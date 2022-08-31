@@ -26,6 +26,7 @@ class Talk_with(Friend_list):
         self.but_list[1].config(command=self.endretu)
         self.fren.talk_with = name
         self.f_scro.pack(fill=tk.Y, side='right')
+        self.f_can.config(height=self.Win_Size[0][1]-78)
         self.f_can.pack()
 
         self.entfarme.pack(side='left', anchor='nw')

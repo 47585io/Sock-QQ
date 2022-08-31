@@ -20,7 +20,7 @@ class Welcome:
     def __init__(self) -> None:
         self.func = []
         self.index = 0
-        self.Win_Size = [(360, 450, 1600, 1000)]
+        self.Win_Size = [[360, 450, 1600, 1000]]
         self.Color = {"bg": "#282c34", "fg": "#abb2bf",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049", "bubu2": "#ff9a97", "alpha": "#4b5363"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",

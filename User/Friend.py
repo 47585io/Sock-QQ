@@ -33,7 +33,7 @@ class Friend_list(Welcome):
         '''init canv and scro'''
         # self.canfarme=tk.Frame(self.bgfarme)
         self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, scrollregion=(
-            0, 0, 500, 1000), confine=False, background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
+            0, 0, 500, 1000),state = tk.NORMAL, confine=False, background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
         self.f_scro = tk.Scrollbar(self.bgfarme)
 
     def canvconfig(self, canv, scro):
@@ -46,11 +46,14 @@ class Friend_list(Welcome):
     def quickconfig(self, friends, sock, mess):
         '''redefine func'''
         Welcome.quickconfig(self, mess, sock)
-        self.canvconfig(self.f_can, self.f_scro)
         self.fren = friends
-
     def new(self):
         '''redefine last class func, go to show friends'''
+        self.Win_Size[0][0]+=100
+        self.Win_Size[0][1]+=200
+        self.win.geometry(self.geosize())
+        self.bgfarme.config(
+            background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])
         self.go(self.showfriends)
         pass
 
@@ -60,17 +63,18 @@ class Friend_list(Welcome):
             a.place_forget()
 
     def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34"):
-        '''draw a friend mess'''
+        '''draw a friend mess'''      
         tag = canv.create_rectangle(relapos[0], relapos[1], relapos[2], relapos[3], fill=color,
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:
             canv.create_image(picpos[0], picpos[1], image=pic,)
-        canv.create_text(namepos[0], namepos[1], width=relapos[3]-relapos[0],
+        canv.create_text(namepos[0]+40, namepos[1], width=relapos[2]-relapos[0]-picpos[1]+picpos[0],
                          text=name, fill=self.Color['fg'], font=(self.Font["zheng"], self.Font_size["mid"]))
         self.f_can.tag_bind(tag, '<Button-1>', func)
         self.tag_list.append(tag)
 
     def showfriends(self):
+        self.canvconfig(self.f_can, self.f_scro)
         self.but_list[0].config(text="+", command=self.addfriend_mid)
         self.but_list[0].place(x=self.Win_Size[0][0]-40, y=0)
         self.f_scro.pack(fill=tk.Y, side='right')
@@ -97,7 +101,7 @@ class Friend_list(Welcome):
                     self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+self.pic_size[1]//2,), (self.Canv_x+50, self.Canv_y+45,), self.talk_with_mid)
             if count % 2 == 1:
                 self.draw_a_friend(
-                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Win_Size[0][0]-self.pic_size[0]-self.Canv_x_from, self.Canv_y+self.pic_size[1]//2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.talk_with_mid)
+                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0], self.Canv_y+self.pic_size[1]//2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.talk_with_mid)
             count += 1
             self.Canv_y += self.pic_size[1]
             # print(self.Canv_x)
