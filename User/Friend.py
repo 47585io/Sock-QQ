@@ -32,17 +32,17 @@ class Friend_list(Welcome):
     def canv_init(self,):
         '''init canv and scro'''
         # self.canfarme=tk.Frame(self.bgfarme)
-        self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, scrollregion=(
-            0, 0, 500, 1000),state = tk.NORMAL, confine=False, background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
+        self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, confine=False, background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
         self.f_scro = tk.Scrollbar(self.bgfarme)
 
     def canvconfig(self, canv, scro):
         '''config a Canv with Theme'''
-        canv.config(width=self.Win_Size[0][0], height=self.Win_Size[0]
-                    [1], borderwidth=0, yscrollcommand=scro.set,)
+        canv.config(width=self.Win_Size[0][0]-1, height=self.Win_Size[0]
+                    [1]-1, borderwidth=0, yscrollcommand=scro.set,)
         scro.config(command=canv.yview, background=self.Color['fg'],
                     activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
-
+        canv.configure(scrollregion=(0,0,500,len(self.furry_l)*self.pic_size[1]))
+        canv.yview_moveto(0.0)
     def quickconfig(self, friends, sock, mess):
         '''redefine func'''
         Welcome.quickconfig(self, mess, sock)
