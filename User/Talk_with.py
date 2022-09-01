@@ -1,6 +1,7 @@
 
 from User.Friend import*
 from Pubilc.Split import Spilt_Mess
+from User.UDPmess import th
 
 class Talk_with(Friend_list):
     '''the talk_with class, can talk with your friens or grounp, and send or get file'''
@@ -23,7 +24,7 @@ class Talk_with(Friend_list):
         if self.istalk == 0:
             self.talk.start()
             self.istalk += 1 
-        self.but_list[1].config(command=self.endretu)
+        self.but_list[1].config(command=lambda :self.retu(self.clear_Canv))
         self.fren.talk_with = name
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.config(height=self.Win_Size[0][1]-78,width=500)
@@ -70,6 +71,4 @@ class Talk_with(Friend_list):
     def delmess(self):
         pass
 
-    def endretu(self):
-        self.clear_Canv()
-        self.retu()
+   

@@ -1,7 +1,6 @@
 import greenlet
-import threading as th
 import tkinter as tk
-USER_NAME=""
+
 
 class GraBase:
     
@@ -64,8 +63,10 @@ class GraBase:
             self.func.append(src_fun)
         go_fun()
 
-    def retu(self,):
+    def retu(self,mid_fun=None):
         '''pop and call a fun from func'''
+        if mid_fun:
+            mid_fun()
         if self.index < 1:
             exit(0)
         self.clear()
@@ -119,17 +120,3 @@ class GraBase:
         self.init_ent()
         self.ent_config()
         self.but_list[1].config(text="←", command=lambda: self.retu())
-
-    def run(self):
-        '''when config all lab , call it'''
-        global USER_NAME
-        tmp = self.openfile()
-        if self.openfile() == 0:
-            self.go(self.welcome1)
-        else:
-            USER_NAME = tmp[0][0:-1:]
-            self.filename = tmp[1]
-            self.go(self.Login)
-        self.win.mainloop()
-        self.new()
-        self.win.mainloop()

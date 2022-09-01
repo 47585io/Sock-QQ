@@ -1,16 +1,21 @@
+import threading as th
 from Pubilc.Split import Spilt_Mess
 import socket
 Mess_Buffer = 1024
 Max_Mess = 10
 # recv buffer size and user mess_list size
 from User.Welcome import USER_NAME
-
+MAX_THD = 1
 UDP_SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 UDP_SOCK.bind(("", 0))
 
-
 class UDP_Mess:
-    def __init__(self) -> None:
+    def __init__(self,sock=UDP_SOCK) -> None:
+        self.sock=sock
+        for i in range(MAX_THD):
+            r = th.Thread(target=self.Read, args=(self.sock,))
+            r.setDaemon(True)
+            r.start()
         self.MessCache = []
         self.index = -1
         self.yes = 0

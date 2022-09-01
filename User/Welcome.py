@@ -3,12 +3,29 @@ import tkinter.filedialog as fid
 from tkinter import messagebox
 from PIL import Image
 import os
-MAX_THD = 1
+
 # the user can use every work max thread
-from User.Base import GraBase,USER_NAME,th,tk
+from User.Base import GraBase,tk
+USER_NAME=""
 
 class Welcome(GraBase):
-    '''the welcom class, can show welcome page and switch page'''
+    '''the welcom class, can show welcome page'''
+    
+    def run(self):
+        '''when config all lab , call it'''
+        global USER_NAME
+        tmp = self.openfile()
+        if self.openfile() == 0:
+            self.go(self.welcome1)
+        else:
+            USER_NAME = tmp[0][0:-1:]
+            self.filename = tmp[1]
+            self.go(self.Login)
+        self.win.mainloop()
+        self.new()
+        self.win.mainloop()
+
+    
     def welcome1(self):
         self.lab_list[0].config(text="\nWelcome!", font=(
             self.Font["zheng"], 20, "bold"))
@@ -106,10 +123,7 @@ class Welcome(GraBase):
         self.message.pack()
         self.win.update()
         self.mess.Send(self.sock, "LOGIN "+USER_NAME)
-        for i in range(MAX_THD):
-            r = th.Thread(target=self.mess.Read, args=(self.sock,))
-            r.setDaemon(True)
-            r.start()
+        self.mess
         sleep(1.5)
         self.cache1.switch()
         # jump to show

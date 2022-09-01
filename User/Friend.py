@@ -1,5 +1,5 @@
 from User.Welcome import*
-
+from concurrent.futures import ThreadPoolExecutor as Th
 # the class can't to new class!!!!
 # or, try lab?
 # no! it not have scro!
@@ -16,8 +16,7 @@ class Friend_list(Welcome):
         self.Canv_y = 0  # 45
         self.Canv_x_from = 70
         self.Canv_size = (self.Win_Size[0][0], self.pic_size[1])
-        self.s = th.Thread(target=self.search,)
-        self.s.setDaemon(True)
+        self.s = Th(1)
         self.isstart = 0
 
     def init(self,):
@@ -35,6 +34,10 @@ class Friend_list(Welcome):
         self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, confine=False, background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
         self.f_scro = tk.Scrollbar(self.bgfarme)
 
+    def Closeall(self):
+        self.isstart=0
+        exit(0)
+    
     def canvconfig(self, canv, scro):
         '''config a Canv with Theme'''
         canv.config(width=self.Win_Size[0][0]-1, height=self.Win_Size[0]
@@ -47,6 +50,8 @@ class Friend_list(Welcome):
         '''redefine func'''
         Welcome.quickconfig(self, mess, sock)
         self.fren = friends
+        self.win.protocol("WM_DELETE_WINDOW",self.Closeall)
+        
     def new(self):
         '''redefine last class func, go to show friends'''
         self.Win_Size[0][0]+=100
@@ -116,18 +121,22 @@ class Friend_list(Welcome):
         '''config a addfriend page'''
         self.entfarme.pack()
         self.List.pack()
+        self.but_list[1].config(command=lambda :self.retu(self.retuadd))
         self.but_list[2].pack(side='right')
         self.but_list[2].config(text='Ok', font=(
             self.Font["zheng"], self.Font_size['mid']+3,), command=self.addmany)
         self.fren.addfriend(self.mess, self.sock)
-        if self.isstart == 0:
-            self.isstart += 1
-            self.s.start()
+        #if self.isstart == 0:
+        self.isstart += 1
+        self.s.submit(self.search)
 
     def search(self):
         '''search user input str in friend_list'''
         tmp = ""
         while 1:
+            if self.isstart==0:
+                print("return")
+                return
             if tmp == self.ent.get():
                 continue
             tmp = self.ent.get()
@@ -151,12 +160,16 @@ class Friend_list(Welcome):
         except Exception:
             pass
 
+    def retuadd(self):
+        self.isstart=0
+          
     def clear_Canv(self,):
         '''clear Canv on old page'''
         self.f_can.delete(tk.ALL)
         #self.index = 0
         self.tag_list.clear()
         self.Canv_y = 0
+        self.fren.talk_with=""
         # self.furry_l.clear()
 
     def talk_with_mid(self, event):
