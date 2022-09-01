@@ -9,6 +9,7 @@ TCP_SOCK.bind(("", 0))
 # the user, olny two port with server
 
 class TCP_mess:
+    '''used for send and get file class'''
     def __init__(self,sock=TCP_SOCK) -> None:
         self.sendfile_list=[]
         #every element is a tuple:(str,srcfile)
@@ -18,11 +19,15 @@ class TCP_mess:
         self.sock=sock
         self.issend=0
         self.isget=0
-        if not os.path.isdir("./User"):
-            os.mkdir("./User")
+#work In the background,   
+        if not os.path.isdir("./mydir"):
+            os.mkdir("./mydir")
+            
     def Sendfile(self,addr=("127.0.0.1",1237)):
+        '''deal with sendfile in list, when Finish, return'''
         self.issend=1
         for file in self.sendfile_list:
+#send a file to server
             self.sock.connect(addr)
             self.sock.send(file[0])
             size = os.path.getsize(file[1])
@@ -35,13 +40,15 @@ class TCP_mess:
         self.issend=0  
     
     def Getfile(self,addr=("127.0.0.1", 1237)):
+        '''deal with file in list, when finish, return'''
         self.isget= 1
         for file in self.getfile_list:
+#get a file and save in default dir
             self.sock.connect(addr)
             self.sock.send(file[0])
             s=self.sock.recv(Mess_Buffer)
             size=int(s.decode())
-            fileobj = open("./User/"+file[1], "wb")
+            fileobj = open("./mydir/"+file[1], "wb")
             while size > 0:
                 date=self.sock.recv(Mess_Buffer)
                 fileobj.write(date)
@@ -55,9 +62,9 @@ class TCP_mess:
         self.sendfile_list.append((s_str,filename))
         if self.issend==0:
             self.slinepool.submit(self.Sendfile)
-    
+
     def Add_a_Get(self, Getstr):
-        '''get a file from server'''
+        '''get a file from server(add it in list)'''
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
         self.getfile_list.append((Getstr,filename))

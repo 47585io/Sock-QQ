@@ -5,6 +5,7 @@ import os
 
 
 class TCP_Mess:
+    '''server TCPmess, send or save file'''
     def __init__(self, addr=("127.0.0.1", 1237)) -> None:
         self.sock = socket.socket()
         self.sock.bind(addr)
@@ -26,6 +27,7 @@ class TCP_Mess:
         size = os.path.getsize("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         file = open("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2], "rb")
         new_sock.send(str(size).encode())
+#send filesize
         print("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         while size > 0:
             date = file.read(Mess_Buffer)

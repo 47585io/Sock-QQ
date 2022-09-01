@@ -2,14 +2,17 @@ from Pubilc.Split import Spilt_Mess
 from User.UDPmess import UDP,UDP_SOCK
 
 class friends:
-    '''The all friend save in'''
+    '''The all friend date save in'''
 
     def __init__(self) -> None:
         self.friend_list = ["my shadow", "my computer", ]
         # friend name list
         self.pic = ["./picture/new.png","./picture/furry.gif"]
+        #friend 头像
         self.Mess_Friend = {}
-        # 记录与好友通信mess label
+        # 记录与好友通信完全mess
+        self.File_all={}
+        # save file
         self.talk_with = ""
         # who talk with now
         self.tmp = []

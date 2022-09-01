@@ -9,8 +9,8 @@ MAX_THD = 1
 UDP_SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 UDP_SOCK.bind(("", 0))
 
-
 class UDP_Mess:
+    '''used for communication class'''
     def __init__(self, sock=UDP_SOCK) -> None:
         self.sock = sock
         for i in range(MAX_THD):

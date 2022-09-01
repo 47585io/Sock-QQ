@@ -61,17 +61,23 @@ class Spilt_Mess:
 
     @staticmethod
     def Send_mess_spilt(fromwho, to, filename,size):
+        '''when want send a file, call it init a send to server str'''
         file = os.path.basename(filename)
         return ("Send√From√" + fromwho + "√To√" + to + "√" + file + "√and√" + size).encode()
 
     @staticmethod
     def Get_mess_spilt(fromwho, to, filename):
+        '''when want get a file from server, call it init a get str'''
         file=os.path.basename(filename)
         return ("Get√From√" + fromwho + "√To√" + to + "√" + file + "√and√" + "no").encode()
 
     @staticmethod
     def File_spilt(s_str):
-        #From who to who filename and size
+      '''when get a Send or Get str, Spilt it, you hava lis,[From,To,filename,(size)]'''
+      #From who to who filename and size
+      try:
         s_str = s_str.decode()
         lis = s_str.split("√", 7)
         return (lis[2], lis[4], lis[5],lis[7])
+      except Exception:
+          return 0

@@ -3,7 +3,7 @@ import tkinter as tk
 
 
 class GraBase:
-    
+    '''A a basic configuration class'''
     LAB_Count = 3
     BUT_Count = 3
     # lab and but init count

@@ -68,7 +68,7 @@ class Friend_list(Welcome):
             a.place_forget()
 
     def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34"):
-        '''draw a friend mess'''      
+        '''draw a friend mess and bind event to mess'''      
         tag = canv.create_rectangle(relapos[0], relapos[1], relapos[2], relapos[3], fill=color,
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:
@@ -79,6 +79,7 @@ class Friend_list(Welcome):
         self.tag_list.append(tag)
 
     def showfriends(self):
+        '''config a friend page'''
         self.canvconfig(self.f_can, self.f_scro)
         self.but_list[0].config(text="+", command=self.addfriend_mid)
         self.but_list[0].place(x=self.Win_Size[0][0]-40, y=0)
@@ -90,7 +91,7 @@ class Friend_list(Welcome):
         if self.fren.pic == []:
             self.f_can.create_text(self.Win_Size[0][0]//2, self.Win_Size[0][1]//2-50, fill=self.Color['fg'], font=(
                 self.Font["zheng"], self.Font_size["big"], "bold"), text="No Friends!")
-
+#while to draw all friend, if user not has head, use default.png
         count = len(self.furry_l)
         while count < len(self.fren.show()):
             if count >= len(self.fren.pic):
@@ -118,7 +119,8 @@ class Friend_list(Welcome):
                 lambda: self.place_forgets(self.but_list[0]))
 
     def addfriend(self):
-        '''config a addfriend page'''
+        '''config a addfriend page
+        from server get friend_list, Then search'''
         self.entfarme.pack()
         self.List.pack()
         self.but_list[1].config(command=lambda :self.retu(self.retuadd))
@@ -134,20 +136,25 @@ class Friend_list(Welcome):
         '''search user input str in friend_list'''
         tmp = ""
         while 1:
+            #when user not search, return 
             if self.isstart==0:
                 print("return")
                 return
             if tmp == self.ent.get():
+#if tmp still is , don't do anything
                 continue
             tmp = self.ent.get()
             if not tmp:
+#if tmp is None,delete all
                 self.List.delete(0, "end")
             list = self.fren.Search_Friend(self.ent.get())
             if list:
+#Will search result,substitute src
                 self.List.delete(0, "end")
                 for l in list:
                     self.List.insert("end", l)
             else:
+#if list is None, delete all
                 self.List.delete(0, "end")
 
     def addmany(self):
@@ -159,29 +166,32 @@ class Friend_list(Welcome):
                 self.fren.friend_list.append(new)
         except Exception:
             pass
+#get user cursor choose lis, and add to friend_list
 
     def retuadd(self):
         self.isstart=0
+        #when user retu, close the sline
           
     def clear_Canv(self,):
         '''clear Canv on old page'''
         self.f_can.delete(tk.ALL)
-        #self.index = 0
         self.tag_list.clear()
         self.Canv_y = 0
         self.fren.talk_with=""
-        # self.furry_l.clear()
 
     def talk_with_mid(self, event):
         '''user choose which friend'''
-        #print(event.widget, event.x, event.y)
         tup = self.f_can.find_closest(event.x, event.y)
+        #get canvobj id on cursor 
         index = self.tag_list.index(tup[0])
+        #search index in tag_list
         name = self.fren.friend_list[index]
+        #get correspond indec's name
         self.clear_Canv()
         self.go(lambda: self.talk_with(name), self.showfriends,
                 lambda: self.place_forgets(self.but_list[0]))
-
+        #clear and go to next page
+        
     def talk_with(self, name):
         print(name)
     # please redefine after
