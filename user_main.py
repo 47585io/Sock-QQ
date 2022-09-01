@@ -1,6 +1,6 @@
 import atexit
 from User.UDPmess import UDP_SOCK,UDP
-from User.TCPmess import TCP_SOCK
+from User.TCPmess import TCP_SOCK,TCP
 from User.friends import Friend_List
 from User.Talk_with import Talk_with
 
@@ -11,9 +11,9 @@ def whenexit():
 atexit.register(whenexit)
 
 GNU = Talk_with()
-def main(mess, sock, friends, gra):
-    gra.quickconfig(friends, mess, sock)
+def main(mess, sock,tcpmess, tcpsock, friends, gra):
+    gra.quickconfig(friends, mess, sock,tcpmess,tcpsock)
     gra.run()
 
 
-main(UDP, UDP_SOCK, Friend_List, GNU)
+main(UDP,UDP_SOCK, TCP,TCP_SOCK, Friend_List, GNU)

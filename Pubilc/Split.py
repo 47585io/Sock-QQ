@@ -1,3 +1,5 @@
+import os
+
 class Spilt_Mess:
     '''The class have many process mess's func'''
     @staticmethod
@@ -58,16 +60,18 @@ class Spilt_Mess:
         return (int(s_str[0:index:]), s_str[index+1::])
 
     @staticmethod
-    def Send_mess_spilt(fromwho, to, filename):
-        return ("Send From " + fromwho + " To " + to + " " + filename).encode()
+    def Send_mess_spilt(fromwho, to, filename,size):
+        file = os.path.basename(filename)
+        return ("Send√From√" + fromwho + "√To√" + to + "√" + file + "√and√" + size).encode()
 
     @staticmethod
     def Get_mess_spilt(fromwho, to, filename):
-        return ("Get From " + fromwho + " To " + to + " " + filename).encode()
+        file=os.path.basename(filename)
+        return ("Get√From√" + fromwho + "√To√" + to + "√" + file + "√and√" + "no").encode()
 
     @staticmethod
     def File_spilt(s_str):
-        #From who to me's filename
+        #From who to who filename and size
         s_str = s_str.decode()
-        lis = s_str.split(" ", 5)
-        return (lis[2], lis[4], lis[5])
+        lis = s_str.split("√", 7)
+        return (lis[2], lis[4], lis[5],lis[7])

@@ -5,27 +5,30 @@ from PIL import Image
 import os
 
 # the user can use every work max thread
-from User.Base import GraBase,tk
-USER_NAME=""
+from User.Base import GraBase, tk
+USER_NAME = ""
+
 
 class Welcome(GraBase):
     '''the welcom class, can show welcome page'''
-    
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.User_Name = USER_NAME
+
     def run(self):
         '''when config all lab , call it'''
-        global USER_NAME
         tmp = self.openfile()
         if self.openfile() == 0:
             self.go(self.welcome1)
         else:
-            USER_NAME = tmp[0][0:-1:]
+            self.User_Name = tmp[0][0:-1:]
             self.filename = tmp[1]
             self.go(self.Login)
         self.win.mainloop()
         self.new()
         self.win.mainloop()
 
-    
     def welcome1(self):
         self.lab_list[0].config(text="\nWelcome!", font=(
             self.Font["zheng"], 20, "bold"))
@@ -89,13 +92,12 @@ class Welcome(GraBase):
             self.filename = mk+"/new.png"
             print("save in ", mk+"/new.png")
         file = open("name.txt", "w")
-        file.writelines([USER_NAME+"\n", self.filename])
+        file.writelines([self.User_Name+"\n", self.filename])
         file.close()
 
     def setname(self):
-        global USER_NAME
-        USER_NAME = self.ent.get()
-        print("hello", USER_NAME)
+        self.User_Name = self.ent.get()
+        print("hello", self.User_Name)
 
     def openfile(self):
         '''check a can use file'''
@@ -108,11 +110,10 @@ class Welcome(GraBase):
 
     def Login(self):
         '''after login, going to show friends'''
-        global USER_NAME
         self.lab_list[0].config(text='\nHello!\n', anchor='center', font=(
             self.Font["zheng"], self.Font_size["big"], "bold"))
         self.lab_list[0].pack()
-        self.message.config(text=USER_NAME, anchor="nw", font=(self.Font["zheng"], self.Font_size["mid"]),
+        self.message.config(text=self.User_Name, anchor="nw", font=(self.Font["zheng"], self.Font_size["mid"]),
                             foreground=self.Color["fg"], background=self.Color["bg"], width=self.Win_Size[0][0]-20)
 
         self.furry = tk.PhotoImage(file=self.filename)
@@ -122,7 +123,7 @@ class Welcome(GraBase):
         self.lab_list[2].pack()
         self.message.pack()
         self.win.update()
-        self.mess.Send(self.sock, "LOGIN "+USER_NAME)
+        self.mess.Send(self.sock, "LOGIN "+self.User_Name)
         self.mess
         sleep(1.5)
         self.cache1.switch()
