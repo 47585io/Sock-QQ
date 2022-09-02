@@ -24,37 +24,49 @@ class TCP_mess:
             os.mkdir("./mydir")
             
     def Sendfile(self,addr=("127.0.0.1",1237)):
-        '''deal with sendfile in list, when Finish, return'''
+        '''deal with sendfile in list, when Finish, return and clear sended file str'''
         self.issend=1
+        print("Send")
         for file in self.sendfile_list:
 #send a file to server
-            self.sock.connect(addr)
-            self.sock.send(file[0])
+            sock=socket.socket()
+            sock.connect(addr)
+            print("connect!")
+            sock.send(file[0])
             size = os.path.getsize(file[1])
             fileobj=open(file[1],"rb")
             while size>0:
                 date=fileobj.read(Mess_Buffer)
-                self.sock.send(date)
+                sock.send(date)
                 size-=Mess_Buffer
-            fileobj.close() 
+            fileobj.close()
+            sock.recv(Mess_Buffer)
+            sock.close()
         self.issend=0  
+        self.sendfile_list.clear()
     
     def Getfile(self,addr=("127.0.0.1", 1237)):
-        '''deal with file in list, when finish, return'''
+        '''deal with file in list, when finish, return and clear geted file str'''
+        print("get")
         self.isget= 1
         for file in self.getfile_list:
 #get a file and save in default dir
-            self.sock.connect(addr)
-            self.sock.send(file[0])
-            s=self.sock.recv(Mess_Buffer)
+            sock=socket.socket()
+            sock.connect(addr)
+            print("connect")
+            sock.send(file[0])
+            s=sock.recv(Mess_Buffer)
             size=int(s.decode())
             fileobj = open("./mydir/"+file[2]+"/"+file[1], "wb")
+            sock.send("Ok".encode())
             while size > 0:
-                date=self.sock.recv(Mess_Buffer)
+                date=sock.recv(Mess_Buffer)
                 fileobj.write(date)
                 size -= Mess_Buffer
             fileobj.close()
+            sock.close()
         self.isget = 0
+        self.getfile_list.clear()
         
     def Add_a_Send(self,From,To,filename):
         '''send a file to server'''
@@ -67,7 +79,7 @@ class TCP_mess:
         '''get a file from server(add it in list)'''
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
-        fromwho=lis[0]
+        fromwho=lis[1]
         if not os.path.isdir("./mydir/"+fromwho):
             os.mkdir("./mydir/"+fromwho)
         self.getfile_list.append((Getstr,filename,fromwho))

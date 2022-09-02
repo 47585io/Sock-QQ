@@ -25,18 +25,31 @@ class Talk_with(Friend_list):
         
     def Login(self):   
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
+        #when you login, you must send your headpic to server
         super().Login()
         
     def chu(self, new):
+        '''get friend headpic from server, add to a dir and add to self.fren.pic with name'''
         s_str = []
         i=0
         self.mess.Send(self.sock,"GetHead "+str(new))
+        #init a GetHead str and send to udpmess server, and server return a headpic list
         head_str=self.mess.getnew()
+        #get the new mess
         head_lis=Spilt_Mess.Friend_list_Read_Spilt(head_str)
+        #use Friend_list_Read_Spilt, cut str to list:[headname1,...]
         while i<len(head_lis):
             s_str.append(Spilt_Mess.Get_mess_spilt("Server",new[i],head_lis[i]))
             i+=1
-        #self.getfile(s_str)
+        #from list get a pic every once, and add in s_str list(a going to get file list)
+        self.getfile(s_str)
+        #get all, and save in ./mydir/name/picname
+        i=0
+        while i<len(head_lis):
+            self.fren.pic.append("./mydir/"+new[i]+"/"+head_lis[i])
+            i+=1
+        #get name in new list, and Find from the corresponding head_lis
+        #end, add the file path to self.fren.pic
         
     def talk_with(self, name):
         '''config a talk page'''
@@ -111,8 +124,8 @@ class Talk_with(Friend_list):
         filename = fid.askopenfilenames()
         for file in filename:
             self.tcpmess.Add_a_Send(self.User_Name, self.fren.talk_with, file)
-            self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
-                self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
+            #self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
+                #self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     def filespilt():
         pass
     def delmess(self,event):        
