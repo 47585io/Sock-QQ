@@ -41,6 +41,7 @@ class TCP_mess:
                 size-=Mess_Buffer
             fileobj.close()
             sock.recv(Mess_Buffer)
+            print("Send finish")
             sock.close()
         self.issend=0  
         self.sendfile_list.clear()
@@ -64,6 +65,8 @@ class TCP_mess:
                 fileobj.write(date)
                 size -= Mess_Buffer
             fileobj.close()
+            sock.send("Ok".encode())
+            print("get finish")
             sock.close()
         self.isget = 0
         self.getfile_list.clear()

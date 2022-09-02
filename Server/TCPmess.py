@@ -35,6 +35,7 @@ class TCP_Mess:
             date = file.read(Mess_Buffer)
             new_sock.send(date)
             size -= Mess_Buffer
+        new_sock.recv(Mess_Buffer)
         print("Send Finsh!")
         file.close()
 
