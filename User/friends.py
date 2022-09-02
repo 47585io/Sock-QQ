@@ -9,10 +9,6 @@ class friends:
         # friend name list
         self.pic = ["./picture/new.png","./picture/furry.gif"]
         #friend 头像
-        self.Mess_Friend = {}
-        # 记录与好友通信完全mess
-        self.File_all={}
-        # save file
         self.talk_with = ""
         # who talk with now
         self.tmp = []

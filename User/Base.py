@@ -5,14 +5,14 @@ import tkinter as tk
 class GraBase:
     '''A a basic configuration class'''
     LAB_Count = 3
-    BUT_Count = 3
+    BUT_Count = 4
     # lab and but init count
 
     def __init__(self) -> None:
         self.func = []
         self.index = 0
         self.Win_Size = [[360, 450, 1600, 1000]]
-        self.Color = {"bg": "#282c34", "fg": "#abb2bf",
+        self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049", "bubu2": "#ff9a97", "alpha": "#4b5363"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
                      "drak": "Quicksand Medium", "small": "Z003",

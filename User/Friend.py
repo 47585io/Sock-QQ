@@ -44,7 +44,7 @@ class Friend_list(Welcome):
                     [1]-1, borderwidth=0, yscrollcommand=scro.set,)
         scro.config(command=canv.yview, background=self.Color['fg'],
                     activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
-        canv.configure(scrollregion=(0,0,500,len(self.furry_l)*self.pic_size[1]))
+        canv.configure(scrollregion=(0,0,500,len(self.furry_l)*self.pic_size[1]+500))
         canv.yview_moveto(0.0)
     def quickconfig(self, friends, sock, mess):
         '''redefine func'''
@@ -54,7 +54,7 @@ class Friend_list(Welcome):
         
     def new(self):
         '''redefine last class func, go to show friends'''
-        self.Win_Size[0][0]+=100
+        self.Win_Size[0][0]+=130
         self.Win_Size[0][1]+=200
         self.win.geometry(self.geosize())
         self.bgfarme.config(
@@ -69,6 +69,7 @@ class Friend_list(Welcome):
 
     def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34"):
         '''draw a friend mess and bind event to mess'''      
+        
         tag = canv.create_rectangle(relapos[0], relapos[1], relapos[2], relapos[3], fill=color,
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:
@@ -82,12 +83,14 @@ class Friend_list(Welcome):
         '''config a friend page'''
         self.canvconfig(self.f_can, self.f_scro)
         self.but_list[0].config(text="+", command=self.addfriend_mid)
-        self.but_list[0].place(x=self.Win_Size[0][0]-40, y=0)
+        self.but_list[0].place(x=self.Win_Size[0][0]-35, y=0)
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.pack()
-
+        
+        self.back=tk.PhotoImage(file="./thedark.png")
+        self.f_can.create_image(230,-250,image=self.back)
     # but_list[0] is place!!!
-
+        
         if self.fren.pic == []:
             self.f_can.create_text(self.Win_Size[0][0]//2, self.Win_Size[0][1]//2-50, fill=self.Color['fg'], font=(
                 self.Font["zheng"], self.Font_size["big"], "bold"), text="No Friends!")

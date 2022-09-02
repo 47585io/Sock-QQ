@@ -31,10 +31,12 @@ class TCP_Mess:
 #send filesize
         print("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         new_sock.recv(Mess_Buffer)
+#must wait user
         while size > 0:
             date = file.read(Mess_Buffer)
             new_sock.send(date)
             size -= Mess_Buffer
+#must wait user         
         new_sock.recv(Mess_Buffer)
         print("Send Finsh!")
         file.close()
@@ -47,12 +49,15 @@ class TCP_Mess:
         size=int(tup[3])
         print("i have a dream , is can save a file")
         new_sock.send('Ok'.encode())
+#respond user
         while size>0:
             date = new_sock.recv(Mess_Buffer)
             file.write(date)
             size-=Mess_Buffer
+            
         print("Save Finsh")
         new_sock.send("Ok".encode())
+#respond user
       except Exception as e:
         print(e)
         file.close()

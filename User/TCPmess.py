@@ -2,7 +2,7 @@ import socket
 import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
-Mess_Buffer = 1024
+Mess_Buffer = 8192
 
 TCP_SOCK = socket.socket()
 TCP_SOCK.bind(("", 0))
@@ -32,9 +32,12 @@ class TCP_mess:
             sock=socket.socket()
             sock.connect(addr)
             print("connect!")
+#connect           
             sock.send(file[0])
             size = os.path.getsize(file[1])
             fileobj=open(file[1],"rb")
+            sock.recv(Mess_Buffer)
+#you must recv a mess, for wait server
             while size>0:
                 date=fileobj.read(Mess_Buffer)
                 sock.send(date)
@@ -43,8 +46,10 @@ class TCP_mess:
             sock.recv(Mess_Buffer)
             print("Send finish")
             sock.close()
+#before close, wait server finish
         self.issend=0  
         self.sendfile_list.clear()
+#clear all send str
     
     def Getfile(self,addr=("127.0.0.1", 1237)):
         '''deal with file in list, when finish, return and clear geted file str'''
@@ -55,18 +60,22 @@ class TCP_mess:
             sock=socket.socket()
             sock.connect(addr)
             print("connect")
+            
             sock.send(file[0])
             s=sock.recv(Mess_Buffer)
             size=int(s.decode())
             fileobj = open("./mydir/"+file[2]+"/"+file[1], "wb")
             sock.send("Ok".encode())
+
             while size > 0:
                 date=sock.recv(Mess_Buffer)
                 fileobj.write(date)
                 size -= Mess_Buffer
+                
             fileobj.close()
             sock.send("Ok".encode())
             print("get finish")
+            
             sock.close()
         self.isget = 0
         self.getfile_list.clear()

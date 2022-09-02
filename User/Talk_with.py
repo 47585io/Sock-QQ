@@ -1,4 +1,6 @@
 
+from genericpath import isdir
+from lib2to3.pygram import pattern_symbols
 from User.Friend import*
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import th
@@ -56,23 +58,26 @@ class Talk_with(Friend_list):
         if self.istalk == 0:
             self.talk.start()
             self.istalk += 1
-
-        self.but_list[0].config(command=self.sendfile, text="↑↓")
-        self.but_list[0].pack()
-
-        self.but_list[1].config(command=lambda: self.retu(self.clear_Canv))
+        self.but_list[1].config(command=lambda: self.retu(self.endretu))
         self.fren.talk_with = name
+        
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.config(
             height=self.Win_Size[0][1]-78, width=self.Win_Size[0][0])
         self.f_can.pack()
+        
         self.entfarme.pack(side='left', anchor='nw')
         self.but_list[2].config(
             text='Send', command=lambda: self.Sendshow(0, name, self.ent.get()))
         self.but_list[2].pack(side='left')
         self.ent.bind("<Return>", lambda x,
                       y=name: self.Sendshow(x, y, self.ent.get()))
-
+        
+        self.but_list[0].config(command=self.sendfile, text="↑",width=1)
+        self.but_list[0].place(x=self.Win_Size[0][0]-60, y=0)
+        self.but_list[3].config(text="↓",width=1,command=self.usergetfile)
+        self.but_list[3].place(x=self.Win_Size[0][0]-35, y=0)
+        
     def Sendshow(self, tmp, name, s_str):
         '''when user send a str, immediately show and send to other user'''
         if name != "my shadow" or name != "my computer":
@@ -95,7 +100,7 @@ class Talk_with(Friend_list):
     #if this is a file mess, go to save the mess, i use it get file from server after save, and it is From who to me
                 lis=Spilt_Mess.File_spilt(s.encode())
                 if lis!=0:
-                    self.fren.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
+                    self.history.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
                     continue
     
@@ -115,7 +120,7 @@ class Talk_with(Friend_list):
                         self.f_can.yview_moveto(1.0)
 
     def getfile(self, s_str):
-        '''from self.fren.file, get talk_with send to str, and send to server get the file'''
+        '''put s_str list in tcpmess spilt list and wait spilt'''
         for s in s_str:
             self.tcpmess.Add_a_Get(s)
 
@@ -123,10 +128,26 @@ class Talk_with(Friend_list):
         '''add go to send file'''
         filename = fid.askopenfilenames()
         for file in filename:
-            self.tcpmess.Add_a_Send(self.User_Name, self.fren.talk_with, file)
-            #self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
-                #self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
-    def filespilt():
-        pass
-    def delmess(self,event):        
+            if os.path.isdir(file):
+                filelist=os.listdir(file)
+                for f in filelist:
+                    self.tcpmess.Add_a_Send(
+                        self.User_Name, self.fren.talk_with, f)
+            else:
+                self.tcpmess.Add_a_Send(self.User_Name, self.fren.talk_with, file)
+            self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
+                self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
+    
+    def usergetfile(self,messbox):
+        '''from self.fren.file, get talk_with send to str, and send to server get the file'''
+        messbox.config("Cheak Your File",self.history.File_all[self.fren.talk_with],"list",0)
+        list=messbox.show()
+        self.getfile(list)      
+    
+    def endretu(self):
+        self.clear_Canv()
+        self.but_list[0].place_forget()
+        self.but_list[3].place_forget()
+    
+    def delmess(self):
         pass
