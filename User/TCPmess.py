@@ -48,7 +48,7 @@ class TCP_mess:
             self.sock.send(file[0])
             s=self.sock.recv(Mess_Buffer)
             size=int(s.decode())
-            fileobj = open("./mydir/"+file[1], "wb")
+            fileobj = open("./mydir/"+file[2]+"/"+file[1], "wb")
             while size > 0:
                 date=self.sock.recv(Mess_Buffer)
                 fileobj.write(date)
@@ -67,7 +67,10 @@ class TCP_mess:
         '''get a file from server(add it in list)'''
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
-        self.getfile_list.append((Getstr,filename))
+        fromwho=lis[0]
+        if not os.path.isdir("./mydir/"+fromwho):
+            os.mkdir("./mydir/"+fromwho)
+        self.getfile_list.append((Getstr,filename,fromwho))
         if self.isget == 0:
             self.slinepool.submit(self.Getfile)
 

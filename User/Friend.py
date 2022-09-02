@@ -162,12 +162,16 @@ class Friend_list(Welcome):
         try:
             tup = self.List.get(self.List.curselection())
             new = self.fren.format_list(tup)
-            if new:
-                self.fren.friend_list.append(new)
-        except Exception:
+            if new:              
+                self.fren.friend_list.extend(new)
+                self.chu(new)
+        except Exception as e:
+            print(e)
             pass
 #get user cursor choose lis, and add to friend_list
-
+    def chu(self,new):
+        pass
+    #please redefine after
     def retuadd(self):
         self.isstart=0
         #when user retu, close the sline

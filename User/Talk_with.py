@@ -22,7 +22,22 @@ class Talk_with(Friend_list):
         self.tcpmess = tcpmess
         self.tcpsock = tcpsock
         #used for send and get file
-
+        
+    def Login(self):   
+        self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
+        super().Login()
+        
+    def chu(self, new):
+        s_str = []
+        i=0
+        self.mess.Send(self.sock,"GetHead "+str(new))
+        head_str=self.mess.getnew()
+        head_lis=Spilt_Mess.Friend_list_Read_Spilt(head_str)
+        while i<len(head_lis):
+            s_str.append(Spilt_Mess.Get_mess_spilt("Server",new[i],head_lis[i]))
+            i+=1
+        #self.getfile(s_str)
+        
     def talk_with(self, name):
         '''config a talk page'''
         if self.istalk == 0:
@@ -67,8 +82,8 @@ class Talk_with(Friend_list):
     #if this is a file mess, go to save the mess, i use it get file from server after save, and it is From who to me
                 lis=Spilt_Mess.File_spilt(s.encode())
                 if lis!=0:
-                    self.fren.File_all[str(lis[0])]=Spilt_Mess.Get_mess_spilt(
-                        lis[0], lis[1], lis[2])
+                    self.fren.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
+                        lis[0], lis[1], lis[2]))
                     continue
     
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
@@ -87,8 +102,9 @@ class Talk_with(Friend_list):
                         self.f_can.yview_moveto(1.0)
 
     def getfile(self, s_str):
-        
-        pass
+        '''from self.fren.file, get talk_with send to str, and send to server get the file'''
+        for s in s_str:
+            self.tcpmess.Add_a_Get(s)
 
     def sendfile(self):
         '''add go to send file'''
@@ -97,9 +113,7 @@ class Talk_with(Friend_list):
             self.tcpmess.Add_a_Send(self.User_Name, self.fren.talk_with, file)
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
-
-    def delmess(self,event):
-        
-        
-        
+    def filespilt():
+        pass
+    def delmess(self,event):        
         pass

@@ -1,4 +1,5 @@
 import socket
+import os
 from Server.users import users
 from Pubilc.Split import Spilt_Mess
 Mess_Buffer = 1024
@@ -29,7 +30,18 @@ class message:
             lis.append(self.USERS.get_friend_list())
             lis.append(tmp[1])
             return lis
-
+        
+        elif tmp[0].decode().startswith("GetHead"):
+            name_list=Spilt_Mess.Friend_list_Read_Spilt(tmp[0])
+            head_lis=[]
+            for name in name_list:
+                nametmp=os.listdir("./From/Server/"+name)
+                head=nametmp[0]
+                head_lis.append(head)
+            lis.append(Spilt_Mess.Friend_list_Send_Spilt(head_lis).decode())
+            lis.append(tmp[1])
+            return lis
+               
     #default, the mess is name@str, read it , get the str and name, send str to name, and add mess from(my_name@str)
     #so send my_name@str to name's addr
         else:

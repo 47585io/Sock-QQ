@@ -25,7 +25,7 @@ class friends:
         '''format the going to add list'''
         if type(list_) == str:
             if list_ not in self.friend_list:
-                return list_
+                return [list_,]
             return
         new_list = []
         for name in list_:
