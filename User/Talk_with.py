@@ -104,7 +104,7 @@ class Talk_with(Friend_list):
                 #self.fren.Mess_Friend[name].append(s)
                 if name == self.fren.talk_with:
                     i = self.fren.friend_list.index(name)
-                    self.draw_a_friend(self.f_can, s, None, (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
+                    self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                         self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
                     self.Canv_y += self.pic_size[1]+10
     
