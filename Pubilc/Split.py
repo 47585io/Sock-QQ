@@ -81,3 +81,8 @@ class Spilt_Mess:
         return (lis[2], lis[4], lis[5],lis[7])
       except Exception:
           return 0
+      
+    @staticmethod
+    def calculate_text(text,x,y,width):
+        pass
+              

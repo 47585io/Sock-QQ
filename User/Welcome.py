@@ -124,7 +124,6 @@ class Welcome(GraBase):
         self.message.pack()
         self.win.update()
         self.mess.Send(self.sock, "LOGIN "+self.User_Name)
-        self.mess
         sleep(1.5)
         self.cache1.switch()
         # jump to show

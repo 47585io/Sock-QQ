@@ -19,18 +19,20 @@ class message:
     def bbmess(self, tmp):
         '''process going to send str'''
         lis = []
+        my_name=self.USERS.value_to_key(tmp[1])
     #if user login, call login get username and friend_list, the end , send mess to src user
         if tmp[0].decode().startswith("LOGIN"):
             s = self.USERS.Login(tmp)
-            lis.extend((s, tmp[1]))
+            lis.extend((Spilt_Mess.Send_spilt(s,my_name), tmp[1]))
             return lis
 
         #if user want to addfriend, return the users name
         elif tmp[0].decode().startswith("AddFriend"):
-            lis.append(self.USERS.get_friend_list())
+            lis.append(Spilt_Mess.Send_spilt(self.USERS.get_friend_list(),my_name))
             lis.append(tmp[1])
             return lis
-        
+    
+    #user want get friends head, spilt str, search filename and return 
         elif tmp[0].decode().startswith("GetHead"):
             name_list=Spilt_Mess.Friend_list_Read_Spilt(tmp[0])
             head_lis=[]
@@ -38,7 +40,8 @@ class message:
                 nametmp=os.listdir("./From/Server/"+name)
                 head=nametmp[0]
                 head_lis.append(head)
-            lis.append(Spilt_Mess.Friend_list_Send_Spilt(head_lis).decode())
+            s=Spilt_Mess.Friend_list_Send_Spilt(head_lis).decode()
+            lis.append(Spilt_Mess.Send_spilt(s,my_name))
             lis.append(tmp[1])
             return lis
                
@@ -49,7 +52,7 @@ class message:
             addr = self.USERS.getto(self.USERS.users, name)
             name = self.USERS.value_to_key(tmp[1])
             s_str = Spilt_Mess.Send_spilt(s_str, name)
-            lis.append(s_str.decode())
+            lis.append(s_str)
             lis.append(addr)
             return lis
 
@@ -64,7 +67,7 @@ class message:
 
     def Send(self, lis):
         '''send bytes, can redefine in sonclass'''
-        self.sock.sendto(lis[0].encode(), lis[1])
+        self.sock.sendto(lis[0], lis[1])
         #the lis[0] is from@str, lis[1] is send to addr
         #login return a decode str,OK,then let us to encode
 

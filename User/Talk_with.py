@@ -1,10 +1,9 @@
 
-from genericpath import isdir
-from lib2to3.pygram import pattern_symbols
+from unittest.util import safe_repr
 from User.Friend import*
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import th
-
+from User.History import History
 
 class Talk_with(Friend_list):
     '''the talk_with class, can talk with your friens or grounp, and send or get file'''
@@ -15,16 +14,37 @@ class Talk_with(Friend_list):
         self.talk.setDaemon(True)
         self.istalk = 0
         #Always check whether has a mess to display
-
+    
+    def topinit(self):
+        self.win2 = tk.Toplevel(self.win,bg=self.Color['endblack'])
+        self.toplist=tk.Listbox(self.win2)
+        self.toplab=tk.Label(self.win2)
+        self.topxbut=tk.Button(self.win2)
+        self.topbut=tk.Button(self.win2)
+        self.topscro=tk.Scrollbar(self.win2)
+    
     def init(self):
         Friend_list.init(self)
-
+        self.history=History()
+        self.topinit()
+  
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         Friend_list.quickconfig(self, friends, sock, mess)
         self.tcpmess = tcpmess
         self.tcpsock = tcpsock
+        self.topclose()
         #used for send and get file
-        
+    
+    def topconfig(self,lab,but,list,scro):
+        self.Win_Size.append((250,300,self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
+        #self.labconfig(lab)
+        self.butconfig(but)
+        self.listconfig(list,scro)
+        self.toplab.pack()
+
+    def topclose(self):
+        self.win2.geometry("0x0-1000-1000")
+
     def Login(self):   
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         #when you login, you must send your headpic to server
@@ -36,7 +56,7 @@ class Talk_with(Friend_list):
         i=0
         self.mess.Send(self.sock,"GetHead "+str(new))
         #init a GetHead str and send to udpmess server, and server return a headpic list
-        head_str=self.mess.getnew()
+        head_str=self.mess.getSpecial()
         #get the new mess
         head_lis=Spilt_Mess.Friend_list_Read_Spilt(head_str)
         #use Friend_list_Read_Spilt, cut str to list:[headname1,...]
@@ -64,6 +84,8 @@ class Talk_with(Friend_list):
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.config(
             height=self.Win_Size[0][1]-78, width=self.Win_Size[0][0])
+        self.f_can.configure(scrollregion=(0,0,500,0))
+        self.f_can.yview_moveto(1.0)
         self.f_can.pack()
         
         self.entfarme.pack(side='left', anchor='nw')
@@ -74,9 +96,9 @@ class Talk_with(Friend_list):
                       y=name: self.Sendshow(x, y, self.ent.get()))
         
         self.but_list[0].config(command=self.sendfile, text="↑",width=1)
-        self.but_list[0].place(x=self.Win_Size[0][0]-60, y=0)
         self.but_list[3].config(text="↓",width=1,command=self.usergetfile)
         self.but_list[3].place(x=self.Win_Size[0][0]-35, y=0)
+        self.but_list[0].place(x=self.Win_Size[0][0]-60, y=0)
         
     def Sendshow(self, tmp, name, s_str):
         '''when user send a str, immediately show and send to other user'''
@@ -100,6 +122,8 @@ class Talk_with(Friend_list):
     #if this is a file mess, go to save the mess, i use it get file from server after save, and it is From who to me
                 lis=Spilt_Mess.File_spilt(s.encode())
                 if lis!=0:
+                    if str(lis[0]) not in self.history.File_all:
+                        self.history.File_all[str(lis[0])]=[]
                     self.history.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
                     continue
@@ -138,16 +162,17 @@ class Talk_with(Friend_list):
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     
-    def usergetfile(self,messbox):
+    def usergetfile(self,):
         '''from self.fren.file, get talk_with send to str, and send to server get the file'''
-        messbox.config("Cheak Your File",self.history.File_all[self.fren.talk_with],"list",0)
-        list=messbox.show()
-        self.getfile(list)      
-    
+        self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
+        self.win2.geometry(self.geosize((self.Win_Size[1][0],self.Win_Size[1][1],self.Win_Size[1][2]+10,self.Win_Size[1][3])))
+        self.win2.update()
+            
     def endretu(self):
         self.clear_Canv()
+        self.topclose()
         self.but_list[0].place_forget()
         self.but_list[3].place_forget()
     
-    def delmess(self):
+    def delmess(self,event):
         pass

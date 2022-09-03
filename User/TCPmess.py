@@ -82,6 +82,8 @@ class TCP_mess:
         
     def Add_a_Send(self,From,To,filename):
         '''send a file to server'''
+        if not filename:
+            return
         s_str = Spilt_Mess.Send_mess_spilt(From, To, filename, str(os.path.getsize(filename)))
         self.sendfile_list.append((s_str,filename))
         if self.issend==0:

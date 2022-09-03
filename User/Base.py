@@ -44,7 +44,7 @@ class GraBase:
     def geosize(self, tup=None):
         '''win size to str'''
         if tup:
-            return str(tup[0][0])+"x"+str(tup[0][1])+"+"+str(tup[0][2])+"+"+str(tup[0][3])
+            return str(tup[0])+"x"+str(tup[1])+"+"+str(tup[2])+"+"+str(tup[3])
         return str(self.Win_Size[0][0])+"x"+str(self.Win_Size[0][1])+"+"+str(self.Win_Size[0][2])+"+"+str(self.Win_Size[0][3])
 
     def clear(self):

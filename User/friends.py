@@ -32,7 +32,7 @@ class friends:
     def __from_server_get_friend_list(self, mess, sock):
         '''func name is i mean'''
         mess.Send(sock, "AddFriend ")
-        s_str = mess.getnew()
+        s_str = mess.getSpecial()
         return Spilt_Mess.Friend_list_Read_Spilt(s_str)
 
     def addfriend(self, mess=UDP, sock=UDP_SOCK):
