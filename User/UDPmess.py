@@ -12,7 +12,6 @@ UDP_SOCK.bind(("", 0))
 class UDP_Mess:
     '''used for communication class'''
     def __init__(self, sock=UDP_SOCK) -> None:
-        self.myname="my"
         self.sock = sock
         for i in range(MAX_THD):
             r = th.Thread(target=self.Read, args=(self.sock,))
@@ -25,6 +24,10 @@ class UDP_Mess:
         self.yes = 0
 # Mess list: Max 10 mess,  index: now new mess index, yes:the mess yes or on new mess
 # Special_Mess,save special mess
+
+    def init(self,name):
+        self.myname=name
+        
     def get(self):
         '''the func pop a element from MessCache head, and return'''
         if self.index >= 0:
