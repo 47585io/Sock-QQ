@@ -51,7 +51,7 @@ class TCP_mess:
         self.sendfile_list.clear()
 #clear all send str
     
-    def Getfile(self,addr=("127.0.0.1", 1237)):
+    def Getfile(self,addr=("192.168.1.3", 1237)):
         '''deal with file in list, when finish, return and clear geted file str'''
         print("get")
         self.isget= 1
@@ -91,6 +91,7 @@ class TCP_mess:
 
     def Add_a_Get(self, Getstr):
         '''get a file from server(add it in list)'''
+        print("Get")
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
         fromwho=lis[0]

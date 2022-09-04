@@ -187,8 +187,8 @@ class Talk_with(Friend_list):
             for mess in self.history.File_all[self.fren.talk_with]:
                 file=Spilt_Mess.File_spilt(mess)
                 self.toplist.insert("end",file[2])
-        except Exception:
-            pass
+        except Exception as e:
+            print(e)
         self.win2.update()
         
     def cursor(self):
