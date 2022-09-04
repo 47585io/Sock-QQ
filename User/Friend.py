@@ -53,7 +53,7 @@ class Friend_list(Welcome):
         canv.yview_moveto(0.0)
 
     def listconfig(self, list, scro):
-        list.config(background=self.Color['bg'], selectbackground=self.Color['ffg'],
+        list.config(background=self.Color['bg'], selectbackground=self.Color['ffg'],selectmode="multiple",
                     yscrollcommand=scro.set, foreground=self.Color['fg'], selectforeground=self.Color['fg'], borderwidth=0, highlightthickness=0)
         scro.config(command=list.yview, background=self.Color['fg'],
                     activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
