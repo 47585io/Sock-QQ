@@ -41,6 +41,20 @@ class GraBase:
         self.ent_scro = tk.Scrollbar(self.entfarme)
         self.ent = tk.Entry(self.entfarme,)
 # on, please wirte all init fun on
+    def canv_init(self,):
+        '''init canv and scro'''
+        # self.canfarme=tk.Frame(self.bgfarme)
+        self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, confine=False,
+                               background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
+        self.f_scro = tk.Scrollbar(self.bgfarme)
+
+    def topinit(self):
+        self.win2 = tk.Toplevel(self.win, bg=self.Color['endblack'])
+        self.toplist = tk.Listbox(self.win2)
+        self.toplab = tk.Label(self.win2)
+        self.topxbut = tk.Button(self.win2)
+        self.topbut = tk.Button(self.win2)
+        self.topscro = tk.Scrollbar(self.win2)
 
     def geostr(self,s_str,split):
         tup=[]
@@ -66,8 +80,10 @@ class GraBase:
         '''use the fun go a new func, and save src fun, if you want to do other things,please give me the fun'''
         if mid_fun:
             mid_fun()
+        #self.lab_list[3].place_forget()
         self.clear()
         self.but_list[1].pack(anchor="nw")
+        #self.lab_list[3].place(x=self.Win_Size[0][0]//2-50,y=0)
         if src_fun:
             self.index += 1
             self.func.append(src_fun)
@@ -79,8 +95,10 @@ class GraBase:
             mid_fun()
         if self.index < 1:
             exit(0)
+        #self.lab_list[3].place_forget()
         self.clear()
         self.but_list[1].pack(anchor="nw")
+        #self.lab_list[3].place(x=self.Win_Size[0][0]//2-50, y=0)
         self.index -= 1
         fun = self.func[self.index]
         fun()
@@ -118,7 +136,40 @@ class GraBase:
         self.ent.pack(side='top')
         self.ent_scro.pack(side="bottom", fill=tk.X)
 # please wirte all config fun on
+    def canvconfig(self, canv, scro):
+        '''config a Canv with Theme'''
+        canv.config(width=self.Win_Size[0][0]-1, height=self.Win_Size[0]
+                    [1]-1, borderwidth=0, yscrollcommand=scro.set,)
+        scro.config(command=canv.yview, background=self.Color['fg'],
+                    activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
+        canv.configure(scrollregion=(0, 0, 500, len(
+            self.furry_l)*self.pic_size[1]+500))
+        canv.yview_moveto(0.0)
 
+    def listconfig(self, list, scro):
+        list.config(background=self.Color['bg'], selectbackground=self.Color['ffg'], selectmode="multiple",
+                    yscrollcommand=scro.set, foreground=self.Color['fg'], selectforeground=self.Color['fg'], borderwidth=0, highlightthickness=0)
+        scro.config(command=list.yview, background=self.Color['fg'],
+                    activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
+    
+    def topconfig(self,lab,but,list,scro):
+        self.Win_Size.append((250,300,self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
+        self.win2.overrideredirect(True)
+        self.win2.update()
+        self.win2.attributes("-alpha", 1.0)
+        
+        self.butconfig(but)
+        self.listconfig(list,scro)
+        lab.config(text=" File Box               ", font=(self.Font["zheng"], self.Font_size["mid"]),
+                   borderwidth=0, foreground=self.Color["fg"], background=self.Color["bg"],)
+        lab.grid(row=0,column=0)
+        but[1].config(text="×", command=self.topclose)
+        
+        scro.grid(row=1,column=1)
+        list.grid(row=1,column=0,rowspan=1)
+        but[1].grid(row=0, column=1)
+        but[0].grid(row=2,column=1)
+        
     def quickconfig(self, mess, sock):
         '''usally, user olny call it, can init and config all lab'''
         self.sock = sock

@@ -15,14 +15,6 @@ class Talk_with(Friend_list):
         self.istalk = 0
         #Always check whether has a mess to display
     
-    def topinit(self):
-        self.win2 = tk.Toplevel(self.win,bg=self.Color['endblack'])
-        self.toplist=tk.Listbox(self.win2)
-        self.toplab=tk.Label(self.win2)
-        self.topxbut=tk.Button(self.win2)
-        self.topbut=tk.Button(self.win2)
-        self.topscro=tk.Scrollbar(self.win2)
-    
     def init(self):
         Friend_list.init(self)
         self.history=History()
@@ -36,24 +28,6 @@ class Talk_with(Friend_list):
         self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
         self.topclose()
         #used for send and get file
-    
-    def topconfig(self,lab,but,list,scro):
-        self.Win_Size.append((250,300,self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
-        self.win2.overrideredirect(True)
-        self.win2.update()
-        self.win2.attributes("-alpha", 1.0)
-        
-        self.butconfig(but)
-        self.listconfig(list,scro)
-        lab.config(text=" File Box               ", font=(self.Font["zheng"], self.Font_size["mid"]),
-                   borderwidth=0, foreground=self.Color["fg"], background=self.Color["bg"],)
-        lab.grid(row=0,column=0)
-        but[1].config(text="×", command=self.topclose)
-        
-        scro.grid(row=1,column=1)
-        list.grid(row=1,column=0,rowspan=1)
-        but[1].grid(row=0, column=1)
-        but[0].grid(row=2,column=1)
         
     def topclose(self):
         self.win2.geometry("0x0-1000-1000")
@@ -90,10 +64,10 @@ class Talk_with(Friend_list):
         '''config a talk page'''
         if self.istalk == 0:
             self.talk.start()
-            self.istalk += 1
+            self.istalk += 1      
         self.but_list[1].config(command=lambda: self.retu(self.endretu))
         self.fren.talk_with = name
-        
+        self.win.title("Talk_With - "+"("+self.fren.talk_with+")")
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.config(
             height=self.Win_Size[0][1]-78, width=self.Win_Size[0][0])

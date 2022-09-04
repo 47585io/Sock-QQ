@@ -31,32 +31,9 @@ class Friend_list(Welcome):
         self.lisscro = tk.Scrollbar(self.bgfarme)
         self.back = tk.PhotoImage(file="./thedark.png")
 
-    def canv_init(self,):
-        '''init canv and scro'''
-        # self.canfarme=tk.Frame(self.bgfarme)
-        self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, confine=False,
-                               background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
-        self.f_scro = tk.Scrollbar(self.bgfarme)
-
     def Closeall(self):
         self.isstart = 0
         exit(0)
-
-    def canvconfig(self, canv, scro):
-        '''config a Canv with Theme'''
-        canv.config(width=self.Win_Size[0][0]-1, height=self.Win_Size[0]
-                    [1]-1, borderwidth=0, yscrollcommand=scro.set,)
-        scro.config(command=canv.yview, background=self.Color['fg'],
-                    activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
-        canv.configure(scrollregion=(0, 0, 500, len(
-            self.furry_l)*self.pic_size[1]+500))
-        canv.yview_moveto(0.0)
-
-    def listconfig(self, list, scro):
-        list.config(background=self.Color['bg'], selectbackground=self.Color['ffg'],selectmode="multiple",
-                    yscrollcommand=scro.set, foreground=self.Color['fg'], selectforeground=self.Color['fg'], borderwidth=0, highlightthickness=0)
-        scro.config(command=list.yview, background=self.Color['fg'],
-                    activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
 
     def quickconfig(self, friends, sock, mess):
         '''redefine func'''
@@ -99,6 +76,7 @@ class Friend_list(Welcome):
 
     def showfriends(self):
         '''config a friend page'''
+        self.win.title("首页面-"+self.User_Name)
         self.ent.config(width=30)
         self.canvconfig(self.f_can, self.f_scro)
         self.but_list[0].config(text="+", command=self.addfriend_mid)
@@ -143,6 +121,7 @@ class Friend_list(Welcome):
     def addfriend(self):
         '''config a addfriend page
         from server get friend_list, Then search'''
+        self.win.title("搜索好友...")
         self.List.config(height=30, width=30)
         self.entfarme.pack()
 
