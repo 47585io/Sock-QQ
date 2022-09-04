@@ -78,10 +78,10 @@ class Talk_with(Friend_list):
             i+=1
         #from list get a pic every once, and add in s_str list(a going to get file list)
         self.getfile(s_str)
-        #get all, and save in ./mydir/name/picname
+        #get all, and save in ./mydir/Server/picname
         i=0
         while i<len(head_lis):
-            self.fren.pic.append("./mydir/"+new[i]+"/"+head_lis[i])
+            self.fren.pic.append("./mydir/Server/"+head_lis[i])
             i+=1
         #get name in new list, and Find from the corresponding head_lis
         #end, add the file path to self.fren.pic
@@ -136,8 +136,8 @@ class Talk_with(Friend_list):
                 lis=Spilt_Mess.File_spilt(s.encode())
                 if lis!=0:
                     if str(lis[0]) not in self.history.File_all:
-                        self.history.File_all[str(lis[0])]=[]
-                    self.history.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
+                        self.history.File_all[name]=[]
+                    self.history.File_all[name].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
                     continue
 

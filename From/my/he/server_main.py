@@ -7,12 +7,12 @@ PRO_MAX = 1
 # 设置要为每个server init's process and sline count
 
 def start(mess, arg):
-    #pool = fu.ThreadPoolExecutor(PRO_MAX)
+    
     for i in range(PRO_MAX):
         s = th.Thread(target=mess.talk_to, args=(arg,))
         s.setDaemon(True)
         s.start()
-        #pool.submit(mess.talk_to, args=(arg,))
+        
     mess.talk_to(arg)
 #all sline share date on the process
 
@@ -37,7 +37,7 @@ def main(messes, arg):
 
 
 messes = [message(), TCP_Mess()]
-#messes.append(messes[0])
+messes.append(messes[0])
 # messes.append(users())
 
 

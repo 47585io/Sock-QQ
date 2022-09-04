@@ -93,7 +93,7 @@ class TCP_mess:
         '''get a file from server(add it in list)'''
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
-        fromwho=lis[1]
+        fromwho=lis[0]
         if not os.path.isdir("./mydir/"+fromwho):
             os.mkdir("./mydir/"+fromwho)
         self.getfile_list.append((Getstr,filename,fromwho))
