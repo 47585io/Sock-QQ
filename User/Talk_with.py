@@ -32,19 +32,32 @@ class Talk_with(Friend_list):
         Friend_list.quickconfig(self, friends, sock, mess)
         self.tcpmess = tcpmess
         self.tcpsock = tcpsock
+        self.win2.overrideredirect(True)
+        self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
         self.topclose()
         #used for send and get file
     
     def topconfig(self,lab,but,list,scro):
         self.Win_Size.append((250,300,self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
-        #self.labconfig(lab)
+        self.win2.overrideredirect(True)
+        self.win2.update()
+        self.win2.attributes("-alpha", 1.0)
+        
         self.butconfig(but)
         self.listconfig(list,scro)
-        self.toplab.pack()
-
+        lab.config(text=" File Box               ", font=(self.Font["zheng"], self.Font_size["mid"]),
+                   borderwidth=0, foreground=self.Color["fg"], background=self.Color["bg"],)
+        lab.grid(row=0,column=0)
+        but[1].config(text="×", command=self.topclose)
+        
+        scro.grid(row=1,column=1)
+        list.grid(row=1,column=0,rowspan=1)
+        but[1].grid(row=0, column=1)
+        but[0].grid(row=2,column=1)
+        
     def topclose(self):
         self.win2.geometry("0x0-1000-1000")
-
+    
     def Login(self):   
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         #when you login, you must send your headpic to server
@@ -127,16 +140,15 @@ class Talk_with(Friend_list):
                     self.history.File_all[str(lis[0])].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
                     continue
-    
+
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
                 print("this ", name, "   ", s, "\n")
-                #self.fren.Mess_Friend[name].append(s)
                 if name == self.fren.talk_with:
                     i = self.fren.friend_list.index(name)
                     self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                         self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
                     self.Canv_y += self.pic_size[1]+10
-    
+
     #when mess is end, move the Canvas
                     if self.Canv_y > self.Win_Size[0][1]:
                         self.f_can.configure(scrollregion=(
@@ -163,10 +175,27 @@ class Talk_with(Friend_list):
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     
     def usergetfile(self,):
-        '''from self.fren.file, get talk_with send to str, and send to server get the file'''
-        self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
-        self.win2.geometry(self.geosize((self.Win_Size[1][0],self.Win_Size[1][1],self.Win_Size[1][2]+10,self.Win_Size[1][3])))
+        '''from history.file, get talk_with send to str, and send to server get the file'''
+        self.toplist.delete(0,"end")
+        tup=self.geostr(self.win.geometry(),("x","+","+"))
+        s=self.geosize((self.Win_Size[1][0], self.Win_Size[1][1], tup[0]+tup[2], tup[3]))
+        self.win2.geometry(s)
+        
+        self.toplist.config(height=8, width=16)
+        self.topbut.config(anchor='nw',text="Get", command=self.cursor)
+        try:
+            for mess in self.history.File_all[self.fren.talk_with]:
+                self.toplist.insert("end",mess)
+        except Exception:
+            pass
         self.win2.update()
+        
+    def cursor(self):
+        tup=self.toplist.curselection()
+        lis=[]
+        for t in tup:
+            lis.append(self.history.File_all[self.fren.talk_with][t])
+        self.getfile(lis)
             
     def endretu(self):
         self.clear_Canv()

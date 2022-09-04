@@ -1,3 +1,4 @@
+from re import T
 import greenlet
 import tkinter as tk
 
@@ -41,6 +42,15 @@ class GraBase:
         self.ent = tk.Entry(self.entfarme,)
 # on, please wirte all init fun on
 
+    def geostr(self,s_str,split):
+        tup=[]
+        for ch in split:
+            s_lis=s_str.split(ch,1)
+            tup.append(int(s_lis[0]))
+            s_str=s_lis[1]
+        tup.append(s_str)
+        return tup
+       
     def geosize(self, tup=None):
         '''win size to str'''
         if tup:
