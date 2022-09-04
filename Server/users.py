@@ -9,7 +9,7 @@ class users:
         #olny have  a dict, {name:(addr,port)}  #save all user, and their addr,port tup
         self.friend_list = mut.Queue()
         self.friend_list.put({})
-        #olny hava a dict, {name[friendname]}  #save user name , and he has friend name list, also save group name and it all user
+        #olny hava a dict, {groupname[friendname]}  #save group name , and he has friend name list, also save group name and it all user
         self.now_in = mut.Queue()
         self.now_in.put([])
         #olny have a list, [name] #save now_in user
@@ -70,5 +70,19 @@ class users:
             if tmp == value:
                 return key
 
-    def addfriend(self, tup):
-        pass
+    def addgroupfriend(self, fromwho,tup):
+        '''from who? who want to addfriend, then, if want add a group, must add it to group friend_list'''
+        group=self.getto(self.group)
+        friend_list=self.getto(self.friend_list,)
+        name_list=[]
+#find user want add all group name
+        for name in tup:
+            if name in group:
+                name_list.append(name)
+#all group add a friend
+        for name in name_list:
+            if name not in friend_list:
+                friend_list[name]=[]
+            friend_list[name].append(fromwho)
+        self.friend_list.get()
+        self.friend_list.put(friend_list)

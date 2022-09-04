@@ -185,7 +185,8 @@ class Talk_with(Friend_list):
         self.topbut.config(anchor='nw',text="Get", command=self.cursor)
         try:
             for mess in self.history.File_all[self.fren.talk_with]:
-                self.toplist.insert("end",mess)
+                file=Spilt_Mess.File_spilt(mess)
+                self.toplist.insert("end",file[2])
         except Exception:
             pass
         self.win2.update()

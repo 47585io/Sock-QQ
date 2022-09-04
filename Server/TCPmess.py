@@ -6,7 +6,7 @@ import os
 
 class TCP_Mess:
     '''server TCPmess, send or save file'''
-    def __init__(self, addr=("127.0.0.1", 1237)) -> None:
+    def __init__(self, addr=("192.168.1.3", 1237)) -> None:
         self.sock = socket.socket()
         self.sock.bind(addr)
         self.sock.listen(20)
