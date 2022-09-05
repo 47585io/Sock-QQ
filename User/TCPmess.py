@@ -2,7 +2,7 @@ import socket
 import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
-Mess_Buffer = 8192
+Mess_Buffer = 512
 
 TCP_SOCK = socket.socket()
 TCP_SOCK.bind(("", 0))

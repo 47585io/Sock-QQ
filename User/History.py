@@ -27,12 +27,14 @@ class History:
     
     def savedict(self,file,dict):
         for name,mess in dict.items():
+            if type(mess[0])==bytes():
+                mess=[get.decode() for get in mess]
             file.write(str(name)+"###"+str(mess)+'\n')
     
     def savetwo(self,file,dict,):
         '''save a two with file'''
         i=0
-        while i<len(dict):
+        while i<len(dict[1]):
             file.write(str(dict[0][i])+"###"+str(dict[1][i])+'\n')
             i+=1
         file.close()

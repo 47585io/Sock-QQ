@@ -1,5 +1,7 @@
 import os
 
+from numpy import set_string_function
+
 class Spilt_Mess:
     '''The class have many process mess's func'''
     @staticmethod
@@ -95,4 +97,17 @@ class Spilt_Mess:
         addtoy= line*size
         mid=width//2
         return (addtoy,mid)
+    
+    @staticmethod
+    def Sava_Date_Spilt(name,date):
+        return str(name)+"###"+str(date)+'\n'
+
+    @staticmethod
+    def Refu_Date_Spilt(s_str):
+        index = s_str.find("###")
+        name = s_str[0:index:]
+        index += 3
+        mess_str = s_str[index:-1:]
+        lis = Spilt_Mess. Friend_list_Read_Spilt(mess_str.encode())
+        return (name,lis)
               

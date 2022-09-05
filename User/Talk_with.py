@@ -172,6 +172,7 @@ class Talk_with(Friend_list):
         try:
             for mess in self.history.File_all[self.fren.talk_with]:
                 file=Spilt_Mess.File_spilt(mess)
+                print(file)
                 self.toplist.insert("end",file[2])
             print(self.history.File_all[self.fren.talk_with])
         except Exception as e:

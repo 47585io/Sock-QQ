@@ -1,4 +1,8 @@
+from genericpath import isfile
 import multiprocessing as mut
+import os
+from Pubilc.Split import Spilt_Mess
+Date_dir="./From/"
 
 class users:
     '''have all date for all process'''
@@ -19,7 +23,15 @@ class users:
         self.group = mut.Queue()
         self.group.put(['one'])
         #olny hava a list, [groupname] #save all group name
-
+         
+        if os.path.isfile(Date_dir+"group_list"):
+            file = open(Date_dir+"group_list", "r")
+            lis=file.readlines()
+            for g in lis:
+                tup=Spilt_Mess.Refu_Date_Spilt(g)
+                self.search(self.friend_list,tup)
+            file.close()
+         
     def search(self, going_search_queue, new_tup):
         '''going to old going_search_queue pointer's obj search to new_tup'''
         tmp = going_search_queue.get()
@@ -86,3 +98,11 @@ class users:
             friend_list[name].append(fromwho)
         self.friend_list.get()
         self.friend_list.put(friend_list)
+        self.saveall()
+        
+    def saveall(self):
+        date=self.friend_list.get()
+        file=open(Date_dir+"group_list","w")
+        for groupname, name in date.items():
+            file.write(groupname+"###"+str(name)+'\n')
+        file.close()
