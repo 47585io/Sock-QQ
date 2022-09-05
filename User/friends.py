@@ -5,9 +5,9 @@ class friends:
     '''The all friend date save in'''
 
     def __init__(self) -> None:
-        self.friend_list = ["my shadow", "my computer", ]
+        self.friend_list = []
         # friend name list
-        self.pic = ["./picture/new.png","./picture/furry.gif"]
+        self.pic = []
         #friend 头像
         self.talk_with = ""
         # who talk with now

@@ -1,6 +1,7 @@
-from ossaudiodev import SNDCTL_DSP_SETFRAGMENT
+
 import os
 from Pubilc.Split import Spilt_Mess
+import sys
 
 class History:
     def __init__(self) -> None:
@@ -16,17 +17,17 @@ class History:
     #friens name and pic
         self.mess_file="./mess"
     #friends mess
+        self.file_get="./get"
        
-    def put_a_var(self):
+    def start_var(self):
         pass
     
-    def del_a_var(self):
+    def _var(self):
         pass
     
     def savedict(self,file,dict):
         for name,mess in dict.items():
             file.write(str(name)+"###"+str(mess)+'\n')
-        pass
     
     def savetwo(self,file,dict,):
         '''save a two with file'''
@@ -40,10 +41,13 @@ class History:
         print("save")
         file=open(self.friend_file,"w")
         file2=open(self.mess_file,"w")
+        file3 = open(self.file_get, "w")
         self.savetwo(file,(friends.friend_list,friends.pic))
         self.savedict(file2,self.Mess_Friend)
+        self.savedict(file3, self.File_all)
         file.close()
         file2.close()
+        file3.close()
         
     def refu_a_two(self,s,tup):
         index = s.find("###")
@@ -73,6 +77,14 @@ class History:
             for line in lines:
                 self.refu_a_dict(line,self.Mess_Friend)
             file2.close()           
+        if os.path.isfile(self.file_get):
+            file3 = open(self.file_get, "r")
+            lines=file3.readlines()
+            for line in lines:
+                self.refu_a_dict(line,self.File_all)
+            file3.close()
+            for name in self.File_all.keys():
+                self.File_all[name] = [ get.encode() for get in self.File_all[name]]
     
     def put_a_mess(self,who,s_str):
         if who not in self.Mess_Friend:
