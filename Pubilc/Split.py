@@ -83,6 +83,16 @@ class Spilt_Mess:
           return 0
       
     @staticmethod
-    def calculate_text(text,x,y,width):
-        pass
+    def Sava_Self_mess(s_str):
+        return "MY#"+s_str
+      
+    def Re_Self_mess(s_str):
+        return s_str[3::]
+    
+    @staticmethod
+    def calculate_text(text,width,size):
+        line = len(text)*size//width
+        addtoy= line*size
+        mid=width//2
+        return (addtoy,mid)
               

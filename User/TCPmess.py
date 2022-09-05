@@ -14,14 +14,15 @@ class TCP_mess:
         self.sendfile_list=[]
         #every element is a tuple:(str,srcfile)
         self.getfile_list=[]
-        #every element is a tupr: (getfilestr,filename)
+        #every element is a tupr: (getfilestr,filename,fromwho)
         self.slinepool=Th(2)
         self.sock=sock
         self.issend=0
         self.isget=0
-#work In the background,   
-        if not os.path.isdir("./mydir"):
-            os.mkdir("./mydir")
+#work In the background,
+        self.mydir = "./mydir/"
+        if not os.path.isdir(self.mydir):
+            os.mkdir(self.mydir)
             
     def Sendfile(self,addr=("192.168.1.3",1237)):
         '''deal with sendfile in list, when Finish, return and clear sended file str'''
@@ -64,7 +65,7 @@ class TCP_mess:
             sock.send(file[0])
             s=sock.recv(Mess_Buffer)
             size=int(s.decode())
-            fileobj = open("./mydir/"+file[2]+"/"+file[1], "wb")
+            fileobj = open(self.mydir+file[2]+"/"+file[1], "wb")
             sock.send("Ok".encode())
 
             while size > 0:
@@ -95,8 +96,8 @@ class TCP_mess:
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
         fromwho=lis[0]
-        if not os.path.isdir("./mydir/"+fromwho):
-            os.mkdir("./mydir/"+fromwho)
+        if not os.path.isdir(self.mydir+fromwho):
+            os.mkdir(self.mydir+fromwho)
         self.getfile_list.append((Getstr,filename,fromwho))
         if self.isget == 0:
             self.slinepool.submit(self.Getfile)

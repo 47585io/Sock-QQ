@@ -80,11 +80,11 @@ class message:
     
     def Sendall(self,sendstr,fromwho,togroup):
         friend_list=self.USERS.getto(self.USERS.friend_list,togroup)
-        sendstr=togroup+"@"+sendstr
+        sendstr=Spilt_Mess.Send_spilt(sendstr,togroup)
         for f in friend_list:
             if f!=fromwho:
                 addr=self.USERS.getto(self.USERS.users,f)
-                self.sock.sendto(sendstr.encode(),addr)
+                self.sock.sendto(sendstr,addr)
 
     #diffrent port's date, it olny give this port , all port's  process olny get itself port's date
     #but, queue still can share

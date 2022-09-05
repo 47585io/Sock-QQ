@@ -63,8 +63,8 @@ class Friend_list(Welcome):
 
     def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34"):
         '''draw a friend mess and bind event to mess'''
-        newtup = Spilt_Mess.calculate_text(
-            name, namepos[0]+40, relapos[1], relapos[2])
+        #newtup = Spilt_Mess.calculate_text(
+           # name, namepos[0]+40, relapos[1], relapos[2])
         tag = canv.create_rectangle(relapos[0], relapos[1], relapos[2], relapos[3], fill=color,
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:

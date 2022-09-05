@@ -55,7 +55,7 @@ class Talk_with(Friend_list):
         #get all, and save in ./mydir/Server/picname
         i=0
         while i<len(head_lis):
-            self.fren.pic.append("./mydir/Server/"+head_lis[i])
+            self.fren.pic.append(self.tcpmess.mydir+"Server/"+head_lis[i])
             i+=1
         #get name in new list, and Find from the corresponding head_lis
         #end, add the file path to self.fren.pic
@@ -98,7 +98,9 @@ class Talk_with(Friend_list):
             self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
             self.f_can.yview_moveto(1.0)
-
+        
+        self.history.put_a_mess(name,Spilt_Mess.Sava_Self_mess(s_str))
+        
     def Readshow(self):
         '''get a mess from UDPmess, and spilt'''
         while 1:
@@ -109,7 +111,7 @@ class Talk_with(Friend_list):
     #if this is a file mess, go to save the mess, i use it get file from server after save, and it is From who to me
                 lis=Spilt_Mess.File_spilt(s.encode())
                 if lis!=0:
-                    if str(lis[0]) not in self.history.File_all:
+                    if name not in self.history.File_all:
                         self.history.File_all[name]=[]
                     self.history.File_all[name].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
@@ -128,7 +130,9 @@ class Talk_with(Friend_list):
                         self.f_can.configure(scrollregion=(
                             0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
                         self.f_can.yview_moveto(1.0)
-
+                
+                self.history.put_a_mess(name,s)
+                
     def getfile(self, s_str):
         '''put s_str list in tcpmess spilt list and wait spilt'''
         for s in s_str:
@@ -161,6 +165,7 @@ class Talk_with(Friend_list):
             for mess in self.history.File_all[self.fren.talk_with]:
                 file=Spilt_Mess.File_spilt(mess)
                 self.toplist.insert("end",file[2])
+            print(self.history.File_all[self.fren.talk_with])
         except Exception as e:
             print(e)
         self.win2.update()

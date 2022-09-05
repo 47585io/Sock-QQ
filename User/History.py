@@ -1,3 +1,6 @@
+from ossaudiodev import SNDCTL_DSP_SETFRAGMENT
+
+
 class History:
     def __init__(self) -> None:
         self.Mess_Friend = {}
@@ -21,7 +24,9 @@ class History:
         pass
     
     def put_a_mess(self,who,s_str):
-        pass
+        if who not in self.Mess_Friend:
+            self.Mess_Friend[who]=[]
+        self.Mess_Friend[who].append(s_str)
     
     def put_a_file(self):
         pass
