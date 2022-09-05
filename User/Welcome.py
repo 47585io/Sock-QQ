@@ -101,6 +101,8 @@ class Welcome(GraBase):
 
     def openfile(self):
         '''check a can use file'''
+        if not os.path.isfile("./name.txt"):
+            return 0
         file = open("name.txt", "r+")
         tmp = file.readlines()
         if tmp == []:

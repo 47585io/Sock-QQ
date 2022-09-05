@@ -35,6 +35,7 @@ class Talk_with(Friend_list):
     def Login(self):   
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         #when you login, you must send your headpic to server
+        self.history.refuall(self.fren)
         super().Login()
         
     def chu(self, new):
@@ -59,12 +60,17 @@ class Talk_with(Friend_list):
             i+=1
         #get name in new list, and Find from the corresponding head_lis
         #end, add the file path to self.fren.pic
-        
+    
+    def Closeall(self):
+        self.history.saveall(self.fren)
+        super().Closeall()
+    
     def talk_with(self, name):
         '''config a talk page'''
         if self.istalk == 0:
             self.talk.start()
-            self.istalk += 1      
+            self.istalk += 1  
+                
         self.but_list[1].config(command=lambda: self.retu(self.endretu))
         self.fren.talk_with = name
         self.win.title("Talk_With - "+"("+self.fren.talk_with+")")
@@ -86,6 +92,8 @@ class Talk_with(Friend_list):
         self.but_list[3].config(text="↓",width=1,command=self.usergetfile)
         self.but_list[3].place(x=self.Win_Size[0][0]-35, y=0)
         self.but_list[0].place(x=self.Win_Size[0][0]-60, y=0)
+        
+        self.refumess()
         
     def Sendshow(self, tmp, name, s_str):
         '''when user send a str, immediately show and send to other user'''
@@ -185,3 +193,18 @@ class Talk_with(Friend_list):
     
     def delmess(self,event):
         pass
+
+    def refumess(self):
+      try:
+        for mess in self.history.Mess_Friend[self.fren.talk_with]:
+            self.draw_a_friend(self.f_can, mess, self.furry_l[0],
+                               (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1]-20,),  (self.Canv_x+20, self.Canv_y+10,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+            self.Canv_y += self.pic_size[1]+10
+            if self.Canv_y > self.Win_Size[0][1]:
+                self.f_can.configure(scrollregion=(
+                0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
+            self.f_can.yview_moveto(1.0)
+      except Exception:
+          pass
+
+        
