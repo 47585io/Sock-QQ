@@ -42,13 +42,4 @@ messes.append(messes[0])
 
 
 def whenexit():
-    '''when exit, close all sock'''
-    global messes
-    for mess in messes:
-        mess.sock.close()
-atexit.register(whenexit)
-
-main(messes, 0)
-
-# and, the list's element type can no message, but it must have func talk_to
-# and, I have prepared a parameter interface for you
+    '''when exit, clo

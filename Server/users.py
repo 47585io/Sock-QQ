@@ -1,3 +1,4 @@
+from copy import deepcopy
 from genericpath import isfile
 import multiprocessing as mut
 import os
@@ -24,8 +25,8 @@ class users:
         self.group.put(['one'])
         #olny hava a list, [groupname] #save all group name
          
-        #self.refuall()
-        #print(self.getto(self.friend_list),self.getto(self.cache),self.getto(self.group))
+        self.refuall()
+        print(self.getto(self.friend_list),self.getto(self.cache),self.getto(self.group))
         
     def search(self, going_search_queue, new_tup):
         '''going to old going_search_queue pointer's obj search to new_tup''' 
@@ -95,19 +96,21 @@ class users:
             friend_list[name].append(fromwho)
         self.friend_list.get()
         self.friend_list.put(friend_list)
-        #self.saveall()
+        self.saveall()
         
     def saveall(self):
-        date=self.friend_list.get()
-        Spilt_Mess.save_dict(Date_dir+"group_list",date)
+        '''every once,save the value and not Revise the date'''
+        date = self.getto(self.friend_list)
+        Spilt_Mess.save_dict(Date_dir+"group_list",deepcopy(date))
           
-        date2=self.cache.get()
-        Spilt_Mess.save_dict(Date_dir+"mess_cache", date2)
+        date2 = self.getto(self.cache)
+        Spilt_Mess.save_dict(Date_dir+"mess_cache",deepcopy(date2))
         
-        date3=self.group.get()
-        Spilt_Mess.save_list(Date_dir+"groups",date3)
+        date3 = self.getto(self.group)
+        Spilt_Mess.save_list(Date_dir+"groups",deepcopy(date3))
     
     def refuall(self):
+        '''anytime, refu any date from fule'''
         redict=Spilt_Mess.refu_dict(Date_dir+"group_list",)
         for key,value in redict.items():
             self.search(self.friend_list,(key,value))
