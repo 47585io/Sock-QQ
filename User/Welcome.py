@@ -3,8 +3,8 @@ import tkinter.filedialog as fid
 from tkinter import messagebox
 from PIL import Image
 import os
+import greenlet
 
-# the user can use every work max thread
 from User.Base import GraBase, tk
 USER_NAME = ""
 
@@ -15,7 +15,8 @@ class Welcome(GraBase):
     def __init__(self) -> None:
         super().__init__()
         self.User_Name = USER_NAME
-
+        self.cache1 = greenlet.greenlet(self.new)
+        
     def run(self):
         '''when config all lab , call it'''
         tmp = self.openfile()
@@ -26,8 +27,7 @@ class Welcome(GraBase):
             self.filename = tmp[1]
             self.go(self.Login)
         self.win.mainloop()
-        self.new()
-        self.win.mainloop()
+        
 
     def welcome1(self):
         self.lab_list[0].config(text="\nWelcome!", font=(

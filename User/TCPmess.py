@@ -3,6 +3,7 @@ import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
 Mess_Buffer = 512
+MY_DIR="./mydir/"
 
 TCP_SOCK = socket.socket()
 TCP_SOCK.bind(("", 0))
@@ -20,7 +21,7 @@ class TCP_mess:
         self.issend=0
         self.isget=0
 #work In the background,
-        self.mydir = "./mydir/"
+        self.mydir = MY_DIR
         if not os.path.isdir(self.mydir):
             os.mkdir(self.mydir)
             

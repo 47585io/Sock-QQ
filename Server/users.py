@@ -24,16 +24,11 @@ class users:
         self.group.put(['one'])
         #olny hava a list, [groupname] #save all group name
          
-        if os.path.isfile(Date_dir+"group_list"):
-            file = open(Date_dir+"group_list", "r")
-            lis=file.readlines()
-            for g in lis:
-                tup=Spilt_Mess.Refu_Date_Spilt(g)
-                self.search(self.friend_list,tup)
-            file.close()
-         
+        #self.refuall()
+        #print(self.getto(self.friend_list),self.getto(self.cache),self.getto(self.group))
+        
     def search(self, going_search_queue, new_tup):
-        '''going to old going_search_queue pointer's obj search to new_tup'''
+        '''going to old going_search_queue pointer's obj search to new_tup''' 
         tmp = going_search_queue.get()
         if type(tmp) == list:
             tmp.append(new_tup)
@@ -53,12 +48,14 @@ class users:
     def add(self, tup):
         '''when a new user, call it'''
         self.search(self.users, tup)
-        self.search(self.friend_list, (tup[0], []))
+        print("self.users:   ",self.users,tup)
+        #self.search(self.friend_list, (tup[0], []))
         self.search(self.now_in, tup[0])
+        print("cache:   ",self.getto(self.cache))
         self.search(self.cache, (tup[0], []))
         tmo = self.now_in.get()
         self.now_in.put(tmo)
-        print(tmo)
+        print("now_in  ",tmo)
 
     def get_friend_list(self):
         '''return user input's search after mess'''
@@ -73,9 +70,9 @@ class users:
         if name == '':
             return ''
         self.add((name, tup[1]))
-        friend = self.getto(self.friend_list, name)
-        return name+str(friend)
-
+        #friend = self.getto(self.friend_list, name)
+        return name
+      
     def value_to_key(self, tmp):
         #print(self.getto(self.users)
         for key, value in self.getto(self.users).items():
@@ -98,11 +95,28 @@ class users:
             friend_list[name].append(fromwho)
         self.friend_list.get()
         self.friend_list.put(friend_list)
-        self.saveall()
+        #self.saveall()
         
     def saveall(self):
         date=self.friend_list.get()
-        file=open(Date_dir+"group_list","w")
-        for groupname, name in date.items():
-            file.write(groupname+"###"+str(name)+'\n')
-        file.close()
+        Spilt_Mess.save_dict(Date_dir+"group_list",date)
+          
+        date2=self.cache.get()
+        Spilt_Mess.save_dict(Date_dir+"mess_cache", date2)
+        
+        date3=self.group.get()
+        Spilt_Mess.save_list(Date_dir+"groups",date3)
+    
+    def refuall(self):
+        redict=Spilt_Mess.refu_dict(Date_dir+"group_list",)
+        for key,value in redict.items():
+            self.search(self.friend_list,(key,value))
+        
+        redict2=Spilt_Mess.refu_dict(Date_dir+"mess_cache",)       
+        for key,value in redict2.items():
+            self.search(self.cache,(key,value))
+        
+        relist=Spilt_Mess.refu_list(Date_dir+"groups")
+        for l in relist:
+            self.search(self.group,l)
+       

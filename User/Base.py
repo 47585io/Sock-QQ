@@ -1,5 +1,4 @@
 from re import T
-import greenlet
 import tkinter as tk
 
 
@@ -21,7 +20,6 @@ class GraBase:
         self.Font_size = {"small": 5, "mid": 10, "big": 20}
         self.pic_size = [100, 90]
         self.filename = ""
-        self.cache1 = greenlet.greenlet(self.new)
 
     def init(self,):
         self.win = tk.Tk()

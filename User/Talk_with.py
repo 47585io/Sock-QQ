@@ -93,7 +93,7 @@ class Talk_with(Friend_list):
         self.but_list[3].place(x=self.Win_Size[0][0]-35, y=0)
         self.but_list[0].place(x=self.Win_Size[0][0]-60, y=0)
         
-        self.refumess()
+        self.refumess(name)
         
     def Sendshow(self, tmp, name, s_str):
         '''when user send a str, immediately show and send to other user'''
@@ -195,17 +195,23 @@ class Talk_with(Friend_list):
     def delmess(self,event):
         pass
 
-    def refumess(self):
+    def refumess(self,name):
       try:
+        i = self.fren.friend_list.index(name)
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
-            self.draw_a_friend(self.f_can, mess, self.furry_l[0],
+            if mess.startswith("MY#"):
+                self.draw_a_friend(self.f_can, mess[3::], self.furry_l[0],
                                (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1]-20,),  (self.Canv_x+20, self.Canv_y+10,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+            else:
+                self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
+                    self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
+            
             self.Canv_y += self.pic_size[1]+10
             if self.Canv_y > self.Win_Size[0][1]:
                 self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
             self.f_can.yview_moveto(1.0)
-      except Exception:
-          pass
+      except Exception as e:
+          print(e)
 
         

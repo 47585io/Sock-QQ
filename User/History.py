@@ -2,6 +2,7 @@
 import os
 from Pubilc.Split import Spilt_Mess
 import sys
+from User.TCPmess import MY_DIR
 
 class History:
     def __init__(self) -> None:
@@ -13,22 +14,26 @@ class History:
  #日志
         self.maxmess=100
  #mess最多保存count
-        self.friend_file="./friend"
+        self.mydir = "./mydir/"
+        self.friend_file=self.mydir+"friend"
     #friens name and pic
-        self.mess_file="./mess"
+        self.mess_file=self.mydir+"mess"
     #friends mess
-        self.file_get="./get"
+        self.file_get=self.mydir+"get"
        
     def start_var(self):
-        pass
+        self.var_file=self.mydir+"var"     
+        self.stdout=sys.stdout
+        self.stderr=sys.stderr
+        sys.stdout=self.var_file
+        sys.stderr=self.var_file
     
-    def _var(self):
-        pass
+    def end_var(self):
+        sys.stdout = self.stdout
+        sys.stderr=self.stderr
     
     def savedict(self,file,dict):
         for name,mess in dict.items():
-            if type(mess[0])==bytes():
-                mess=[get.decode() for get in mess]
             file.write(str(name)+"###"+str(mess)+'\n')
     
     def savetwo(self,file,dict,):
@@ -46,6 +51,12 @@ class History:
         file3 = open(self.file_get, "w")
         self.savetwo(file,(friends.friend_list,friends.pic))
         self.savedict(file2,self.Mess_Friend)
+        try:
+            for name,mess in self.File_all.items():
+                self.File_all[name] = [get.decode() for get in mess]
+        except Exception as e:
+            print(e)
+            print(self.File_all)
         self.savedict(file3, self.File_all)
         file.close()
         file2.close()
@@ -92,13 +103,8 @@ class History:
         if who not in self.Mess_Friend:
             self.Mess_Friend[who]=[]
         self.Mess_Friend[who].append(s_str)
-    
-   
-    
-    def put_a_file(self):
-        pass
-    
-    def get_a_file(self):
-        pass
+        if len(self.Mess_Friend[who])>self.maxmess:
+            del self.Mess_Friend[who][0]
+            self.maxmess-=1
     
     
