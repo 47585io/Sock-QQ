@@ -42,10 +42,12 @@ messes.append(messes[0])
 
 
 def whenexit():
-    '''when exit, close all sock'''
+    '''when exit, close all sock, save all date, toto all user'''
     global messes
     for mess in messes:
         mess.sock.close()
+    messes[0].USERS.saveall()
+    messes[0].totouser()
 atexit.register(whenexit)
 
 main(messes, 0)

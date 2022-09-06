@@ -25,7 +25,7 @@ class TCP_mess:
         if not os.path.isdir(self.mydir):
             os.mkdir(self.mydir)
             
-    def Sendfile(self,addr=("192.168.1.3",1237)):
+    def Sendfile(self,addr=("127.0.0.1",1237)):
         '''deal with sendfile in list, when Finish, return and clear sended file str'''
         self.issend=1
         print("Send")
@@ -53,7 +53,7 @@ class TCP_mess:
         self.sendfile_list.clear()
 #clear all send str
     
-    def Getfile(self,addr=("192.168.1.3", 1237)):
+    def Getfile(self,addr=("127.0.0.1", 1237)):
         '''deal with file in list, when finish, return and clear geted file str'''
         print("get")
         self.isget= 1

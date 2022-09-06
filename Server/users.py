@@ -22,7 +22,7 @@ class users:
         self.cache.put({})
         #olny hava a dict, {name:[cachemess]} #sava can't send str, wait that user login, send all to
         self.group = mut.Queue()
-        self.group.put(['one'])
+        self.group.put([])
         #olny hava a list, [groupname] #save all group name
          
         self.refuall()
@@ -39,12 +39,15 @@ class users:
             going_search_queue.put(tmp)
 
     def getto(self, going_get_queue, index=None):
+      try:
         '''get queue's dict or list index element'''
         tmp = going_get_queue.get()
         going_get_queue.put(tmp)
-        if index:
+        if index:      
             return tmp[index]
         return tmp
+      except Exception:
+          return
 
     def add(self, tup):
         '''when a new user, call it'''
@@ -72,7 +75,7 @@ class users:
             return ''
         self.add((name, tup[1]))
         #friend = self.getto(self.friend_list, name)
-        return name
+        return name+str(self.getto(self.cache,name))
       
     def value_to_key(self, tmp):
         #print(self.getto(self.users)
@@ -96,7 +99,7 @@ class users:
             friend_list[name].append(fromwho)
         self.friend_list.get()
         self.friend_list.put(friend_list)
-        self.saveall()
+        #self.saveall()
         
     def saveall(self):
         '''every once,save the value and not Revise the date'''
@@ -122,4 +125,17 @@ class users:
         relist=Spilt_Mess.refu_list(Date_dir+"groups")
         for l in relist:
             self.search(self.group,l)
-       
+    
+    def Isin(self,s_str,toname,fromaddr):
+        '''the send to user whether in now_in?, what do i do?'''
+        if toname not in self.getto(self.users):
+            return 0
+        if toname not in self.getto(self.now_in):
+            lis=self.getto(self.cache,toname)
+            if type(fromaddr)==str:
+                lis.append(fromaddr+"@"+s_str.encode())
+            else:
+                lis.append(self.value_to_key(fromaddr)+"@"+s_str.encode())
+            self.search(self.cache,(toname,lis))
+            return 0
+        return 1

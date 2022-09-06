@@ -2,7 +2,7 @@ import socket
 import os
 from Server.users import users
 from Pubilc.Split import Spilt_Mess
-Mess_Buffer = 512
+Mess_Buffer = 128
 # 设置每一个sock cache buffer size
 
 class message:
@@ -11,7 +11,7 @@ class message:
 #the mess server can on many port, but it olny init users once, so their share queue
 #a port can have many process, the same port's process will fight date, but their space is different, so if once process get user name and addr,must save in queue
 
-    def __init__(self, tup=("192.168.1.3", 1234)) -> None:
+    def __init__(self, tup=("127.0.0.1", 1234)) -> None:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind(tup)
         self.USERS = users()
@@ -54,8 +54,9 @@ class message:
             s_str, name = Spilt_Mess.Read_spilt(tmp[0])
             if name in self.USERS.getto(self.USERS.group):
                 self.Sendall(s_str,my_name,name)
-                return ("no".encode(),('127.0.0.1',1239))
+                return 
             else:
+              if self.USERS.Isin(s_str,name,tmp[1]):
                 addr = self.USERS.getto(self.USERS.users, name)
                 name = self.USERS.value_to_key(tmp[1])
                 s_str = Spilt_Mess.Send_spilt(s_str, name)
@@ -74,17 +75,25 @@ class message:
 
     def Send(self, lis):
         '''send bytes, can redefine in sonclass'''
+        if not lis:
+            return
+        if not lis[1]:
+            return
         self.sock.sendto(lis[0], lis[1])
         #the lis[0] is from@str, lis[1] is send to addr
-        #login return a decode str,OK,then let us to encode
     
     def Sendall(self,sendstr,fromwho,togroup):
         friend_list=self.USERS.getto(self.USERS.friend_list,togroup)
         sendstr=Spilt_Mess.Send_spilt(sendstr,togroup)
         for f in friend_list:
             if f!=fromwho:
+              if self.USERS.Isin(sendstr, f, fromwho):
                 addr=self.USERS.getto(self.USERS.users,f)
-                self.sock.sendto(sendstr,addr)
+                self.Send((sendstr,addr))
 
     #diffrent port's date, it olny give this port , all port's  process olny get itself port's date
     #but, queue still can share
+    
+    def totouser(self):
+        '''Kick users in the order in the list'''
+        pass

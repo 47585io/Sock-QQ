@@ -56,7 +56,7 @@ class UDP_Mess:
             print("return ",tmp )
             return tmp
 
-    def Send(self, sock, send_str, to_user=None, to_addr=("192.168.1.3", 1234)):
+    def Send(self, sock, send_str, to_user=None, to_addr=("127.0.0.1", 1234)):
         '''when want send mess to server, call it'''
         self.yes = 0
         # when send a mess, Read going to read a new mess, the yes=0, now index is no new
