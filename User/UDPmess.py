@@ -2,7 +2,7 @@
 import threading as th
 from Pubilc.Split import Spilt_Mess
 import socket
-Mess_Buffer = 512
+Mess_Buffer = 128
 Max_Mess = 10
 # recv buffer size and user mess_list size
 MAX_THD = 1

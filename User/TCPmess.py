@@ -2,7 +2,7 @@ import socket
 import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
-Mess_Buffer = 512
+Mess_Buffer = 128
 MY_DIR="./mydir/"
 
 TCP_SOCK = socket.socket()
