@@ -5,12 +5,13 @@ import tkinter as tk
 class GraBase:
     '''A a basic configuration class'''
     LAB_Count = 3
-    BUT_Count = 4
+    BUT_Count = 5
     # lab and but init count
 
     def __init__(self) -> None:
         self.func = []
         self.index = 0
+        self.atfunc=None
         self.Win_Size = [[360, 450, 1600, 1000]]
         self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049", "bubu2": "#ff9a97", "alpha": "#4b5363"}
@@ -79,9 +80,11 @@ class GraBase:
         if mid_fun:
             mid_fun()
         #self.lab_list[3].place_forget()
+        self.atfunc=go_fun
+        
         self.clear()
-        self.but_list[1].pack(anchor="nw")
-        #self.lab_list[3].place(x=self.Win_Size[0][0]//2-50,y=0)
+        self.but_list[1].pack(anchor='nw')
+        self.but_list[4].pack()
         if src_fun:
             self.index += 1
             self.func.append(src_fun)
@@ -96,13 +99,20 @@ class GraBase:
         #self.lab_list[3].place_forget()
         self.clear()
         self.but_list[1].pack(anchor="nw")
+        self.but_list[4].pack()
         #self.lab_list[3].place(x=self.Win_Size[0][0]//2-50, y=0)
         self.index -= 1
         fun = self.func[self.index]
+        self.atfunc=fun
         fun()
         # print("finsh!")
         del self.func[self.index]
-
+    
+    def refresh(self,mid_fun=None):
+        if mid_fun:
+            mid_fun()
+        self.atfunc()
+    
     def winconfig(self):
         self.win.config(bg=self.Color["bg"],)
         self.win.title("Sock QQ")
@@ -179,3 +189,4 @@ class GraBase:
         self.init_ent()
         self.ent_config()
         self.but_list[1].config(text="←", command=lambda: self.retu())
+        self.but_list[4].config(text="Fresh", command=lambda: self.refresh())

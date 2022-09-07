@@ -73,6 +73,7 @@ class Talk_with(Friend_list):
             self.istalk += 1  
                 
         self.but_list[1].config(command=lambda: self.retu(self.endretu))
+        self.but_list[4].config(command=lambda :self.refresh(self.endretu))
         self.fren.talk_with = name
         self.win.title("Talk_With - "+"("+self.fren.talk_with+")")
         self.f_scro.pack(fill=tk.Y, side='right')

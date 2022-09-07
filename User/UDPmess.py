@@ -83,7 +83,7 @@ class UDP_Mess:
                 sock.settimeout(Time_out)
             tmp = sock.recvfrom(Mess_Buffer)
             
-        #user try login 
+        #when can connect server, user try login with server 
             if tmp[0].decode()=="hello":
                 self.is_login=1
             if self.is_login==0:

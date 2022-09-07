@@ -83,9 +83,10 @@ class Friend_list(Welcome):
         self.but_list[0].place(x=self.Win_Size[0][0]-35, y=0)
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.pack()
-
         self.f_can.create_image(230, -250, image=self.back)
     # but_list[0] is place!!!
+        self.but_list[4].config(
+            command=lambda: self.refresh(self.clear_Canv()))
 
         if self.fren.pic == []:
             self.f_can.create_text(self.Win_Size[0][0]//2, self.Win_Size[0][1]//2-50, fill=self.Color['fg'], font=(
