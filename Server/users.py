@@ -76,7 +76,7 @@ class users:
         cache=self.getto(self.cache, name)
         self.add((name, tup[1]))
         #friend = self.getto(self.friend_list, name)
-        return name+'@'+str(cache)
+        return cache
       
     def value_to_key(self, tmp):
         #print(self.getto(self.users)

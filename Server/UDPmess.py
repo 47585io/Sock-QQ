@@ -22,12 +22,12 @@ class message:
         lis = []
         my_name=self.USERS.value_to_key(tmp[1])
         
-    #if user login, call login get username and friend_list, the end , send mess to src user
+    #if user login, call login get cache, the end , send mess to src user
         if tmp[0].decode().startswith("LOGIN"):
-            s = self.USERS.Login(tmp)
-            lis.extend((s.encode(), tmp[1]))
-            return lis
-        
+            cache = self.USERS.Login(tmp)
+            for mess in cache:
+                self.Send((mess.encode(),tmp[1]))
+                   
     #if user exit, del it in now_in
         elif tmp[0].decode().startswith("EXIT"):
             self.USERS.exit(tmp[1])

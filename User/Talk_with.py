@@ -116,7 +116,7 @@ class Talk_with(Friend_list):
             if s_str: 
     #when server exit, then after the mess, no mess read
     #if want to connet, wait server start  and send any mess to server and wait read  
-                if s_str.decode=="EXIT":
+                if s_str.decode()=="EXIT":
                     print("服务端已退出")
                     continue
                 s, name = Spilt_Mess.Read_spilt(s_str)
