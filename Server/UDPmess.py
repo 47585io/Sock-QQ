@@ -29,7 +29,7 @@ class message:
             return lis
         
     #if user exit, del it in now_in
-        if tmp[0].decode().startswith("EXIT"):
+        elif tmp[0].decode().startswith("EXIT"):
             self.USERS.exit(tmp[1])
 
         #if user want to addfriend, return the users name

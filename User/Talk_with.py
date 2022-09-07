@@ -113,7 +113,12 @@ class Talk_with(Friend_list):
         '''get a mess from UDPmess, and spilt'''
         while 1:
             s_str = self.mess.get()
-            if s_str:    
+            if s_str: 
+    #when server exit, then after the mess, no mess read
+    #if want to connet, wait server start  and send any mess to server and wait read  
+                if s_str.decode=="EXIT":
+                    print("服务端已退出")
+                    continue
                 s, name = Spilt_Mess.Read_spilt(s_str)
                 
     #if this is a file mess, go to save the mess, i use it get file from server after save, and it is From who to me

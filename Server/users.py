@@ -76,7 +76,7 @@ class users:
         cache=self.getto(self.cache, name)
         self.add((name, tup[1]))
         #friend = self.getto(self.friend_list, name)
-        return name+str(cache)
+        return name+'@'+str(cache)
       
     def value_to_key(self, tmp):
         #print(self.getto(self.users)
@@ -147,3 +147,4 @@ class users:
         index=lis.index(name)
         del lis[index]
         self.now_in.put(lis)
+        print("已与",name,"断开连接")
