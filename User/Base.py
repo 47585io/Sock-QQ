@@ -79,12 +79,12 @@ class GraBase:
         '''use the fun go a new func, and save src fun, if you want to do other things,please give me the fun'''
         if mid_fun:
             mid_fun()
-        #self.lab_list[3].place_forget()
+        self.but_list[4].place_forget()
         self.atfunc=go_fun
         
         self.clear()
         self.but_list[1].pack(anchor='nw')
-        self.but_list[4].pack()
+        self.but_list[4].place(x=self.Font_size['mid']*4,y=0)
         if src_fun:
             self.index += 1
             self.func.append(src_fun)
@@ -96,10 +96,10 @@ class GraBase:
             mid_fun()
         if self.index < 1:
             exit(0)
-        #self.lab_list[3].place_forget()
+        self.but_list[4].place_forget()
         self.clear()
         self.but_list[1].pack(anchor="nw")
-        self.but_list[4].pack()
+        self.but_list[4].place(x=self.Font_size['mid']*4,y=0)
         #self.lab_list[3].place(x=self.Win_Size[0][0]//2-50, y=0)
         self.index -= 1
         fun = self.func[self.index]
