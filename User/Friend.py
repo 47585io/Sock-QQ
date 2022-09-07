@@ -44,7 +44,7 @@ class Friend_list(Welcome):
 
     def new(self):
         '''redefine last class func, go to show friends'''
-        self.Win_Size[0][0] += 130
+        self.Win_Size[0][0] += 120
         self.Win_Size[0][1] += 200
         self.win.geometry(self.geosize())
         self.bgfarme.config(
@@ -83,7 +83,7 @@ class Friend_list(Welcome):
         self.but_list[0].place(x=self.Win_Size[0][0]-35, y=0)
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.pack()
-        self.f_can.create_image(230, -250, image=self.back)
+        self.f_can.create_image(240, -250, image=self.back)
     # but_list[0] is place!!!
         self.but_list[4].config(
             command=lambda: self.refresh(self.clear_Canv()))

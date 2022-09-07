@@ -33,11 +33,13 @@ class GraBase:
             self.lab_list.append(tk.Label(self.bgfarme))
         for i in range(self.BUT_Count):
             self.but_list.append(tk.Button(self.bgfarme))
+        self.fresh_pic = tk.PhotoImage(
+            file="/home/tom/vscode/idea/Sock-QQ/picture/end.png")
 
     def init_ent(self):
         '''quick init a ent'''
         self.entfarme = tk.Frame(self.bgfarme)
-        self.ent_scro = tk.Scrollbar(self.entfarme)
+        self.ent_scro = tk.Scrollbar(self.entfarme,width=8)
         self.ent = tk.Entry(self.entfarme,)
 # on, please wirte all init fun on
     def canv_init(self,):
@@ -45,7 +47,7 @@ class GraBase:
         # self.canfarme=tk.Frame(self.bgfarme)
         self.f_can = tk.Canvas(self.bgfarme, highlightthickness=0, confine=False,
                                background=self.Color['bg'], selectbackground=self.Color['ffg'], selectforeground='white', borderwidth=0,)
-        self.f_scro = tk.Scrollbar(self.bgfarme)
+        self.f_scro = tk.Scrollbar(self.bgfarme,width=8)
 
     def topinit(self):
         self.win2 = tk.Toplevel(self.win, bg=self.Color['endblack'])
@@ -189,4 +191,4 @@ class GraBase:
         self.init_ent()
         self.ent_config()
         self.but_list[1].config(text="←", command=lambda: self.retu())
-        self.but_list[4].config(text="Fresh", command=lambda: self.refresh())
+        self.but_list[4].config( image=self.fresh_pic, command=lambda: self.refresh())
