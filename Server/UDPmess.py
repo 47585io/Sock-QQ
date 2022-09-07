@@ -27,6 +27,7 @@ class message:
             cache = self.USERS.Login(tmp)
             for mess in cache:
                 self.Send((mess.encode(),tmp[1]))
+            return ("hello".encode(),tmp[1])
                    
     #if user exit, del it in now_in
         elif tmp[0].decode().startswith("EXIT"):

@@ -2,6 +2,8 @@
 import threading as th
 from Pubilc.Split import Spilt_Mess
 import socket
+Time_out = 5
+#set recv mess time out, Prevent threads from getting stuck
 Mess_Buffer = 128
 Max_Mess = 50
 # recv buffer size and user mess_list size
@@ -13,15 +15,16 @@ class UDP_Mess:
     '''used for communication class'''
     def __init__(self, sock=UDP_SOCK) -> None:
         self.sock = sock
-        for i in range(MAX_THD):
-            r = th.Thread(target=self.Read, args=(self.sock,))
-            r.setDaemon(True)
-            r.start()
+        self.server_is_start=0
         self.MessCache = []
         self.Special_Mess=[]
         self.index = -1
         self.Special_index=-1
         self.yes = 0
+        for i in range(MAX_THD):
+            r = th.Thread(target=self.Read, args=(self.sock,))
+            r.setDaemon(True)
+            r.start()
 # Mess list: Max 10 mess,  index: now new mess index, yes:the mess yes or on new mess
 # Special_Mess,save special mess
 
@@ -49,11 +52,10 @@ class UDP_Mess:
 
     def getSpecial(self):
       while 1:
-        if self.Special_index < len(self.Special_Mess) and self.Special_index>=0:
+        if self.Special_index < len(self.Special_Mess) and self.Special_index>=0 and self.yes:
             tmp =self.Special_Mess[self.Special_index]
             del self.Special_Mess[self.Special_index]
             self.Special_index-=1
-            print("return ",tmp )
             return tmp
 
     def Send(self, sock, send_str, to_user=None, to_addr=("127.0.0.1", 1234)):
@@ -65,27 +67,39 @@ class UDP_Mess:
 #if you has many server port, also can use random.randint init a num in a range 
 
     def Read(self, sock):
-      '''every once, recv a mess and add it to MessCache, if mess count >Max, del old mess'''
-      print("start")
-      try:
+        '''every once, recv a mess and add it to MessCache, if mess count >Max, del old mess'''
+        print("start Read")
         while 1:
+          try:
+            if self.server_is_start==0:
+                sock.settimeout(Time_out)
             tmp = sock.recvfrom(Mess_Buffer)
+                
             if tmp[0].decode().startswith(self.myname+"@"):
                 print('this is a special mess!')
                 tup=Spilt_Mess.Read_spilt(tmp[0])
                 self.Special_Mess.append(tup[0].encode())
                 self.Special_index+=1
-                print("so, now in:" ,self.Special_Mess)
+                self.yes = 1
             else:
                 self.MessCache.append(tmp[0])
                 self.index += 1
                 self.yes = 1
-                if(self.index >= Max_Mess):
+                if self.index >= Max_Mess:
                     del self.MessCache[0]
                     self.index -= 1
+                    
             print("a new mess: ", tmp[0], "\n")
-      except Exception as e:
-        print(e)
+            self.server_is_start=1
+            self.sock.settimeout(None)
+            if tmp[0].decode()=="EXIT":
+                self.server_is_start=0
+                
+          except Exception as e:
+            self.Special_Mess.append(None)
+            self.Special_index += 1
+            print(e)
+            self.yes=1
 
 UDP = UDP_Mess()
 # mess object

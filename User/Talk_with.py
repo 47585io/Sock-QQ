@@ -62,6 +62,7 @@ class Talk_with(Friend_list):
         #end, add the file path to self.fren.pic
     
     def Closeall(self):
+        '''when user close the window, saveall and exit'''
         self.history.saveall(self.fren)
         super().Closeall()
     
@@ -108,9 +109,11 @@ class Talk_with(Friend_list):
             self.f_can.yview_moveto(1.0)
         
         self.history.put_a_mess(name,Spilt_Mess.Sava_Self_mess(s_str))
+  #one way or another, save the mess waiting for use
         
     def Readshow(self):
         '''get a mess from UDPmess, and spilt'''
+        print("start Readshow")
         while 1:
             s_str = self.mess.get()
             if s_str: 
@@ -145,6 +148,7 @@ class Talk_with(Friend_list):
                         self.f_can.yview_moveto(1.0)
                 
                 self.history.put_a_mess(name,s)
+                #save
                 
     def getfile(self, s_str):
         '''put s_str list in tcpmess spilt list and wait spilt'''
@@ -164,6 +168,7 @@ class Talk_with(Friend_list):
                 self.tcpmess.Add_a_Send(self.User_Name, self.fren.talk_with, file)
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
+    #upload file to server, and send command string to get file to user, wait user get it
     
     def usergetfile(self,):
         '''from history.file, get talk_with send to str, and send to server get the file'''
@@ -171,9 +176,11 @@ class Talk_with(Friend_list):
         tup=self.geostr(self.win.geometry(),("x","+","+"))
         s=self.geosize((self.Win_Size[1][0], self.Win_Size[1][1], tup[0]+tup[2], tup[3]))
         self.win2.geometry(s)
+        #sonwindow Always follow parent window
         
         self.toplist.config(height=8, width=16)
         self.topbut.config(anchor='nw',text="Get", command=self.cursor)
+        
         try:
             for mess in self.history.File_all[self.fren.talk_with]:
                 file=Spilt_Mess.File_spilt(mess)
@@ -182,9 +189,11 @@ class Talk_with(Friend_list):
             print(self.history.File_all[self.fren.talk_with])
         except Exception as e:
             print(e)
+        #show friend send's command string, and choose and get the file
         self.win2.update()
         
     def cursor(self):
+        '''Add the file command string to be obtained to the tcp list through user options and wait for it to be obtained'''
         tup=self.toplist.curselection()
         lis=[]
         for t in tup:
@@ -192,6 +201,7 @@ class Talk_with(Friend_list):
         self.getfile(lis)
             
     def endretu(self):
+        '''clear Canvs'''
         self.clear_Canv()
         self.topclose()
         self.but_list[0].place_forget()
@@ -201,6 +211,7 @@ class Talk_with(Friend_list):
         pass
 
     def refumess(self,name):
+      '''when user talk with friend, refu history mess'''
       try:
         i = self.fren.friend_list.index(name)
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
@@ -210,12 +221,14 @@ class Talk_with(Friend_list):
             else:
                 self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                     self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
-            
+        #if mess is myself, is put right, if not, put on left
+          
             self.Canv_y += self.pic_size[1]+25
             if self.Canv_y > self.Win_Size[0][1]:
                 self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
             self.f_can.yview_moveto(1.0)
+        #move Canvas
       except Exception as e:
           print(e)
 

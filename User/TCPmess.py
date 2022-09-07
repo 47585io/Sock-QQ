@@ -15,7 +15,7 @@ class TCP_mess:
         self.sendfile_list=[]
         #every element is a tuple:(str,srcfile)
         self.getfile_list=[]
-        #every element is a tupr: (getfilestr,filename,fromwho)
+        #every element is a tuple: (getfilestr,filename,fromwho)
         self.slinepool=Th(2)
         self.sock=sock
         self.issend=0
@@ -44,6 +44,7 @@ class TCP_mess:
                 date=fileobj.read(Mess_Buffer)
                 sock.send(date)
                 size-=Mess_Buffer
+#Each time the transmission data is synchronized with the server
             fileobj.close()
             sock.recv(Mess_Buffer)
             print("Send finish")
@@ -88,6 +89,8 @@ class TCP_mess:
             return
         s_str = Spilt_Mess.Send_mess_spilt(From, To, filename, str(os.path.getsize(filename)))
         self.sendfile_list.append((s_str,filename))
+#spilt str, add to list, wait send,
+#if send sline not start, start, if not, olny add
         if self.issend==0:
             self.slinepool.submit(self.Sendfile)
 

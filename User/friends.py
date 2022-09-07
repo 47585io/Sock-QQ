@@ -1,5 +1,6 @@
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import UDP,UDP_SOCK
+from time import sleep
 
 class friends:
     '''The all friend date save in'''
@@ -33,13 +34,17 @@ class friends:
         '''func name is i mean'''
         mess.Send(sock, "AddFriend ")
         s_str = mess.getSpecial()
-        return Spilt_Mess.Friend_list_Read_Spilt(s_str)
+        if s_str:
+            return Spilt_Mess.Friend_list_Read_Spilt(s_str)
 
     def addfriend(self, mess=UDP, sock=UDP_SOCK):
         '''get friend list and show'''
+    #if can't get friend_list, return 0
         list_ = self.__from_server_get_friend_list(mess, sock)
-        list_ = self.format_list(list_)
-        self.tmp.extend(list_)
+        if list_:
+            list_ = self.format_list(list_)
+            self.tmp.extend(list_)  
+            return 1
 
     def Search_Friend(self, name_str):
         '''search name_str in friend_list'''
