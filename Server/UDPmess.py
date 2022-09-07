@@ -21,11 +21,16 @@ class message:
         
         lis = []
         my_name=self.USERS.value_to_key(tmp[1])
+        
     #if user login, call login get username and friend_list, the end , send mess to src user
         if tmp[0].decode().startswith("LOGIN"):
             s = self.USERS.Login(tmp)
-            lis.extend((Spilt_Mess.Send_spilt(s,my_name), tmp[1]))
+            lis.extend((s.encode(), tmp[1]))
             return lis
+        
+    #if user exit, del it in now_in
+        if tmp[0].decode().startswith("EXIT"):
+            self.USERS.exit(tmp[1])
 
         #if user want to addfriend, return the users name
         elif tmp[0].decode().startswith("AddFriend"):
@@ -38,6 +43,7 @@ class message:
             name_list=Spilt_Mess.Friend_list_Read_Spilt(tmp[0])
             head_lis=[]
             self.USERS.addgroupfriend(my_name,name_list)
+            
     #if want add a groupfriend, add it to the group's friend_list
             for name in name_list:
                 nametmp=os.listdir("./From/Server/"+name)
@@ -83,6 +89,7 @@ class message:
         #the lis[0] is from@str, lis[1] is send to addr
     
     def Sendall(self,sendstr,fromwho,togroup):
+        '''send a mess to all user in group'''
         friend_list=self.USERS.getto(self.USERS.friend_list,togroup)
         sendstr=Spilt_Mess.Send_spilt(sendstr,togroup)
         for f in friend_list:
@@ -96,4 +103,6 @@ class message:
     
     def totouser(self):
         '''Kick users in the order in the list'''
-        pass
+        users=self.USERS.getto(self.USERS.now_in)
+        for user in users:
+            self.Send(("EXIT".encode(),self.USERS.getto(self.USERS.users,user)))

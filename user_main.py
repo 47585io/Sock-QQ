@@ -6,6 +6,7 @@ from User.Talk_with import Talk_with
 
 def whenexit():
     '''when exit, close all sock'''
+    UDP.Send("EXIT")
     UDP_SOCK.close()
     TCP_SOCK.close()
 atexit.register(whenexit)

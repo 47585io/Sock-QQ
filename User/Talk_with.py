@@ -101,7 +101,7 @@ class Talk_with(Friend_list):
             self.mess.Send(self.sock, s_str, name)
         self.draw_a_friend(self.f_can, s_str, self.furry_l[0],
                            (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1]-20,),  (self.Canv_x+20, self.Canv_y+10,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
-        self.Canv_y += self.pic_size[1]+10
+        self.Canv_y += self.pic_size[1]+25
         if self.Canv_y > self.Win_Size[0][1]:
             self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
@@ -131,7 +131,7 @@ class Talk_with(Friend_list):
                     i = self.fren.friend_list.index(name)
                     self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                         self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
-                    self.Canv_y += self.pic_size[1]+10
+                    self.Canv_y += self.pic_size[1]+25
 
     #when mess is end, move the Canvas
                     if self.Canv_y > self.Win_Size[0][1]:
@@ -206,7 +206,7 @@ class Talk_with(Friend_list):
                 self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                     self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
             
-            self.Canv_y += self.pic_size[1]+10
+            self.Canv_y += self.pic_size[1]+25
             if self.Canv_y > self.Win_Size[0][1]:
                 self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))

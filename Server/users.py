@@ -73,9 +73,10 @@ class users:
         name = name[6::]
         if name == '':
             return ''
+        cache=self.getto(self.cache, name)
         self.add((name, tup[1]))
         #friend = self.getto(self.friend_list, name)
-        return name+str(self.getto(self.cache,name))
+        return name+str(cache)
       
     def value_to_key(self, tmp):
         #print(self.getto(self.users)
@@ -133,9 +134,16 @@ class users:
         if toname not in self.getto(self.now_in):
             lis=self.getto(self.cache,toname)
             if type(fromaddr)==str:
-                lis.append(fromaddr+"@"+s_str.encode())
+                lis.append(fromaddr+"@"+s_str)
             else:
-                lis.append(self.value_to_key(fromaddr)+"@"+s_str.encode())
+                lis.append(self.value_to_key(fromaddr)+"@"+s_str)
             self.search(self.cache,(toname,lis))
             return 0
         return 1
+    
+    def exit(self,addr):
+        name=self.value_to_key(addr)
+        lis=self.now_in.get()
+        index=lis.index(name)
+        del lis[index]
+        self.now_in.put(lis)
