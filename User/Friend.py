@@ -133,9 +133,9 @@ class Friend_list(Welcome):
         self.List.pack()
         self.lisscro.pack(fill=tk.Y)
         self.win.update()
-        self.fren.addfriend(self.mess, self.sock)
-        self.isstart += 1
-        self.s.submit(self.search)
+        if self.fren.addfriend(self.mess, self.sock):    
+            self.isstart += 1
+            self.s.submit(self.search)
 
     def search(self):
         '''search user input str in friend_list'''
