@@ -48,8 +48,11 @@ class History:
         file=open(self.friend_file,"w")
         file2=open(self.mess_file,"w")
         file3 = open(self.file_get, "w")
-        self.savetwo(file,(friends.friend_list,friends.pic))
-        self.savedict(file2,self.Mess_Friend)
+        try:
+            self.savetwo(file,(friends.friend_list,friends.pic))
+            self.savedict(file2,self.Mess_Friend)
+        except Exception as e:
+            print(e)
         try:
             for name,mess in self.File_all.items():
                 self.File_all[name] = [get.decode() for get in mess]

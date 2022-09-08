@@ -71,8 +71,10 @@ class Talk_with(Friend_list):
     
     def Closeall(self):
         '''when user close the window, saveall and exit'''
-        #self.history.saveall(self.fren)
-        super().Closeall()
+        self.isstart=0
+        sleep(0.5)
+        self.history.saveall(self.fren)
+        exit(0)
     
     def talk_with(self, name):
         '''config a talk page'''

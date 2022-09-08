@@ -2,7 +2,7 @@ import socket
 import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
-Mess_Buffer = 128
+from User.UDPmess import Mess_Buffer
 from User.UDPmess import Time_out
 MY_DIR="./mydir/"
 
