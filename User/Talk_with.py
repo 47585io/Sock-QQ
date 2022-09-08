@@ -33,8 +33,9 @@ class Talk_with(Friend_list):
         self.win2.geometry("0x0-1000-1000")
     
     def Login(self):   
+        self.mess.init(self.User_Name,self.filename,self.tcpmess)
+        self.mess.Send(self.sock,"LOGIN "+self.User_Name)
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
-        #when you login, you must send your headpic to server
         self.history.refuall(self.fren)
         super().Login()
         
@@ -61,10 +62,17 @@ class Talk_with(Friend_list):
         #get name in new list, and Find from the corresponding head_lis
         #end, add the file path to self.fren.pic
     
+    @staticmethod
+    def small(num):
+        if num<1:
+            return 1
+        else:
+            return num
+    
     def Closeall(self):
         '''when user close the window, saveall and exit'''
-        self.history.saveall(self.fren)
         super().Closeall()
+        self.history.saveall(self.fren)
     
     def talk_with(self, name):
         '''config a talk page'''
@@ -102,8 +110,8 @@ class Talk_with(Friend_list):
         if name != "my shadow" or name != "my computer":
             self.mess.Send(self.sock, s_str, name)
         self.draw_a_friend(self.f_can, s_str, self.furry_l[0],
-                           (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1]-20,),  (self.Canv_x+20, self.Canv_y+25,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
-        self.Canv_y += self.pic_size[1]+25
+                           (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(s_str)//26)*50,),  (self.Canv_x+205, self.Canv_y+self.small(len(s_str)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+        self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(len(s_str)//26)*50 else self.small(len(s_str)//26)*50+25
         if self.Canv_y > self.Win_Size[0][1]:
             self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
@@ -217,14 +225,16 @@ class Talk_with(Friend_list):
         i = self.fren.friend_list.index(name)
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
             if mess.startswith("MY#"):
-                self.draw_a_friend(self.f_can, mess[3::], self.furry_l[0],
-                               (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1]-20,),  (self.Canv_x+20, self.Canv_y+10,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+                self.draw_a_friend(self.f_can,mess, self.furry_l[0],
+                                   (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(mess)//26)*30+20,),  (self.Canv_x+205, self.Canv_y+self.small(len(mess)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+                self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
+                    len(mess)//26)*30+20 else self.small(len(mess)//26)*30+45
+                
             else:
                 self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
                     self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
         #if mess is myself, is put right, if not, put on left
           
-            self.Canv_y += self.pic_size[1]+25
             if self.Canv_y > self.Win_Size[0][1]:
                 self.f_can.configure(scrollregion=(
                 0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))

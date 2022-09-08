@@ -2,6 +2,7 @@
 import threading as th
 from Pubilc.Split import Spilt_Mess
 import socket
+
 Time_out = 5
 #set recv mess time out, Prevent threads from getting stuck
 Mess_Buffer = 128
@@ -30,8 +31,10 @@ class UDP_Mess:
 # Special_Mess,save special mess, speciak index, point to the latest news
 #server_is_start, Determine whether you need to interact with the server or wait
 
-    def init(self,name):
+    def init(self,name,filename,tcpmess):
         self.myname=name
+        self.filename=filename
+        self.tcpmess=tcpmess
         self.is_login=0
         
     def get(self):
@@ -77,18 +80,21 @@ class UDP_Mess:
           try:
             #the first login, check server whther start
             # (if time out, resia a Exception, jump to except ,the server not start! )
-            # until in time out in a cycle, a mess to user from server, the server is start
+            # until in time out in a cycle, user send a mess, a mess to user from server, the server is start
             # then self.server_is_start = 1, settimeout = default
             if self.server_is_start==0:
                 sock.settimeout(Time_out)
             tmp = sock.recvfrom(Mess_Buffer)
-            
+        
+        #if get a mess, execute the following statement
         #when can connect server, user try login with server 
             if tmp[0].decode()=="hello":
                 self.is_login=1
             if self.is_login==0:
                 self.Send(self.sock,"LOGIN "+self.myname)
-            
+                self.tcpmess.Add_a_Send("Server",self.myname,self.filename)
+        #when you login, you must send your headpic to server
+                
             if tmp[0].decode().startswith(self.myname+"@"):
                 print('this is a special mess!')
                 tup=Spilt_Mess.Read_spilt(tmp[0])

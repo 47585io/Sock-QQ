@@ -33,6 +33,8 @@ class Friend_list(Welcome):
 
     def Closeall(self):
         self.isstart = 0
+        self.retu()
+        self.retu()
         exit(0)
 
     def quickconfig(self, friends, sock, mess):
@@ -69,7 +71,7 @@ class Friend_list(Welcome):
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:
             canv.create_image(picpos[0], picpos[1], image=pic,)
-        canv.create_text(namepos[0]+40, namepos[1], width=relapos[2]-relapos[0]-picpos[1]+picpos[0],
+        canv.create_text(namepos[0], namepos[1], width=320,
                          text=name, fill=self.Color['fg'], font=(self.Font["zheng"], self.Font_size["mid"]))
         self.f_can.tag_bind(tag, '<Button-1>', func)
         self.tag_list.append(tag)
@@ -116,6 +118,8 @@ class Friend_list(Welcome):
     def addfriend_mid(self):
         '''clear Canv and go to add friend'''
         self.clear_Canv()
+        self.but_list[4].config(
+            command=lambda: self.refresh(self.retuadd))
         self.go(self.addfriend, self.showfriends,
                 lambda: self.place_forgets(self.but_list[0]))
 
@@ -133,8 +137,7 @@ class Friend_list(Welcome):
 
         self.List.pack()
         self.lisscro.pack(fill=tk.Y)
-        self.win.update()
-        if self.fren.addfriend(self.mess, self.sock):    
+        if self.fren.addfriend(self.mess, self.sock) and self.isstart==0:    
             self.isstart += 1
             self.s.submit(self.search)
 
@@ -146,14 +149,14 @@ class Friend_list(Welcome):
             if self.isstart == 0:
                 print("return")
                 return
+            
             if tmp == self.ent.get():
-                # if tmp still is , don't do anything
+                # if tmp still is this, don't do anything
                 continue
-            tmp = self.ent.get()
-            if not tmp:
-                # if tmp is None,delete all
-                self.List.delete(0, "end")
-            list = self.fren.Search_Friend(self.ent.get())
+            
+            #if not, search new str
+            tmp = self.ent.get()  
+            list = self.fren.Search_Friend(tmp)
             if list:
                 # Will search result,substitute src
                 self.List.delete(0, "end")
@@ -162,7 +165,8 @@ class Friend_list(Welcome):
             else:
                 # if list is None, delete all
                 self.List.delete(0, "end")
-
+           
+            
     def addmany(self):
         '''user going to add friend'''
         try:

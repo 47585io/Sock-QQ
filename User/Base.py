@@ -1,3 +1,4 @@
+from copy import deepcopy
 from re import T
 import tkinter as tk
 
@@ -40,6 +41,7 @@ class GraBase:
         '''quick init a ent'''
         self.entfarme = tk.Frame(self.bgfarme)
         self.ent_scro = tk.Scrollbar(self.entfarme,width=8)
+        #self.entvar=tk.StringVar()
         self.ent = tk.Entry(self.entfarme,)
 # on, please wirte all init fun on
     def canv_init(self,):
@@ -113,7 +115,13 @@ class GraBase:
     def refresh(self,mid_fun=None):
         if mid_fun:
             mid_fun()
-        self.atfunc()
+        #self.go(self.atfunc)
+        
+        self.func.append(self.atfunc)
+        self.index += 1
+        self.retu()
+        
+        
     
     def winconfig(self):
         self.win.config(bg=self.Color["bg"],)

@@ -49,7 +49,6 @@ class friends:
     def Search_Friend(self, name_str):
         '''search name_str in friend_list'''
         if not name_str:
-            #print("no name")
             return
         name_list = []
         for i in self.tmp:
