@@ -147,9 +147,10 @@ class Talk_with(Friend_list):
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
                 if name == self.fren.talk_with:
                     i = self.fren.friend_list.index(name)
-                    self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
-                        self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+25), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
-                    self.Canv_y += self.pic_size[1]+25
+                    self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.small(len(s)//26)*50+25,), (
+                        self.Canv_x+self.pic_size[0]+175, self.Canv_y+self.small(len(s)//26)*10*2+2), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
+                    self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
+                        len(s)//26)*50 else self.small(len(s)//26)*50+25
 
     #when mess is end, move the Canvas
                     if self.Canv_y > self.Win_Size[0][1]:
@@ -224,14 +225,17 @@ class Talk_with(Friend_list):
         i = self.fren.friend_list.index(name)
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
             if mess.startswith("MY#"):
+                mess=mess[3::]
                 self.draw_a_friend(self.f_can,mess, self.furry_l[0],
-                                   (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(mess)//26)*30+20,),  (self.Canv_x+205, self.Canv_y+self.small(len(mess)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
+                                   (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(mess)//26)*40+25,),  (self.Canv_x+205, self.Canv_y+self.small(len(mess)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
                 self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
-                    len(mess)//26)*30+20 else self.small(len(mess)//26)*30+45
+                    len(mess)//26)*40+25 else self.small(len(mess)//26)*40+25
                 
             else:
-                self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
-                    self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+10), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
+                self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.small(len(mess)//26)*40+25,), (
+                        self.Canv_x+self.pic_size[0]+175, self.Canv_y+self.small(len(mess)//26)*10*2+2), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
+                self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
+                        len(mess)//26)*40 else self.small(len(mess)//26)*40+25
         #if mess is myself, is put right, if not, put on left
           
             if self.Canv_y > self.Win_Size[0][1]:
