@@ -199,4 +199,4 @@ class GraBase:
         self.init_ent()
         self.ent_config()
         self.but_list[1].config(text="←", command=lambda: self.retu())
-        self.but_list[4].config( image=self.fresh_pic, command=lambda: self.refresh())
+        self.but_list[4].config(text="↻", command=lambda: self.refresh())

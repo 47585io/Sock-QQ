@@ -71,8 +71,8 @@ class Talk_with(Friend_list):
     
     def Closeall(self):
         '''when user close the window, saveall and exit'''
+        #self.history.saveall(self.fren)
         super().Closeall()
-        self.history.saveall(self.fren)
     
     def talk_with(self, name):
         '''config a talk page'''
@@ -143,7 +143,6 @@ class Talk_with(Friend_list):
                     continue
 
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
-                print("this ", name, "   ", s, "\n")
                 if name == self.fren.talk_with:
                     i = self.fren.friend_list.index(name)
                     self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.pic_size[1]-20,), (
@@ -193,9 +192,7 @@ class Talk_with(Friend_list):
         try:
             for mess in self.history.File_all[self.fren.talk_with]:
                 file=Spilt_Mess.File_spilt(mess)
-                print(file)
                 self.toplist.insert("end",file[2])
-            print(self.history.File_all[self.fren.talk_with])
         except Exception as e:
             print(e)
         #show friend send's command string, and choose and get the file

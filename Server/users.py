@@ -142,9 +142,12 @@ class users:
         return 1
     
     def exit(self,addr):
+      try:
         name=self.value_to_key(addr)
         lis=self.now_in.get()
         index=lis.index(name)
         del lis[index]
         self.now_in.put(lis)
         print("已与",name,"断开连接")
+      except:
+        pass

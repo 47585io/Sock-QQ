@@ -21,7 +21,9 @@ class TCP_Mess:
             os.mkdir("./From/"+tup[0]+"/"+tup[1])
 
     def sendfile(self, new_sock, addr, tup):
-        '''if user want to get a file, i must send to he'''
+      '''if user want to get a file, i must send to he'''
+      try:
+        print("Send")
         self.checkfile(tup)
         if not os.path.isfile("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2]):
             return
@@ -39,11 +41,16 @@ class TCP_Mess:
 #must wait user         
         new_sock.recv(Mess_Buffer)
         print("Send Finsh!")
+      except Exception as e:
+        print("Sendfile Error: ",e)
+        file.close()
+      else:
         file.close()
 
     def savefile(self, new_sock, addr, tup):
       '''if user want to send a file to me, i must save it'''
       try:
+        print("Save")
         self.checkfile(tup)
         file = open("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2], "wb")
         size=int(tup[3])
@@ -59,7 +66,7 @@ class TCP_Mess:
         new_sock.send("Ok".encode())
 #respond user
       except Exception as e:
-        print(e)
+        print("Savefile Error: ",e)
         file.close()
       else:
         file.close()
@@ -67,6 +74,7 @@ class TCP_Mess:
     def talk_to(self, *arg):
         '''before do any thing, Let's see what it is'''
         while 1:
+          try:
             print("waiting")
             new_sock, addr = self.sock.accept()
             s_str = new_sock.recv(Mess_Buffer)
@@ -75,6 +83,9 @@ class TCP_Mess:
                 self.sendfile(new_sock, addr, s_list)
             else:
                 self.savefile(new_sock, addr, s_list)
+            new_sock.close()
+          except Exception as e:
+            print("TCP port: 抓住了,但是没有事", e)
             new_sock.close()
       
       

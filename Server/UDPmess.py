@@ -74,11 +74,14 @@ class message:
     def talk_to(self, *arg):
         '''the talk_to going to recv a bytes mess from a user, after process, it send a bytes mess to other user'''
         while True:
+          try:
             tmp = self.sock.recvfrom(Mess_Buffer)
             print("接收", tmp)
             lis = self.bbmess(tmp)
             print("发送", lis)
             self.Send(lis)
+          except Exception as e:
+            print("UDP port: 抓住了,但是没有事",e)
 
     def Send(self, lis):
         '''send bytes, can redefine in sonclass'''

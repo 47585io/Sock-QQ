@@ -32,9 +32,8 @@ class Friend_list(Welcome):
         self.back = tk.PhotoImage(file="./thedark.png")
 
     def Closeall(self):
+        '''Recursively go back every page'''
         self.isstart = 0
-        self.retu()
-        self.retu()
         exit(0)
 
     def quickconfig(self, friends, sock, mess):

@@ -45,7 +45,6 @@ class History:
         file.close()
     
     def saveall(self,friends):
-        print("save")
         file=open(self.friend_file,"w")
         file2=open(self.mess_file,"w")
         file3 = open(self.file_get, "w")
@@ -61,6 +60,7 @@ class History:
         file.close()
         file2.close()
         file3.close()
+        print("save finish")
         
     def refu_a_two(self,s,tup):
         index = s.find("###")

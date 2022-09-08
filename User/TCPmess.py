@@ -3,6 +3,7 @@ import os
 from Pubilc.Split import Spilt_Mess
 from User.Friend import Th
 Mess_Buffer = 128
+from User.UDPmess import Time_out
 MY_DIR="./mydir/"
 
 TCP_SOCK = socket.socket()
@@ -31,60 +32,84 @@ class TCP_mess:
         print("Send")
         for file in self.sendfile_list:
 #send a file to server
-            sock=socket.socket()
-            sock.connect(addr)
-            print("connect!")
+            try:
+                fileobj=None
+                sock=socket.socket()
+                sock.settimeout(Time_out)
+                sock.connect(addr)
+                print("connect!")
 #connect           
-            sock.send(file[0])
-            size = os.path.getsize(file[1])
-            fileobj=open(file[1],"rb")
-            sock.recv(Mess_Buffer)
+                sock.send(file[0])
+                size = os.path.getsize(file[1])
+                fileobj=open(file[1],"rb")
+                sock.recv(Mess_Buffer)
 #you must recv a mess, for wait server
-            while size>0:
-                date=fileobj.read(Mess_Buffer)
-                sock.send(date)
-                size-=Mess_Buffer
+                while size>0:
+                    date=fileobj.read(Mess_Buffer)
+                    sock.send(date)
+                    size-=Mess_Buffer
 #Each time the transmission data is synchronized with the server
-            fileobj.close()
-            sock.recv(Mess_Buffer)
-            print("Send finish")
-            sock.close()
+                fileobj.close()
+                sock.recv(Mess_Buffer)
+                print("Send finish")
+                sock.close()
 #before close, wait server finish
+                index = self.sendfile_list.index(file)
+                del self.sendfile_list[index]
+            except:
+                print("与服务端断开连接")
+                sock.close()
+                if fileobj:
+                    fileobj.close()
         self.issend=0  
-        self.sendfile_list.clear()
-#clear all send str
     
     def Getfile(self,addr=("127.0.0.1", 1237)):
         '''deal with file in list, when finish, return and clear geted file str'''
         print("get")
         self.isget= 1
+        
         for file in self.getfile_list:
 #get a file and save in default dir
-            sock=socket.socket()
-            sock.connect(addr)
-            print("connect")
+            try:
+                fileobj=None
+                sock=socket.socket()
+                sock.settimeout(Time_out)
+                sock.connect(addr)
+                print("connect")
             
-            sock.send(file[0])
-            s=sock.recv(Mess_Buffer)
-            size=int(s.decode())
-            fileobj = open(self.mydir+file[2]+"/"+file[1], "wb")
-            sock.send("Ok".encode())
+                sock.send(file[0])
+                s=sock.recv(Mess_Buffer)
+                size=int(s.decode())
+                fileobj = open(self.mydir+file[2]+"/"+file[1], "wb")
+                sock.send("Ok".encode())
 
-            while size > 0:
-                date=sock.recv(Mess_Buffer)
-                fileobj.write(date)
-                size -= Mess_Buffer
+                while size > 0:
+                    date=sock.recv(Mess_Buffer)
+                    fileobj.write(date)
+                    size -= Mess_Buffer
                 
-            fileobj.close()
-            sock.send("Ok".encode())
-            print("get finish")
+                fileobj.close()
+                sock.send("Ok".encode())
+                print("get finish")
+                sock.close()
             
-            sock.close()
+                index=self.getfile_list.index(file)
+                del self.getfile_list[index]
+                
+#defalut, every once get a file, and close all and del self.getfile_list[index]
+#but, if timeout, server is not start, then can't del self.getfile_list[index]
+
+            except Exception:
+                print("与服务端断开连接")
+                sock.close()
+                if fileobj:
+                    fileobj.close()
+          
         self.isget = 0
-        self.getfile_list.clear()
         
     def Add_a_Send(self,From,To,filename):
         '''send a file to server'''
+        print("Add a Send")
         if not filename:
             return
         s_str = Spilt_Mess.Send_mess_spilt(From, To, filename, str(os.path.getsize(filename)))
@@ -96,7 +121,7 @@ class TCP_mess:
 
     def Add_a_Get(self, Getstr):
         '''get a file from server(add it in list)'''
-        print("Get")
+        print("Add a Get")
         lis=Spilt_Mess.File_spilt(Getstr)
         filename=lis[2]
         fromwho=lis[0]
