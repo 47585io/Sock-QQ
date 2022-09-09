@@ -3,6 +3,7 @@ import os
 from Server.users import users
 from Pubilc.Split import Spilt_Mess
 Mess_Buffer = 128
+
 # 设置每一个sock cache buffer size
 
 class message:

@@ -48,6 +48,8 @@ class Friend_list(Welcome):
         self.Win_Size[0][0] += 120
         self.Win_Size[0][1] += 200
         self.win.geometry(self.geosize())
+        self.panda.config(
+            width=self.Win_Size[0][0], height=self.Win_Size[0][1])
         self.bgfarme.config(
             background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])
         self.go(self.showfriends)
@@ -106,10 +108,10 @@ class Friend_list(Welcome):
         for count in range(len(self.furry_l)):
             if count % 2 == 0:
                 self.draw_a_friend(
-                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+self.Canv_x_from, self.Canv_y+self.pic_size[1]//2,), (self.Canv_x+50, self.Canv_y+45,), self.talk_with_mid)
+                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+self.Canv_x_from+100, self.Canv_y+self.pic_size[1]//2,), (self.Canv_x+50, self.Canv_y+45,), self.talk_with_mid)
             if count % 2 == 1:
                 self.draw_a_friend(
-                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0], self.Canv_y+self.pic_size[1]//2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.talk_with_mid)
+                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+100, self.Canv_y+self.pic_size[1]//2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.talk_with_mid)
             count += 1
             self.Canv_y += self.pic_size[1]
             # print(self.Canv_x)
@@ -120,7 +122,7 @@ class Friend_list(Welcome):
         self.but_list[4].config(
             command=lambda: self.refresh(self.retuadd))
         self.go(self.addfriend, self.showfriends,
-                lambda: self.place_forgets(self.but_list[0]))
+                lambda: self.place_forgets(self.but_list[0],self.but_list[5]))
 
     def addfriend(self):
         '''config a addfriend page
@@ -204,7 +206,7 @@ class Friend_list(Welcome):
         # get correspond indec's name
         self.clear_Canv()
         self.go(lambda: self.talk_with(name), self.showfriends,
-                lambda: self.place_forgets(self.but_list[0]))
+                lambda: self.place_forgets(self.but_list[0],self.but_list[5]))
         # clear and go to next page
 
     def talk_with(self, name):

@@ -6,7 +6,7 @@ import tkinter as tk
 class GraBase:
     '''A a basic configuration class'''
     LAB_Count = 3
-    BUT_Count = 5
+    BUT_Count = 6
     # lab and but init count
 
     def __init__(self) -> None:
@@ -25,7 +25,8 @@ class GraBase:
 
     def init(self,):
         self.win = tk.Tk()
-        self.bgfarme = tk.Frame(self.win)
+        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=4,)
+        self.bgfarme = tk.Frame(self.panda)
         self.lab_list = []
         self.but_list = []
         self.message = tk.Message(self.bgfarme)
@@ -34,8 +35,6 @@ class GraBase:
             self.lab_list.append(tk.Label(self.bgfarme))
         for i in range(self.BUT_Count):
             self.but_list.append(tk.Button(self.bgfarme))
-        self.fresh_pic = tk.PhotoImage(
-            file="/home/tom/vscode/idea/Sock-QQ/picture/end.png")
 
     def init_ent(self):
         '''quick init a ent'''
@@ -77,7 +76,13 @@ class GraBase:
     def clear(self):
         '''forget all lab on the bgfarme '''
         for wed in self.bgfarme.winfo_children():
-            wed.pack_forget()
+            try:
+                wed.pack_forget()
+            except:
+                try:
+                    wed.grid_forget()
+                except:
+                    wed.place_forget()
 
     def go(self, go_fun, src_fun=None, mid_fun=None):
         '''use the fun go a new func, and save src fun, if you want to do other things,please give me the fun'''
@@ -120,9 +125,7 @@ class GraBase:
         self.func.append(self.atfunc)
         self.index += 1
         self.retu()
-        
-        
-    
+
     def winconfig(self):
         self.win.config(bg=self.Color["bg"],)
         self.win.title("Sock QQ")
@@ -130,7 +133,8 @@ class GraBase:
         self.win.resizable(0, 0)
         self.bgfarme.config(
             background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])
-        self.bgfarme.pack()
+        self.panda.add(self.bgfarme)
+        self.panda.pack()
         # olny set once
 
     def labconfig(self, lab_list):

@@ -22,7 +22,8 @@ class History:
         self.file_get=self.mydir+"get"
        
     def start_var(self):
-        self.var_file=self.mydir+"var"     
+        self.var_file=self.mydir+"var"
+        self.var_obj=open(self.var_file,"w")     
         self.stdout=sys.stdout
         self.stderr=sys.stderr
         sys.stdout=self.var_file
@@ -31,6 +32,7 @@ class History:
     def end_var(self):
         sys.stdout = self.stdout
         sys.stderr=self.stderr
+        self.var_obj.close()
     
     def savedict(self,file,dict):
         for name,mess in dict.items():
