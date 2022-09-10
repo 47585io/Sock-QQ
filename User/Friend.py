@@ -15,7 +15,8 @@ class Friend_list(Welcome):
         Welcome.__init__(self)
         self.Canv_x = 0  # 50
         self.Canv_y = 0  # 45
-        self.Canv_x_from = 70
+        self.Canv_x_from = 30
+        self.Canv_y_from=25
         self.Canv_size = (self.Win_Size[0][0], self.pic_size[1])
         self.s = Th(1)
         self.isstart = 0
@@ -52,8 +53,8 @@ class Friend_list(Welcome):
             width=self.Win_Size[0][0], height=self.Win_Size[0][1])
         self.bgfarme.config(
             background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])
+        self.fren.pic[0]=self.filename
         self.go(self.showfriends)
-        pass
 
     def place_forgets(self, *arg):
         '''it going to place_forget all arg as mid fun before pack_forget'''
@@ -64,18 +65,48 @@ class Friend_list(Welcome):
         for a in arg:
             a.grid_forget()
 
-    def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34"):
+    def draw_a_friend(self, canv, name, pic, relapos, namepos, picpos, func, color="#282c34", mywidth=320):
         '''draw a friend mess and bind event to mess'''
-        #newtup = Spilt_Mess.calculate_text(
-           # name, namepos[0]+40, relapos[1], relapos[2])
         tag = canv.create_rectangle(relapos[0], relapos[1], relapos[2], relapos[3], fill=color,
                                     activefill=self.Color['ffg'], outline=self.Color['bg'], width=0)
         if canv:
             canv.create_image(picpos[0], picpos[1], image=pic,)
-        canv.create_text(namepos[0], namepos[1], width=320,
+        canv.create_text(namepos[0], namepos[1], width=mywidth,
                          text=name, fill=self.Color['fg'], font=(self.Font["zheng"], self.Font_size["mid"]))
         self.f_can.tag_bind(tag, '<Button-1>', func)
         self.tag_list.append(tag)
+
+    def cala_draw(self, canv, name, pic, func, pos="left", From=(0, 0), color="bg", moveto=0.0):
+        '''Using it, you can easily draw messages without knowing the internal calculation process'''
+        width = self.Win_Size[0][0]-From[0]-self.pic_size[0]
+        count = width//(1.2*self.Font_size['mid'])-2
+        if pos == "right":
+            self.draw_a_friend(canv, name, pic,
+                               (self.Canv_x+From[0], self.Canv_y, self.Win_Size[0][0]-self.pic_size[0],
+                                self.Canv_y+self.pic_size[1]
+                                if From[1] == -1 else self.Canv_y+self.small(len(name)//count)*40,),
+                               (self.Canv_x+width//2+From[0], self.Canv_y+self.pic_size[1]//2-5
+                                if From[1] == -1 else self.Canv_y+self.small(len(name)//count)*self.Font_size['mid']*2+2,),
+                               (self.Win_Size[0][0] -
+                                self.pic_size[0]+50, self.Canv_y+45,),
+                               func, self.Color[color], width)
+        elif pos == 'left':
+            self.draw_a_friend(canv, name, pic,
+                               (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-From[0],
+                                self.Canv_y+self.pic_size[1]
+                                if From[1] == -1 else self.Canv_y+self.small(len(name)//count)*40,),
+                               (self.Canv_x+self.pic_size[0]+width//2, self.Canv_y+self.pic_size[1]//2 - 5
+                                if From[1] == -1 else self.Canv_y+self.small(len(name)//count)*self.Font_size['mid']*2+2),
+                               (self.Canv_x+50, self.Canv_y+45,),
+                               func, self.Color[color], width)
+
+        self.Canv_y += self.pic_size[1]+From[1] if self.pic_size[1] > self.small(
+            len(name)//count)*40 else self.small(len(name)//count)*40+From[1]
+
+        if self.Canv_y > self.Win_Size[0][1]:
+            canv.configure(scrollregion=(
+                0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
+            canv.yview_moveto(moveto)
 
     def showfriends(self):
         '''config a friend page'''
@@ -107,14 +138,13 @@ class Friend_list(Welcome):
 # from furry_l count start, when self.pic > it, then has new pic, add to furry_l, when not pic, pic < friendname, then use default.png
         for count in range(len(self.furry_l)):
             if count % 2 == 0:
-                self.draw_a_friend(
-                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+self.Canv_x_from+100, self.Canv_y+self.pic_size[1]//2,), (self.Canv_x+50, self.Canv_y+45,), self.talk_with_mid)
+                self.cala_draw(self.f_can, self.fren.friend_list[count], self.furry_l[count],
+                               self.talk_with_mid, "left", (0, -1))
             if count % 2 == 1:
-                self.draw_a_friend(
-                    self.f_can, self.fren.friend_list[count], self.furry_l[count], (self.Canv_x, self.Canv_y, self.Win_Size[0][0], self.Canv_y+self.pic_size[1],), (self.Canv_x+self.pic_size[0]+100, self.Canv_y+self.pic_size[1]//2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.talk_with_mid)
+                self.cala_draw(self.f_can, self.fren.friend_list[count], self.furry_l[count],
+                               self.talk_with_mid, "right", (0, -1))
+
             count += 1
-            self.Canv_y += self.pic_size[1]
-            # print(self.Canv_x)
 
     def addfriend_mid(self):
         '''clear Canv and go to add friend'''
@@ -122,7 +152,7 @@ class Friend_list(Welcome):
         self.but_list[4].config(
             command=lambda: self.refresh(self.retuadd))
         self.go(self.addfriend, self.showfriends,
-                lambda: self.place_forgets(self.but_list[0],self.but_list[5]))
+                lambda: self.place_forgets(self.but_list[0], self.but_list[5]))
 
     def addfriend(self):
         '''config a addfriend page
@@ -138,7 +168,7 @@ class Friend_list(Welcome):
 
         self.List.pack()
         self.lisscro.pack(fill=tk.Y)
-        if self.fren.addfriend(self.mess, self.sock) and self.isstart==0:    
+        if self.fren.addfriend(self.mess, self.sock) and self.isstart == 0:
             self.isstart += 1
             self.s.submit(self.search)
 
@@ -150,13 +180,13 @@ class Friend_list(Welcome):
             if self.isstart == 0:
                 print("return")
                 return
-            
+
             if tmp == self.ent.get():
                 # if tmp still is this, don't do anything
                 continue
-            
-            #if not, search new str
-            tmp = self.ent.get()  
+
+            # if not, search new str
+            tmp = self.ent.get()
             list = self.fren.Search_Friend(tmp)
             if list:
                 # Will search result,substitute src
@@ -166,8 +196,7 @@ class Friend_list(Welcome):
             else:
                 # if list is None, delete all
                 self.List.delete(0, "end")
-           
-            
+
     def addmany(self):
         '''user going to add friend'''
         try:
@@ -206,7 +235,7 @@ class Friend_list(Welcome):
         # get correspond indec's name
         self.clear_Canv()
         self.go(lambda: self.talk_with(name), self.showfriends,
-                lambda: self.place_forgets(self.but_list[0],self.but_list[5]))
+                lambda: self.place_forgets(self.but_list[0], self.but_list[5]))
         # clear and go to next page
 
     def talk_with(self, name):

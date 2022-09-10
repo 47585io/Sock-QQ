@@ -14,7 +14,7 @@ class Talk_with(Friend_list):
         self.talk.setDaemon(True)
         self.istalk = 0
         #Always check whether has a mess to display
-    
+
     def init(self):
         Friend_list.init(self)
         self.history=History()
@@ -111,13 +111,8 @@ class Talk_with(Friend_list):
         '''when user send a str, immediately show and send to other user'''
         if name != "my shadow" or name != "my computer":
             self.mess.Send(self.sock, s_str, name)
-        self.draw_a_friend(self.f_can, s_str, self.furry_l[0],
-                           (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(s_str)//26)*40,),  (self.Canv_x+205, self.Canv_y+self.small(len(s_str)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
-        self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(len(s_str)//26)*40 else self.small(len(s_str)//26)*40+25
-        if self.Canv_y > self.Win_Size[0][1]:
-            self.f_can.configure(scrollregion=(
-                0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
-            self.f_can.yview_moveto(1.0)
+        self.cala_draw(self.f_can, s_str, self.furry_l[0], self.delmess, "right", (
+            self.Canv_x_from, self.Canv_y_from), "bubu1", 1.0,)
         
         self.history.put_a_mess(name,Spilt_Mess.Sava_Self_mess(s_str))
   #one way or another, save the mess waiting for use
@@ -145,20 +140,11 @@ class Talk_with(Friend_list):
                     continue
 
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
-                if name == self.fren.talk_with:
-                    i = self.fren.friend_list.index(name)
-                    self.draw_a_friend(self.f_can, s, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.small(len(s)//26)*40,), (
-                        self.Canv_x+self.pic_size[0]+175, self.Canv_y+self.small(len(s)//26)*10*2+2), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
-                    self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
-                        len(s)//26)*40 else self.small(len(s)//26)*40+25
-
-    #when mess is end, move the Canvas
-                    if self.Canv_y > self.Win_Size[0][1]:
-                        self.f_can.configure(scrollregion=(
-                            0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
-                        self.f_can.yview_moveto(1.0)
+                if name in self.fren.friend_list:
+                    i=self.fren.friend_list.index(name)
+                    self.cala_draw(self.f_can,s,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)             
+                    self.history.put_a_mess(name,s)
                 
-                self.history.put_a_mess(name,s)
                 #save
                 
     def getfile(self, s_str):
@@ -226,23 +212,11 @@ class Talk_with(Friend_list):
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
             if mess.startswith("MY#"):
                 mess=mess[3::]
-                self.draw_a_friend(self.f_can,mess, self.furry_l[0],
-                                   (self.Canv_x+30, self.Canv_y, self.Win_Size[0][0]-self.pic_size[0], self.Canv_y+self.small(len(mess)//26)*40,),  (self.Canv_x+205, self.Canv_y+self.small(len(mess)//26)*10*2+2,), (self.Win_Size[0][0]-self.pic_size[0]+50, self.Canv_y+45,), self.delmess, self.Color['bubu1'])
-                self.Canv_y += self.pic_size[1] if self.pic_size[1] > self.small(
-                    len(mess)//26)*40 else self.small(len(mess)//26)*40+25
+                self.cala_draw(self.f_can,mess,self.furry_l[0],self.delmess,"right",(self.Canv_x_from,self.Canv_y_from),"bubu1",1.0,)
                 
             else:
-                self.draw_a_friend(self.f_can, mess, self.furry_l[i], (self.Canv_x, self.Canv_y, self.Win_Size[0][0]-30, self.Canv_y+self.small(len(mess)//26)*40,), (
-                        self.Canv_x+self.pic_size[0]+175, self.Canv_y+self.small(len(mess)//26)*10*2+2), (self.Canv_x+50, self.Canv_y+45,), self.delmess, self.Color['bubu2'])
-                self.Canv_y += self.pic_size[1]+25 if self.pic_size[1] > self.small(
-                        len(mess)//26)*40 else self.small(len(mess)//26)*40+25
-        #if mess is myself, is put right, if not, put on left
-          
-            if self.Canv_y > self.Win_Size[0][1]:
-                self.f_can.configure(scrollregion=(
-                0, 0, 500, self.Canv_y-self.Win_Size[0][1]+self.pic_size[1]))
-            self.f_can.yview_moveto(1.0)
-        #move Canvas
+                self.cala_draw(self.f_can,mess,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)
+                
       except Exception as e:
           print(e)
 

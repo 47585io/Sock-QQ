@@ -25,7 +25,7 @@ class GraBase:
 
     def init(self,):
         self.win = tk.Tk()
-        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=4,)
+        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=5,)
         self.bgfarme = tk.Frame(self.panda)
         self.lab_list = []
         self.but_list = []
