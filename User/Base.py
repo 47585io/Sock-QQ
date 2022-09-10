@@ -14,7 +14,7 @@ class GraBase:
         self.index = 0
         self.atfunc=None
         self.Win_Size = [[360, 450, 1600, 1000]]
-        self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",
+        self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",'s_blue':"#61afef",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049",
                       "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#f1eade"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
@@ -26,7 +26,7 @@ class GraBase:
 
     def init(self,):
         self.win = tk.Tk()
-        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=8,borderwidth=0)
+        self.panda=tk.PanedWindow(self.win,bg=self.Color['setpage'],width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=8,borderwidth=0)
         self.bgfarme = tk.Frame(self.panda)
         self.lab_list = []
         self.but_list = []
@@ -154,7 +154,7 @@ class GraBase:
                              activebackground=self.Color["entblock"], borderwidth=0, orient=tk.HORIZONTAL, elementborderwidth=0, activerelief="sunken")
         self.ent.config(xscrollcommand=self.ent_scro.set, borderwidth=1, highlightbackground=self.Color['fg'],
                         highlightcolor=self.Color['fg'],
-                        highlightthickness=1, insertbackground='#61afef',
+                        highlightthickness=1, insertbackground=self.Color['s_blue'],
                         bd=0, background=self.Color['bg'], fg=self.Color['fg'],)
         self.ent.pack(side='top')
         self.ent_scro.pack(side="bottom", fill=tk.X)

@@ -1,5 +1,7 @@
 from User.Talk_with import Talk_with,tk
 from tkinter import colorchooser
+from time import sleep
+from Pubilc.Split import Spilt_Mess
 
 class Seting(Talk_with):
     def __init__(self) -> None:
@@ -46,7 +48,8 @@ class Seting(Talk_with):
      
     def init(self):
         super().init()
-        self.panframe = tk.PanedWindow(self.panda, orient="vertical",sashwidth=6)
+        self.panframe = tk.PanedWindow(self.panda, orient="vertical",sashwidth=6,bg=self.Color['s_blue'] 
+                                       ,borderwidth=0,)
         self.pancanv = tk.Canvas(self.panframe, bg=self.Color['setpage'])
         self.panframe.add(self.pancanv)
         self.panson=tk.Frame(self.panframe,)
@@ -57,8 +60,13 @@ class Seting(Talk_with):
 #the panframe have two member: pancanv and panson, pancanv show fllow panframe, so can show first, and becuse pancanv on panframe, so olny show panframe, just show pancanv
 #when uset click the pancanv obj, show the pantext, so add panson to panframe in after
     
-    def textconfug():
-        pass
+    def Closeall(self):
+        '''when user close the window, saveall and exit'''
+        self.isstart=0
+        sleep(0.5)
+        self.history.saveall(self.fren)
+        #self.savetext()
+        exit(0)
     
     def new(self):
         super().new()
@@ -99,16 +107,68 @@ class Seting(Talk_with):
         #self.win.bell()
     
     def color_insert(self,text,s):
-        pass
+        def get_line(s):
+            tup=[]
+            index=0
+            while index!=-1:
+                tmp=index
+                if index==0:
+                    tmp=-1
+                index=s.find('\n',index+1)
+                tup.append(s[tmp+1:index+1:])  
+            return tup
+        
+        def get_index(line,row,index):
+            relis=[]
+            lis=Spilt_Mess.Friend_list_Read_Spilt(line.encode())
+            for l in lis:
+                index=line.find(l,index)
+                relis.append((str(row)+"."+str(index), str(row)+"."+str(index+len(l))))
+            return relis
+        
+        tup=get_line(s)     
+        text.insert("end",s)
+        
+        name_list=[]
+        list_=[]
+        mess_list=[]  
+        i=1
+        for s in tup:
+            index=s.find("###")
+            if index:
+                name_list.append((str(i)+"."+str(0),str(i)+"."+str(index)))
+                list_.append((str(i)+"."+str(index), str(i)+"."+str(index+3)))
+                index+=3
+                mess_list.append(get_index(s,i,index))
+            i+=1
+        for name in name_list:
+            text.tag_add("name",name[0],name[1])
+        for a in list_:
+            text.tag_add("#",a[0],a[1])
+        for mess in mess_list:
+            for m in mess:
+                text.tag_add("mess",m[0],m[1])
+        text.tag_config("name",foreground='red')  
+        text.tag_config("#",foreground='green')  
+        text.tag_config("mess",foreground='blue')  
+    
+    def savetext(self,):
+        if self.textlab['text']:
+            file=open(self.textlab['text'],"w")
+            file.write(self.pantext.get("0.0","end"))
+            file.close()
     
     def opentext(self,event):
+       # self.savetext()
         tup = self.pancanv.find_closest(event.x, event.y)
         index = self.pan_tag.index(tup[0])
         name=self.setstr4[index]
         self.textlab.config(text=name)
+        
         file=open(name,"r")
         s=file.read()
+        file.close()
         self.pantext.delete("0.0","end")
         self.panframe.add(self.panson)
         self.color_insert(self.pantext,s)
-        file.close()
+       

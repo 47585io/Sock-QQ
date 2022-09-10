@@ -1,2 +1,2 @@
 kbih
-/home/tom/vscode/idea/Sock-QQ/new.png
+./picture/new.png

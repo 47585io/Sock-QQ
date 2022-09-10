@@ -132,8 +132,12 @@ class Friend_list(Welcome):
                 self.furry_l.append(tk.PhotoImage(
                     file="./picture/default.png", width=self.pic_size[0], height=self.pic_size[1]))
             else:
+              try:
                 self.furry_l.append(tk.PhotoImage(
                     file=self.fren.pic[count], width=self.pic_size[0], height=self.pic_size[1]))
+              except:
+                self.furry_l.append(tk.PhotoImage(
+                    file="./picture/default.png", width=self.pic_size[0], height=self.pic_size[1]))
             count += 1
 # from furry_l count start, when self.pic > it, then has new pic, add to furry_l, when not pic, pic < friendname, then use default.png
         for count in range(len(self.furry_l)):

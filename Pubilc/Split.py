@@ -44,7 +44,7 @@ class Spilt_Mess:
             if s_str[index] == "'":
                 start = index+1
                 index += 1
-                while True:
+                while index<len(s_str):
                     if s_str[index] == "'":
                         end = index
                         friend_list.append(s_str[start:end:])
