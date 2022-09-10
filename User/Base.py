@@ -15,7 +15,8 @@ class GraBase:
         self.atfunc=None
         self.Win_Size = [[360, 450, 1600, 1000]]
         self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",
-                      "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049", "bubu2": "#ff9a97", "alpha": "#4b5363"}
+                      "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049",
+                      "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#f1eade"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
                      "drak": "Quicksand Medium", "small": "Z003",
                      "beutful": "DejaVu Math TeX Gyre", "frmory": "Dingbats"}
@@ -25,7 +26,7 @@ class GraBase:
 
     def init(self,):
         self.win = tk.Tk()
-        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=5,)
+        self.panda=tk.PanedWindow(self.win,width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=8,borderwidth=0)
         self.bgfarme = tk.Frame(self.panda)
         self.lab_list = []
         self.but_list = []

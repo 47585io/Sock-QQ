@@ -144,8 +144,7 @@ class Talk_with(Friend_list):
                     i=self.fren.friend_list.index(name)
                     self.cala_draw(self.f_can,s,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)             
                     self.history.put_a_mess(name,s)
-                
-                #save
+                    #save
                 
     def getfile(self, s_str):
         '''put s_str list in tcpmess spilt list and wait spilt'''
@@ -194,7 +193,7 @@ class Talk_with(Friend_list):
         for t in tup:
             lis.append(self.history.File_all[self.fren.talk_with][t])
         self.getfile(lis)
-            
+    
     def endretu(self):
         '''clear Canvs'''
         self.clear_Canv()
@@ -212,8 +211,7 @@ class Talk_with(Friend_list):
         for mess in self.history.Mess_Friend[self.fren.talk_with]:
             if mess.startswith("MY#"):
                 mess=mess[3::]
-                self.cala_draw(self.f_can,mess,self.furry_l[0],self.delmess,"right",(self.Canv_x_from,self.Canv_y_from),"bubu1",1.0,)
-                
+                self.cala_draw(self.f_can,mess,self.furry_l[0],self.delmess,"right",(self.Canv_x_from,self.Canv_y_from),"bubu1",1.0,)           
             else:
                 self.cala_draw(self.f_can,mess,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)
                 

@@ -31,12 +31,34 @@ class Seting(Talk_with):
                       "./mydir/var",
                       "./mydir",
                       "./mydir/supurconfig"]
-        
+    
+    def text_init(self):
+        self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,
+                                width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'])
+        self.textlab=tk.Label(self.panson)
+        self.textlab.pack()
+        self.text_scro=tk.Scrollbar(self.panson,)
+        self.pantext.config(yscrollcommand=self.text_scro.set)
+        self.text_scro.config(command=self.pantext.yview, background=self.Color['fg'],
+                              activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
+        self.text_scro.pack(side='right',fill=tk.Y,)
+        self.pantext.pack()
+     
     def init(self):
         super().init()
-        self.panframe=tk.Frame(self.panda)
-        self.pancanv=tk.Canvas(self.panframe,width=self.Win_Size[0][0])
-        self.pancanv.pack()
+        self.panframe = tk.PanedWindow(self.panda, orient="vertical",sashwidth=6)
+        self.pancanv = tk.Canvas(self.panframe, bg=self.Color['setpage'])
+        self.panframe.add(self.pancanv)
+        self.panson=tk.Frame(self.panframe,)
+        self.text_init()
+        
+#panda has two member: panframe and  bgfarme, bgfarme is front page, so add it in init
+#when user click the Seting Button, show the Setting page, so now add panframe in self.Setting
+#the panframe have two member: pancanv and panson, pancanv show fllow panframe, so can show first, and becuse pancanv on panframe, so olny show panframe, just show pancanv
+#when uset click the pancanv obj, show the pantext, so add panson to panframe in after
+    
+    def textconfug():
+        pass
     
     def new(self):
         super().new()
@@ -53,6 +75,8 @@ class Seting(Talk_with):
                 self.pancanv, self.setstr3[i], (self.Win_Size[0][0]//2+self.Win_Size[0][0]//6//2, self.pan_y),)
             self.pan_y += 50
             i += 1
+        self.pan_y += 100
+        self.pancanv.create_text(self.Win_Size[0][0]/2,self.pan_y,text="选中上面的文件后,将下面的分割条往上拉↓")
     
     def showfriends(self):
         super().showfriends()
@@ -73,9 +97,18 @@ class Seting(Talk_with):
         self.panda.add(self.panframe,)
         #self.panda.add(self.bgfarme)
         #self.win.bell()
-
+    
+    def color_insert(self,text,s):
+        pass
+    
     def opentext(self,event):
         tup = self.pancanv.find_closest(event.x, event.y)
         index = self.pan_tag.index(tup[0])
         name=self.setstr4[index]
-        print(name)
+        self.textlab.config(text=name)
+        file=open(name,"r")
+        s=file.read()
+        self.pantext.delete("0.0","end")
+        self.panframe.add(self.panson)
+        self.color_insert(self.pantext,s)
+        file.close()

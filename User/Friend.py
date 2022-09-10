@@ -143,7 +143,6 @@ class Friend_list(Welcome):
             if count % 2 == 1:
                 self.cala_draw(self.f_can, self.fren.friend_list[count], self.furry_l[count],
                                self.talk_with_mid, "right", (0, -1))
-
             count += 1
 
     def addfriend_mid(self):

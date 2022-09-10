@@ -43,9 +43,12 @@ class users:
         '''get queue's dict or list index element'''
         tmp = going_get_queue.get()
         going_get_queue.put(tmp)
-        if index:      
+        if index:     
+            if index not in tmp :
+                tmp[index]=[]
             return tmp[index]
-        return tmp
+        else:
+            return tmp
       except Exception:
           return
 
@@ -129,8 +132,6 @@ class users:
     
     def Isin(self,s_str,toname,fromaddr):
         '''the send to user whether in now_in?, what do i do?'''
-        if toname not in self.getto(self.users):
-            return 0
         if toname not in self.getto(self.now_in):
             lis=self.getto(self.cache,toname)
             if type(fromaddr)==str:

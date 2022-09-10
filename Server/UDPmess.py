@@ -44,8 +44,7 @@ class message:
         elif tmp[0].decode().startswith("GetHead"):
             name_list=Spilt_Mess.Friend_list_Read_Spilt(tmp[0])
             head_lis=[]
-            self.USERS.addgroupfriend(my_name,name_list)
-            
+            self.USERS.addgroupfriend(my_name,name_list)       
     #if want add a groupfriend, add it to the group's friend_list
             for name in name_list:
                 nametmp=os.listdir("./From/Server/"+name)
