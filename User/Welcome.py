@@ -4,6 +4,7 @@ from tkinter import messagebox
 from PIL import Image
 import os
 import greenlet
+import abc
 
 from User.Base import GraBase, tk
 USER_NAME = ""
@@ -104,11 +105,15 @@ class Welcome(GraBase):
         if not os.path.isfile("./name.txt"):
             return 0
         file = open("name.txt", "r+")
-        tmp = file.readlines()
+        tmp = file.read()
         if tmp == []:
             return 0
         else:
-            return tmp
+            index=tmp.find("###")
+            i=len(tmp)-1
+            while tmp[i]=='\n':
+                i-=1
+            return (tmp[0:index:],tmp[index+3:i+1:])
 
     def Login(self):
         '''after login, going to show friends'''

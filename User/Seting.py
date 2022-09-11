@@ -1,13 +1,15 @@
 from User.Talk_with import Talk_with,tk
-from tkinter import colorchooser
+from tkinter import filedialog as f
 from time import sleep
 from Pubilc.Split import Spilt_Mess
+import os
 
 class Seting(Talk_with):
     def __init__(self) -> None:
         super().__init__()
         self.pan_y=50
         self.pan_tag=[]
+        self.atpic=None
         self.setstr=["要设置Sock-QQ的各项配置,请按如下格式:\n\n", 
                      "Name###['mess1','mess2'...]\n",
                      "_____________________________________\n",]
@@ -48,9 +50,10 @@ class Seting(Talk_with):
      
     def init(self):
         super().init()
-        self.panframe = tk.PanedWindow(self.panda, orient="vertical",sashwidth=6,bg=self.Color['s_blue'] 
+        self.panframe = tk.PanedWindow(self.panda, orient="vertical",sashwidth=10,bg=self.Color['setpage'] 
                                        ,borderwidth=0,)
-        self.pancanv = tk.Canvas(self.panframe, bg=self.Color['setpage'])
+        self.pancanv = tk.Canvas(
+            self.panframe, bg=self.Color['setpage'], borderwidth=0, highlightthickness=0,)
         self.panframe.add(self.pancanv)
         self.panson=tk.Frame(self.panframe,)
         self.text_init()
@@ -65,7 +68,7 @@ class Seting(Talk_with):
         self.isstart=0
         sleep(0.5)
         self.history.saveall(self.fren)
-        #self.savetext()
+        self.savetext()
         exit(0)
     
     def new(self):
@@ -78,7 +81,7 @@ class Seting(Talk_with):
         i = 0
         while i < len(self.setstr2):
             self.draw_a_text(
-                self.pancanv, self.setstr2[i], (self.Win_Size[0][0]//6, self.pan_y), "red", self.opentext)
+                self.pancanv, self.setstr2[i], (self.Win_Size[0][0]//6, self.pan_y), "red", self.check_file)
             self.draw_a_text(
                 self.pancanv, self.setstr3[i], (self.Win_Size[0][0]//2+self.Win_Size[0][0]//6//2, self.pan_y),)
             self.pan_y += 50
@@ -135,40 +138,77 @@ class Seting(Talk_with):
         i=1
         for s in tup:
             index=s.find("###")
-            if index:
+            if index!=-1:
                 name_list.append((str(i)+"."+str(0),str(i)+"."+str(index)))
                 list_.append((str(i)+"."+str(index), str(i)+"."+str(index+3)))
                 index+=3
-                mess_list.append(get_index(s,i,index))
+                relis=get_index(s,i,index)
+                if relis:
+                    mess_list.append(relis)
+                else:
+                    mess_list.append((str(i)+"."+str(index), str(i)+"."+str(index+len(s[index::]))))
             i+=1
         for name in name_list:
             text.tag_add("name",name[0],name[1])
         for a in list_:
             text.tag_add("#",a[0],a[1])
         for mess in mess_list:
-            for m in mess:
-                text.tag_add("mess",m[0],m[1])
+            if type(mess)==tuple:
+                text.tag_add("mess",mess[0],mess[1])
+            else:
+                for m in mess:
+                    text.tag_add("mess",m[0],m[1])
         text.tag_config("name",foreground='red')  
         text.tag_config("#",foreground='green')  
         text.tag_config("mess",foreground='blue')  
     
     def savetext(self,):
-        if self.textlab['text']:
+        print(Spilt_Mess.Isfile(self.textlab['text']))
+        if Spilt_Mess.Isfile(self.textlab['text']) == ".jpg" or Spilt_Mess.Isfile(self.textlab['text']) == ".png" or Spilt_Mess.Isfile(self.textlab['text']) == ".gif" or not self.textlab['text']:
+            return
+        if os.path.isfile(self.textlab['text']):
             file=open(self.textlab['text'],"w")
-            file.write(self.pantext.get("0.0","end"))
+            text=self.pantext.get("0.0","end")
+            i=len(text)-1
+            print(text)
+            while text[i]=='\n':
+                i-=1
+            file.write(text[0:i+2:])
             file.close()
     
-    def opentext(self,event):
-       # self.savetext()
+    def check_file(self,event):
         tup = self.pancanv.find_closest(event.x, event.y)
         index = self.pan_tag.index(tup[0])
         name=self.setstr4[index]
-        self.textlab.config(text=name)
+        self.panframe.add(self.panson)
+        if os.path.isdir(name):
+            self.open_other(name)
+        elif os.path.isfile(name):
+            self.opentext(name)
         
+    def opentext(self,name):
+        self.savetext() 
+        self.pantext.delete("0.0", "end")  
+        self.textlab.config(text=name)        
         file=open(name,"r")
         s=file.read()
         file.close()
-        self.pantext.delete("0.0","end")
-        self.panframe.add(self.panson)
         self.color_insert(self.pantext,s)
        
+    def openpic(self,name):
+        self.pantext.delete("0.0", "end")  
+        self.atpic=tk.PhotoImage(file=name)
+        self.pantext.image_create("end",image=self.atpic)
+    
+    def open_other(self,name):
+        name=f.askopenfilename(initialdir=name)
+        self.textlab.config(text=name)  
+        type=Spilt_Mess.Isfile(name)
+        if type==".png" or type==".gif":
+            self.openpic(name)
+        elif type=='.jpg':
+            name=Spilt_Mess.totos(name,(self.Win_Size[0][0],self.Win_Size[0][1]))
+            self.openpic(name)
+        else:
+            self.opentext(name)
+        

@@ -123,7 +123,7 @@ class UDP_Mess:
           except Exception as e:
             self.Special_Mess.append(None)
             self.Special_index += 1
-            print(e)
+            #print(e)
             self.yes=1
 #when time out, can't get this mess, then fill with None
 #but yes=1, They can still get this result, this is to prevent blocking when calling get_new or get_Special

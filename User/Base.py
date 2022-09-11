@@ -162,7 +162,7 @@ class GraBase:
     def canvconfig(self, canv, scro):
         '''config a Canv with Theme'''
         canv.config(width=self.Win_Size[0][0]-1, height=self.Win_Size[0]
-                    [1]-1, borderwidth=0, yscrollcommand=scro.set,)
+                    [1]-1, borderwidth=0, yscrollcommand=scro.set, highlightthickness=0)
         scro.config(command=canv.yview, background=self.Color['fg'],
                     activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
         canv.configure(scrollregion=(0, 0, 500, len(

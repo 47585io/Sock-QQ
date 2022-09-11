@@ -1,6 +1,7 @@
 import dataclasses
 from genericpath import isdir
 import os
+from PIL import Image
 
 from numpy import set_string_function
 
@@ -152,3 +153,19 @@ class Spilt_Mess:
             relist= Spilt_Mess.Friend_list_Read_Spilt(s.encode())
             file.close()
             return relist
+    
+    @staticmethod
+    def Isfile(name):
+        if name:
+            index=name.find(".",0)
+            if index==-1:
+                return "can"
+            return name[index::]
+    
+    def totos(name,max):
+        file=Image.open(name,"r")
+        if file.size[0] > max[0] or file.size[0]>max[1]:
+            file.thumbnail((max[0],max[1]))
+        file.convert("RGBA")
+        file.save("./picture/tmp.png")
+        return "./picture/tmp.png"

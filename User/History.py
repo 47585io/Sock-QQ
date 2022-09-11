@@ -84,18 +84,27 @@ class History:
     def refuall(self,friends):
         if os.path.isfile(self.friend_file):
             print("refu")
-            file = open(self.friend_file, "r")
-            lines=file.readlines()
-            for line in lines:
-                self.refu_a_two(line,(friends.friend_list,friends.pic))
-            file.close()
+            try:
+                file = open(self.friend_file, "r")
+                lines=file.readlines()
+                for line in lines:
+                    self.refu_a_two(line,(friends.friend_list,friends.pic))
+                file.close()
+            except:
+              file.close()
+              
         if os.path.isfile(self.mess_file):
+          try:
             file2 = open(self.mess_file, "r")
             lines=file2.readlines()
             for line in lines:
                 self.refu_a_dict(line,self.Mess_Friend)
-            file2.close()           
+            file2.close()     
+          except:
+              file2.close()
+                    
         if os.path.isfile(self.file_get):
+          try:
             file3 = open(self.file_get, "r")
             lines=file3.readlines()
             for line in lines:
@@ -103,6 +112,8 @@ class History:
             file3.close()
             for name in self.File_all.keys():
                 self.File_all[name] = [ get.encode() for get in self.File_all[name]]
+          except:
+              pass
     
     def put_a_mess(self,who,s_str):
         if who not in self.Mess_Friend:
