@@ -38,7 +38,7 @@ class Seting(Talk_with):
                       "./mydir/supurconfig"]
     
     def text_init(self):
-        self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,wrap="none",insertbackground=self.Color['s_blue'],
+        self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,insertbackground=self.Color['s_blue'],
                                 width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'],insertwidth=3)
         self.textlab=tk.Label(self.panson)
         self.textlab.pack()

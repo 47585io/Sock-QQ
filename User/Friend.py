@@ -30,7 +30,8 @@ class Friend_list(Welcome):
         self.List = tk.Listbox(self.bgfarme, background=self.Color['bg'], selectbackground=self.Color['ffg'],
                                foreground=self.Color['fg'], selectforeground=self.Color['fg'], borderwidth=0, highlightthickness=0)
         self.lisscro = tk.Scrollbar(self.bgfarme)
-        self.back = tk.PhotoImage(file="./thedark.png")
+        self.backfile= "./thedark.png"
+        self.back = tk.PhotoImage(file=self.backfile)
 
     def Closeall(self):
         '''Recursively go back every page'''
@@ -46,8 +47,8 @@ class Friend_list(Welcome):
 
     def new(self):
         '''redefine last class func, go to show friends'''
-        self.Win_Size[0][0] += 120
-        self.Win_Size[0][1] += 200
+        self.Win_Size[0][0] += 140
+        self.Win_Size[0][1] += 220
         self.win.geometry(self.geosize())
         self.panda.config(
             width=self.Win_Size[0][0], height=self.Win_Size[0][1])
@@ -117,7 +118,8 @@ class Friend_list(Welcome):
         self.but_list[0].place(x=self.Win_Size[0][0]-35, y=0)
         self.f_scro.pack(fill=tk.Y, side='right')
         self.f_can.pack()
-        self.f_can.create_image(240, -250, image=self.back)
+        back=Image.open(self.backfile,"r")
+        self.f_can.create_image(self.Win_Size[0][0]//2-1, 0-back.size[1]//2-40, image=self.back)
     # but_list[0] is place!!!
         self.but_list[4].config(
             command=lambda: self.refresh(self.clear_Canv()))

@@ -1,13 +1,15 @@
 import tkinter as tk
 from User.Seting import Seting
 from time import perf_counter
+from concurrent.futures import ThreadPoolExecutor as Th
 
 class Mess_Box(Seting):
     def __init__(self) -> None:
         super().__init__()
         self.after_time=0
         self.before_time=0
-        atstr=""
+        self.messth=Th(1)
+        self.mess_list=()
     def init(self):
         super().init()
         self.messtop=tk.Toplevel(self.win)
@@ -17,11 +19,12 @@ class Mess_Box(Seting):
         self.messlab.pack(side='bottom')
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         super().quickconfig(friends, mess, sock, tcpmess, tcpsock)
+        self.topclose(self.messtop)
         
     def messshow(self,):
         pos_str=self.win.geometry()
         pos=self.geostr()
-        pos_str=self.geosize(pos)
+        pos_str=self.geosize((200,100,pos[2]+300,pos[3]+500))
         self.messtop.geometry()
     
     def start(self,time):
@@ -29,13 +32,16 @@ class Mess_Box(Seting):
         self.before_time=perf_counter()
         self.after_time=self.before_time+time
         self.messshow()
+        self.messth.submit(self.reset)
     
-    def reset(self,str):
+    def reset(self,):
         '''reset str'''
-        self.messlab.config(text=str)
-        self.before_time=perf_counter()
-        if self.before_time > self.after_time:
-            self.topclose(self.messtop)
+        while self.before_time > self.after_time:
+            self.messlab.config(text=str)
+            self.before_time=perf_counter()
+            self.messtop.update()
+        self.topclose(self.messtop)
+    
     
     
     

@@ -4,6 +4,7 @@ from User.Friend import*
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import th
 from User.History import History
+from User.messbox import Mess_Box
 
 class Talk_with(Friend_list):
     '''the talk_with class, can talk with your friens or grounp, and send or get file'''
@@ -19,6 +20,7 @@ class Talk_with(Friend_list):
         Friend_list.init(self)
         self.history=History()
         self.topinit()
+        self.messbox=Mess_Box()
   
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         Friend_list.quickconfig(self, friends, sock, mess)
@@ -192,8 +194,10 @@ class Talk_with(Friend_list):
         lis=[]
         for t in tup:
             lis.append(self.history.File_all[self.fren.talk_with][t])
+        self.messbox.atstr.append(self.tcpmess.s_g_size)
+        self.messbox.start(None)
         self.getfile(lis)
-    
+        
     def endretu(self):
         '''clear Canvs'''
         self.clear_Canv()

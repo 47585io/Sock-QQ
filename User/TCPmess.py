@@ -22,6 +22,7 @@ class TCP_mess:
         self.issend=0
         self.isget=0
 #work In the background,
+        self.s_g_size=(0,0)
         self.mydir = MY_DIR
         if not os.path.isdir(self.mydir):
             os.mkdir(self.mydir)
@@ -41,6 +42,7 @@ class TCP_mess:
 #connect           
                 sock.send(file[0])
                 size = os.path.getsize(file[1])
+                resize=size
                 fileobj=open(file[1],"rb")
                 sock.recv(Mess_Buffer)
 #you must recv a mess, for wait server
@@ -48,6 +50,8 @@ class TCP_mess:
                     date=fileobj.read(Mess_Buffer)
                     sock.send(date)
                     size-=Mess_Buffer
+                    self.s_g_size[1] = "Send  共有:"+str(resize)+", "+"余下:"+str(size)
+
 #Each time the transmission data is synchronized with the server
                 fileobj.close()
                 sock.recv(Mess_Buffer)
@@ -80,6 +84,7 @@ class TCP_mess:
                 sock.send(file[0])
                 s=sock.recv(Mess_Buffer)
                 size=int(s.decode())
+                resize=size
                 fileobj = open(self.mydir+file[2]+"/"+file[1], "wb")
                 sock.send("Ok".encode())
 
@@ -87,7 +92,7 @@ class TCP_mess:
                     date=sock.recv(Mess_Buffer)
                     fileobj.write(date)
                     size -= Mess_Buffer
-                
+                    self.s_g_size[1] = "Get  共有:"+str(resize)+", "+"余下:"+str(size)
                 fileobj.close()
                 sock.send("Ok".encode())
                 print("get finish")
