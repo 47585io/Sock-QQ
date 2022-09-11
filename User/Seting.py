@@ -1,3 +1,4 @@
+from turtle import width
 from User.Talk_with import Talk_with,tk
 from tkinter import filedialog as f
 from time import sleep
@@ -37,11 +38,11 @@ class Seting(Talk_with):
                       "./mydir/supurconfig"]
     
     def text_init(self):
-        self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,
-                                width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'])
+        self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,wrap="none",insertbackground=self.Color['s_blue'],
+                                width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'],insertwidth=3)
         self.textlab=tk.Label(self.panson)
         self.textlab.pack()
-        self.text_scro=tk.Scrollbar(self.panson,)
+        self.text_scro=tk.Scrollbar(self.panson,width=6)
         self.pantext.config(yscrollcommand=self.text_scro.set)
         self.text_scro.config(command=self.pantext.yview, background=self.Color['fg'],
                               activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
@@ -201,7 +202,7 @@ class Seting(Talk_with):
         self.pantext.image_create("end",image=self.atpic)
     
     def open_other(self,name):
-        name=f.askopenfilename(initialdir=name)
+        name=f.askopenfilename(initialdir=name,)
         self.textlab.config(text=name)  
         type=Spilt_Mess.Isfile(name)
         if type==".png" or type==".gif":

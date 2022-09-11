@@ -26,11 +26,11 @@ class Talk_with(Friend_list):
         self.tcpsock = tcpsock
         self.win2.overrideredirect(True)
         self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
-        self.topclose()
+        self.topclose(self.win2)
         #used for send and get file
         
-    def topclose(self):
-        self.win2.geometry("0x0-1000-1000")
+    def topclose(self,top):
+        top.geometry("0x0-1000-1000")
     
     def Login(self):   
         self.mess.init(self.User_Name,self.filename,self.tcpmess)
@@ -197,7 +197,7 @@ class Talk_with(Friend_list):
     def endretu(self):
         '''clear Canvs'''
         self.clear_Canv()
-        self.topclose()
+        self.topclose(self.win2)
         self.but_list[0].place_forget()
         self.but_list[3].place_forget()
     

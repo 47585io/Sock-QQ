@@ -16,7 +16,7 @@ class GraBase:
         self.Win_Size = [[360, 450, 1600, 1000]]
         self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",'s_blue':"#61afef",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049",
-                      "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#f1eade"}
+                      "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#e6e0d2"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
                      "drak": "Quicksand Medium", "small": "Z003",
                      "beutful": "DejaVu Math TeX Gyre", "frmory": "Dingbats"}
@@ -60,6 +60,7 @@ class GraBase:
         self.topscro = tk.Scrollbar(self.win2)
 
     def geostr(self,s_str,split):
+        '''win str to size'''
         tup=[]
         for ch in split:
             s_lis=s_str.split(ch,1)
@@ -186,7 +187,7 @@ class GraBase:
         lab.config(text=" File Box               ", font=(self.Font["zheng"], self.Font_size["mid"]),
                    borderwidth=0, foreground=self.Color["fg"], background=self.Color["bg"],)
         lab.grid(row=0,column=0)
-        but[1].config(text="×", command=self.topclose)
+        but[1].config(text="×", command=lambda :self.topclose(self.win2))
         
         scro.grid(row=1,column=1)
         list.grid(row=1,column=0,rowspan=1)

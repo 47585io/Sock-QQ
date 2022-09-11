@@ -168,9 +168,8 @@ class Friend_list(Welcome):
         self.but_list[2].pack()
         self.but_list[2].config(text='Ok', font=(
             self.Font["zheng"], self.Font_size['mid']+3,), command=self.addmany)
-
         self.List.pack()
-        self.lisscro.pack(fill=tk.Y)
+        self.lisscro.pack()
         if self.fren.addfriend(self.mess, self.sock) and self.isstart == 0:
             self.isstart += 1
             self.s.submit(self.search)
