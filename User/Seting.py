@@ -64,13 +64,13 @@ class Seting(Talk_with):
 #the panframe have two member: pancanv and panson, pancanv show fllow panframe, so can show first, and becuse pancanv on panframe, so olny show panframe, just show pancanv
 #when uset click the pancanv obj, show the pantext, so add panson to panframe in after
     
-    def Closeall(self):
-        '''when user close the window, saveall and exit'''
-        self.isstart=0
-        sleep(0.5)
-        self.history.saveall(self.fren)
-        self.savetext()
-        exit(0)
+    #def Closeall(self):
+       # '''when user close the window, saveall and exit'''
+       # self.isstart=0
+        #sleep(0.5)
+        #self.history.saveall(self.fren)
+        #self.savetext()
+        #exit(0)
     
     def new(self):
         super().new()

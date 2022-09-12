@@ -4,7 +4,7 @@ from User.Friend import*
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import th
 from User.History import History
-from User.messbox import Mess_Box
+#from User.messbox import Mess_Box
 
 class Talk_with(Friend_list):
     '''the talk_with class, can talk with your friens or grounp, and send or get file'''
@@ -13,14 +13,15 @@ class Talk_with(Friend_list):
         Friend_list.__init__(self)
         self.talk = th.Thread(target=self.Readshow,)
         self.talk.setDaemon(True)
-        self.istalk = 0
+        self.istalk=0
         #Always check whether has a mess to display
 
     def init(self):
         Friend_list.init(self)
         self.history=History()
         self.topinit()
-        self.messbox=Mess_Box()
+        #self.messbox=Mess_Box()
+        ##self.messbox.init(self.win)
   
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         Friend_list.quickconfig(self, friends, sock, mess)
@@ -30,15 +31,15 @@ class Talk_with(Friend_list):
         self.topconfig(self.toplab,(self.topbut,self.topxbut),self.toplist,self.topscro)
         self.topclose(self.win2)
         #used for send and get file
-        
-    def topclose(self,top):
-        top.geometry("0x0-1000-1000")
     
-    def Login(self):   
-        self.mess.init(self.User_Name,self.filename,self.tcpmess)
+    def Login(self):  
+        self.mess.init(self.User_Name, self.filename, self.tcpmess)
         self.mess.Send(self.sock,"LOGIN "+self.User_Name)
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         self.history.refuall(self.fren)
+        #sleep(1)
+        #self.messbox.atstr.append("与服务器断开连接!" if self.mess.server_is_start==0 else "连接至服务器")
+        #self.messbox.start(20)
         super().Login()
         
     def chu(self, new):
@@ -80,9 +81,9 @@ class Talk_with(Friend_list):
     
     def talk_with(self, name):
         '''config a talk page'''
-        if self.istalk == 0:
+        if self.istalk==0:
             self.talk.start()
-            self.istalk += 1  
+            self.istalk=1     
                 
         self.but_list[1].config(command=lambda: self.retu(self.endretu))
         self.but_list[4].config(command=lambda :self.refresh(self.endretu))
@@ -125,6 +126,7 @@ class Talk_with(Friend_list):
         while 1:
             s_str = self.mess.get()
             if s_str: 
+                print("Readshow a mess:",s_str)
     #when server exit, then after the mess, no mess read
     #if want to connet, wait server start  and send any mess to server and wait read  
                 if s_str.decode()=="EXIT":
@@ -139,12 +141,12 @@ class Talk_with(Friend_list):
                         self.history.File_all[name]=[]
                     self.history.File_all[name].append(Spilt_Mess.Get_mess_spilt(
                         lis[0], lis[1], lis[2]))
-                    continue
 
     #if not, go to display on talking with user Canvas, talk out, then save it in messcache          
-                if name in self.fren.friend_list:
-                    i=self.fren.friend_list.index(name)
-                    self.cala_draw(self.f_can,s,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)             
+                elif name in self.fren.friend_list:
+                    if self.fren.talk_with==name:
+                        i=self.fren.friend_list.index(name)
+                        self.cala_draw(self.f_can,s,self.furry_l[i],self.delmess,"left",(self.Canv_x_from,self.Canv_y_from),"bubu2",1.0,)             
                     self.history.put_a_mess(name,s)
                     #save
                 
@@ -167,7 +169,7 @@ class Talk_with(Friend_list):
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     #upload file to server, and send command string to get file to user, wait user get it
-    
+            
     def usergetfile(self,):
         '''from history.file, get talk_with send to str, and send to server get the file'''
         self.toplist.delete(0,"end")
@@ -194,8 +196,6 @@ class Talk_with(Friend_list):
         lis=[]
         for t in tup:
             lis.append(self.history.File_all[self.fren.talk_with][t])
-        self.messbox.atstr.append(self.tcpmess.s_g_size)
-        self.messbox.start(None)
         self.getfile(lis)
         
     def endretu(self):

@@ -3,7 +3,7 @@ import atexit
 from User.UDPmess import UDP_SOCK,UDP
 from User.TCPmess import TCP_SOCK,TCP
 from User.friends import Friend_List
-from User.messbox import Mess_Box
+from User.Seting import Seting
 
 def whenexit():
     '''when exit, close all sock'''
@@ -12,7 +12,7 @@ def whenexit():
     TCP_SOCK.close()
 atexit.register(whenexit)
 
-GNU = Mess_Box()
+GNU = Seting()
 def main(mess, sock,tcpmess, tcpsock, friends, gra):
     gra.quickconfig(friends, mess, sock,tcpmess,tcpsock)
     gra.run()

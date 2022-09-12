@@ -52,7 +52,7 @@ class GraBase:
         self.f_scro = tk.Scrollbar(self.bgfarme,width=8)
 
     def topinit(self):
-        self.win2 = tk.Toplevel(self.win, bg=self.Color['endblack'])
+        self.win2 = tk.Toplevel(self.win, bg=self.Color['bg'])
         self.toplist = tk.Listbox(self.win2)
         self.toplab = tk.Label(self.win2)
         self.topxbut = tk.Button(self.win2)
@@ -74,6 +74,9 @@ class GraBase:
         if tup:
             return str(tup[0])+"x"+str(tup[1])+"+"+str(tup[2])+"+"+str(tup[3])
         return str(self.Win_Size[0][0])+"x"+str(self.Win_Size[0][1])+"+"+str(self.Win_Size[0][2])+"+"+str(self.Win_Size[0][3])
+
+    def topclose(self,top):
+        top.geometry("0x0-1000-1000")
 
     def clear(self):
         '''forget all lab on the bgfarme '''

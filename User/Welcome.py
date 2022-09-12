@@ -104,16 +104,16 @@ class Welcome(GraBase):
         '''check a can use file'''
         if not os.path.isfile("./name.txt"):
             return 0
-        file = open("name.txt", "r+")
+        file = open("name.txt", "r")
         tmp = file.read()
-        if tmp == []:
+        if not tmp:
             return 0
         else:
             index=tmp.find("###")
             i=len(tmp)-1
             while tmp[i]=='\n':
                 i-=1
-            return (tmp[0:index:],tmp[index+3:i+1:])
+            return (tmp[0:index+1:],tmp[index+3:i+1:])
 
     def Login(self):
         '''after login, going to show friends'''

@@ -2,6 +2,7 @@ from Server.UDPmess import Spilt_Mess
 from Server.UDPmess import Mess_Buffer
 from Server.UDPmess import socket
 import os
+Time_out=5
 
 
 class TCP_Mess:
@@ -30,6 +31,7 @@ class TCP_Mess:
         size = os.path.getsize("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         file = open("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2], "rb")
         new_sock.send(str(size).encode())
+        new_sock.settimeout(Time_out)
 #send filesize
         print("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         new_sock.recv(Mess_Buffer)
@@ -55,6 +57,7 @@ class TCP_Mess:
         file = open("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2], "wb")
         size=int(tup[3])
         print("i have a dream , is can save a file")
+        new_sock.settimeout(Time_out)
         new_sock.send('Ok'.encode())
 #respond user
         while size>0:

@@ -6,7 +6,7 @@ import socket
 Time_out = 5
 #set recv mess time out, Prevent threads from getting stuck
 Mess_Buffer = 128
-Max_Mess = 50
+Max_Mess = 500
 # recv buffer size and user mess_list size
 MAX_THD = 1
 UDP_SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -27,7 +27,7 @@ class UDP_Mess:
             r = th.Thread(target=self.Read, args=(self.sock,))
             r.setDaemon(True)
             r.start()
-# MessCache: Max 10 mess,  index: now new mess index, yes:the mess yes or on new mess
+# MessCache: Max 500 mess,  index: now new mess index, yes:the mess yes or on new mess
 # Special_Mess,save special mess, speciak index, point to the latest news
 #server_is_start, Determine whether you need to interact with the server or wait
 

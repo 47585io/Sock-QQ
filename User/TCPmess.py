@@ -22,7 +22,7 @@ class TCP_mess:
         self.issend=0
         self.isget=0
 #work In the background,
-        self.s_g_size=(0,0)
+        self.s_g_size=[0,0]
         self.mydir = MY_DIR
         if not os.path.isdir(self.mydir):
             os.mkdir(self.mydir)
