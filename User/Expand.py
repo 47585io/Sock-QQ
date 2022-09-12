@@ -12,4 +12,4 @@ class Extension:
     def check_connect(self):
         self.output(
             ("与服务器断开连接!" if self.mess.server_is_start == 0 else "连接至服务器"))
-        pass
+    

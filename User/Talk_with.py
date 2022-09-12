@@ -23,7 +23,7 @@ class Talk_with(Friend_list,Mess_Box):
         #self.messbox=Mess_Box()
         Mess_Box.__init__(self)
         self.messinit(self.win)
-  
+    
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         Friend_list.quickconfig(self, friends, sock, mess)
         self.tcpmess = tcpmess
@@ -40,11 +40,6 @@ class Talk_with(Friend_list,Mess_Box):
         self.history.refuall(self.fren)
         super().Login()
     
-    def new(self):
-        super().new()
-        self.output(
-            ("与服务器断开连接!" if self.mess.server_is_start == 0 else "连接至服务器"))
-        
     def chu(self, new):
         '''get friend headpic from server, add to a dir and add to self.fren.pic with name'''
         s_str = []

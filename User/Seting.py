@@ -40,12 +40,8 @@ class Seting(Talk_with,Extension):
     
     def popmenu(self,event):
         self.mainmenu.post(event.x_root, event.y_root)
-    
-    def init(self):
-        super().init()
-        self.mainmenu=tk.Menu(self.win,tearoff=False,bg=self.Color['s_blue'],borderwidth=0,)
-        self.win.bind("<Button-3>",self.popmenu)
-        Extension.__init__(self)
+    def unpop(self,event):
+        self.mainmenu.unpost()
     
     def text_init(self):
         self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,insertbackground=self.Color['s_blue'],
@@ -68,6 +64,10 @@ class Seting(Talk_with,Extension):
         self.panframe.add(self.pancanv)
         self.panson=tk.Frame(self.panframe,)
         self.text_init()
+        self.mainmenu = tk.Menu(self.win, tearoff=False,activebackground=self.Color['s_blue'], borderwidth=0,)
+        Extension.__init__(self)
+        self.win.bind("<Button-3>",self.popmenu)
+        self.win.bind("<Button-1>",self.unpop)
         
 #panda has two member: panframe and  bgfarme, bgfarme is front page, so add it in init
 #when user click the Seting Button, show the Setting page, so now add panframe in self.Setting
@@ -184,7 +184,6 @@ class Seting(Talk_with,Extension):
             file=open(self.textlab['text'],"w")
             text=self.pantext.get("0.0","end")
             i=len(text)-1
-            print(text)
             while text[i]=='\n':
                 i-=1
             file.write(text[0:i+2:])
