@@ -45,6 +45,7 @@ class TCP_mess:
                 resize=size
                 fileobj=open(file[1],"rb")
                 sock.recv(Mess_Buffer)
+                sock.settimeout(None)
 #you must recv a mess, for wait server
                 while size>0:
                     date=fileobj.read(Mess_Buffer)
@@ -54,6 +55,7 @@ class TCP_mess:
 
 #Each time the transmission data is synchronized with the server
                 fileobj.close()
+                sock.settimeout(Time_out)
                 sock.recv(Mess_Buffer)
                 print("Send finish")
                 self.s_g_size[0] = "Send finish"

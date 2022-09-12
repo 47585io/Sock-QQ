@@ -5,7 +5,7 @@ import socket
 
 Time_out = 5
 #set recv mess time out, Prevent threads from getting stuck
-Mess_Buffer = 8192
+Mess_Buffer = 256
 Max_Mess = 500
 # recv buffer size and user mess_list size
 MAX_THD = 1

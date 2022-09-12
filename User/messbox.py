@@ -1,8 +1,6 @@
 import tkinter as tk
 from time import perf_counter
-import threading as th
 from concurrent.futures import ThreadPoolExecutor as T
-from time import sleep
 
 class Mess_Box:
     def __init__(self) -> None:
@@ -20,13 +18,16 @@ class Mess_Box:
         self.messlab=tk.Message(self.messtop,textvariable=self.strvar)
         self.messxbut.pack(anchor='ne',side='right',)
         self.messlab.pack()
+        self.messtop.overrideredirect(True)
+        #self.messtop.update()
+        self.messtop.attributes("-alpha", 1.0)
         self.topclose(self.messtop)
        
     def messshow(self,):
         '''open show window'''
         pos_str=self.win.geometry()
         pos=self.geostr(pos_str,('x','+','+'))
-        pos_str=self.geosize((200,100,int(pos[2])+500,int(pos[3])+100))
+        pos_str=self.geosize((250,300,int(pos[2])+500,int(pos[3])+100))
         self.messtop.geometry(pos_str)
     
     def starttime(self,time):

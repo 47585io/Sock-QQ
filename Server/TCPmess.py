@@ -36,11 +36,13 @@ class TCP_Mess:
         print("./From/"+tup[0]+"/"+tup[1]+"/"+tup[2])
         new_sock.recv(Mess_Buffer)
 #must wait user
+        new_sock.settimeout(None)
         while size > 0:
             date = file.read(Mess_Buffer)
             new_sock.send(date)
             size -= Mess_Buffer
-#must wait user         
+#must wait user      
+        new_sock.settimeout(Time_out)
         new_sock.recv(Mess_Buffer)
         print("Send Finsh!")
       except Exception as e:
