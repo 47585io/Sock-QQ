@@ -52,6 +52,8 @@ class GraBase:
         self.f_scro = tk.Scrollbar(self.bgfarme,width=8)
 
     def topinit(self):
+        self.Win_Size.append(
+            (250, 300, self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
         self.win2 = tk.Toplevel(self.win, bg=self.Color['bg'])
         self.toplist = tk.Listbox(self.win2)
         self.toplab = tk.Label(self.win2)
@@ -180,7 +182,6 @@ class GraBase:
                     activebackground=self.Color["entblock"], borderwidth=0, elementborderwidth=0, activerelief="sunken")
     
     def topconfig(self,lab,but,list,scro):
-        self.Win_Size.append((250,300,self.Win_Size[0][2]+self.Win_Size[0][0], self.Win_Size[0][3],))
         self.win2.overrideredirect(True)
         self.win2.update()
         self.win2.attributes("-alpha", 1.0)

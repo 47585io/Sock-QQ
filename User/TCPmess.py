@@ -51,7 +51,7 @@ class TCP_mess:
                     date=fileobj.read(Mess_Buffer)
                     sock.send(date)
                     size-=Mess_Buffer
-                    self.s_g_size[0] = "Send "+file[1] +" 共有: "+str(resize)+", "+"余下: "+str(size)
+                    self.s_g_size[0] = "Send "+file[1] +"\n共有: "+str(resize)+",\n"+"余下: "+str(size)+"\n\n"
 
 #Each time the transmission data is synchronized with the server
                 fileobj.close()
@@ -96,7 +96,7 @@ class TCP_mess:
                     date=sock.recv(Mess_Buffer)
                     fileobj.write(date)
                     size -= Mess_Buffer
-                    self.s_g_size[1] = "Get "+file[1]+"  共有: "+str(resize)+", "+"余下: "+str(size)
+                    self.s_g_size[1] = "Get "+file[1]+"\n共有: "+str(resize)+",\n"+"余下: "+str(size)+"\n\n"
                 fileobj.close()
                 sock.send("Ok".encode())
                 print("get finish")

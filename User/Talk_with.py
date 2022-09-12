@@ -80,6 +80,7 @@ class Talk_with(Friend_list,Mess_Box):
     def Closeall(self):
         '''when user close the window, saveall and exit'''
         self.isstart=0
+        self.mess_start=0
         sleep(0.5)
         self.history.saveall(self.fren)
         exit(0)

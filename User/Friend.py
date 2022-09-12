@@ -175,6 +175,7 @@ class Friend_list(Welcome):
         if self.fren.addfriend(self.mess, self.sock) and self.isstart == 0:
             self.isstart += 1
             self.s.submit(self.search)
+    
 
     def search(self):
         '''search user input str in friend_list'''
