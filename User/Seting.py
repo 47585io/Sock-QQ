@@ -1,11 +1,12 @@
-from turtle import width
+
 from User.Talk_with import Talk_with,tk
 from tkinter import filedialog as f
 from time import sleep
 from Pubilc.Split import Spilt_Mess
 import os
+from User.Expand import Extension
 
-class Seting(Talk_with):
+class Seting(Talk_with,Extension):
     def __init__(self) -> None:
         super().__init__()
         self.pan_y=50
@@ -37,6 +38,15 @@ class Seting(Talk_with):
                       "./mydir",
                       "./mydir/supurconfig"]
     
+    def popmenu(self,event):
+        self.mainmenu.post(event.x_root, event.y_root)
+    
+    def init(self):
+        super().init()
+        self.mainmenu=tk.Menu(self.win,tearoff=False,bg=self.Color['s_blue'],borderwidth=0,)
+        self.win.bind("<Button-3>",self.popmenu)
+        Extension.__init__(self)
+    
     def text_init(self):
         self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,insertbackground=self.Color['s_blue'],
                                 width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'],insertwidth=3)
@@ -66,6 +76,9 @@ class Seting(Talk_with):
     
     def Closeall(self):
         '''when user close the window, saveall and exit'''
+        self.mess_start = 0
+        self.tcpmess.isget = 0
+        self.tcpmess.issend=0
         self.isstart=0
         sleep(0.5)
         self.history.saveall(self.fren)

@@ -48,10 +48,13 @@ class TCP_mess:
                 sock.settimeout(None)
 #you must recv a mess, for wait server
                 while size>0:
+                    if self.issend==0:
+                        print("send return")
+                        return
                     date=fileobj.read(Mess_Buffer)
                     sock.send(date)
                     size-=Mess_Buffer
-                    self.s_g_size[0] = "Send "+file[1] +"\n共有: "+str(resize)+",\n"+"余下: "+str(size)+"\n\n"
+                    self.s_g_size[0] = "Send "+file[1] +" 共有: "+str(resize)+", "+"余下: "+str(size)+" "
 
 #Each time the transmission data is synchronized with the server
                 fileobj.close()
@@ -93,10 +96,13 @@ class TCP_mess:
                 sock.send("Ok".encode())
 
                 while size > 0:
+                    if self.isget==0:
+                        print("get return")
+                        return
                     date=sock.recv(Mess_Buffer)
                     fileobj.write(date)
                     size -= Mess_Buffer
-                    self.s_g_size[1] = "Get "+file[1]+"\n共有: "+str(resize)+",\n"+"余下: "+str(size)+"\n\n"
+                    self.s_g_size[1] = "Get "+file[1]+" 共有: "+str(resize)+", "+"余下: "+str(size)+" "
                 fileobj.close()
                 sock.send("Ok".encode())
                 print("get finish")

@@ -38,14 +38,12 @@ class Talk_with(Friend_list,Mess_Box):
         self.mess.Send(self.sock,"LOGIN "+self.User_Name)
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         self.history.refuall(self.fren)
-        sleep(0.5)
-        self.atstr.append(("与服务器断开连接!" if self.mess.server_is_start==0 else "连接至服务器"))
-        self.starttime(20)
         super().Login()
     
     def new(self):
         super().new()
-        self.to()
+        self.output(
+            ("与服务器断开连接!" if self.mess.server_is_start == 0 else "连接至服务器"))
         
     def chu(self, new):
         '''get friend headpic from server, add to a dir and add to self.fren.pic with name'''
@@ -175,9 +173,7 @@ class Talk_with(Friend_list,Mess_Box):
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     #upload file to server, and send command string to get file to user, wait user get it
-            self.atstr[0]=self.tcpmess.s_g_size
-            self.starttime(20)
-            self.to()
+            self.output(self.tcpmess.s_g_size)
             
     def usergetfile(self,):
         '''from history.file, get talk_with send to str, and send to server get the file'''
@@ -206,9 +202,7 @@ class Talk_with(Friend_list,Mess_Box):
         for t in tup:
             lis.append(self.history.File_all[self.fren.talk_with][t])
         self.getfile(lis)
-        self.atstr[0] = self.tcpmess.s_g_size
-        self.starttime(20)
-        self.to()
+        self.output(self.tcpmess.s_g_size)
  
     def endretu(self):
         '''clear Canvs'''
