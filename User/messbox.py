@@ -1,37 +1,35 @@
 import tkinter as tk
 from time import perf_counter
 import threading as th
-from User.Base import GraBase
+from concurrent.futures import ThreadPoolExecutor as T
 from time import sleep
 
-class Mess_Box(GraBase):
+class Mess_Box:
     def __init__(self) -> None:
         self.after_time=0
         self.before_time=0
-        self.messth=th.Thread(target=self.timing)
-        self.messth.setDaemon(True)
+        self.messth=T(1) 
         self.atstr=[]
         self.strvar=tk.StringVar()
         self.mess_y=0
-        self.messth.start()
         
-    def init(self,win):
-        self.win=win
+    def messinit(self,win):
         self.messtop=tk.Toplevel(win)
         self.messxbut = tk.Button(
             self.messtop, command=lambda: self.topclose(self.messtop),text="x")
-        self.messlab=tk.Label(self.messtop,textvariable=self.strvar)
+        self.messlab=tk.Message(self.messtop,textvariable=self.strvar)
         self.messxbut.pack(anchor='ne',side='right',)
         self.messlab.pack()
         self.topclose(self.messtop)
        
     def messshow(self,):
+        '''open show window'''
         pos_str=self.win.geometry()
         pos=self.geostr(pos_str,('x','+','+'))
         pos_str=self.geosize((200,100,int(pos[2])+500,int(pos[3])+100))
         self.messtop.geometry(pos_str)
     
-    def start(self,time):
+    def starttime(self,time):
         '''start show, set a time'''
         self.before_time=perf_counter()
         if time:
@@ -39,16 +37,24 @@ class Mess_Box(GraBase):
         else:
             self.after_time = self.before_time+20
     
+    def reset(self,s):
+        ''''''
+        self.atstr.append(s)
+    
+    def to(self):
+        '''start timing'''
+        self.messth.submit(self.timing)
+    
     def timing(self):
-        sleep(5)
-        while 1:
-            while self.before_time < self.after_time:
-                if self.strvar.get()!=self.atstr[0]:
-                    self.start(None)
-                    self.strvar.set(self.atstr[0])
-                    self.messshow() 
-                self.before_time = perf_counter()        
-            self.topclose(self.messtop)
+        '''None'''
+        while self.before_time < self.after_time:
+            if self.strvar.get()!=str(self.atstr[0]):
+                self.starttime(None)
+                self.strvar.set(str(self.atstr[0])) 
+            self.before_time = perf_counter() 
+            self.messshow()
+            self.messtop.update()       
+        self.topclose(self.messtop)
         
     
     

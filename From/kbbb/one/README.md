@@ -1,3 +1,0 @@
-# Sock-QQ
-# server
-# user

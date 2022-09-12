@@ -2,21 +2,21 @@ from copy import deepcopy
 from re import T
 import tkinter as tk
 
-
 class GraBase:
     '''A a basic configuration class'''
     LAB_Count = 3
     BUT_Count = 6
     # lab and but init count
-
+     
     def __init__(self) -> None:
         self.func = []
         self.index = 0
         self.atfunc=None
         self.Win_Size = [[360, 450, 1600, 1000]]
-        self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2024",'s_blue':"#61afef",
+        self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2126",'s_blue':"#61afef",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049",
-                      "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#e8e2d4"}
+                      "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#e8e2d4",
+                      "#": "#98c379", "name": "#ca463a", "mess": "#56ab9d", "orange": "#d19a66", }
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
                      "drak": "Quicksand Medium", "small": "Z003",
                      "beutful": "DejaVu Math TeX Gyre", "frmory": "Dingbats"}

@@ -130,7 +130,6 @@ class Welcome(GraBase):
         self.lab_list[2].pack()
         self.message.pack()
         self.win.update()
-        sleep(0.5)
         self.cache1.switch()
         # jump to show
 

@@ -50,18 +50,20 @@ class TCP_mess:
                     date=fileobj.read(Mess_Buffer)
                     sock.send(date)
                     size-=Mess_Buffer
-                    self.s_g_size[1] = "Send  共有:"+str(resize)+", "+"余下:"+str(size)
+                    self.s_g_size[0] = "Send "+file[1] +" 共有: "+str(resize)+", "+"余下: "+str(size)
 
 #Each time the transmission data is synchronized with the server
                 fileobj.close()
                 sock.recv(Mess_Buffer)
                 print("Send finish")
+                self.s_g_size[0] = "Send finish"
                 sock.close()
 #before close, wait server finish
                 index = self.sendfile_list.index(file)
                 del self.sendfile_list[index]
             except:
                 print("与服务端断开连接")
+                self.s_g_size[0] ="error"
                 sock.close()
                 if fileobj:
                     fileobj.close()
@@ -92,10 +94,11 @@ class TCP_mess:
                     date=sock.recv(Mess_Buffer)
                     fileobj.write(date)
                     size -= Mess_Buffer
-                    self.s_g_size[1] = "Get  共有:"+str(resize)+", "+"余下:"+str(size)
+                    self.s_g_size[1] = "Get "+file[1]+"  共有: "+str(resize)+", "+"余下: "+str(size)
                 fileobj.close()
                 sock.send("Ok".encode())
                 print("get finish")
+                self.s_g_size[1] = "Get finish"
                 sock.close()
             
                 index=self.getfile_list.index(file)
@@ -106,6 +109,7 @@ class TCP_mess:
 
             except Exception:
                 print("与服务端断开连接")
+                self.s_g_size[1] ='error'
                 sock.close()
                 if fileobj:
                     fileobj.close()

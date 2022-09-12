@@ -64,13 +64,13 @@ class Seting(Talk_with):
 #the panframe have two member: pancanv and panson, pancanv show fllow panframe, so can show first, and becuse pancanv on panframe, so olny show panframe, just show pancanv
 #when uset click the pancanv obj, show the pantext, so add panson to panframe in after
     
-    #def Closeall(self):
-       # '''when user close the window, saveall and exit'''
-       # self.isstart=0
-        #sleep(0.5)
-        #self.history.saveall(self.fren)
-        #self.savetext()
-        #exit(0)
+    def Closeall(self):
+        '''when user close the window, saveall and exit'''
+        self.isstart=0
+        sleep(0.5)
+        self.history.saveall(self.fren)
+        self.savetext()
+        exit(0)
     
     def new(self):
         super().new()
@@ -82,7 +82,7 @@ class Seting(Talk_with):
         i = 0
         while i < len(self.setstr2):
             self.draw_a_text(
-                self.pancanv, self.setstr2[i], (self.Win_Size[0][0]//6, self.pan_y), "red", self.check_file)
+                self.pancanv, self.setstr2[i], (self.Win_Size[0][0]//6, self.pan_y), self.Color['name'], self.check_file)
             self.draw_a_text(
                 self.pancanv, self.setstr3[i], (self.Win_Size[0][0]//2+self.Win_Size[0][0]//6//2, self.pan_y),)
             self.pan_y += 50
@@ -99,7 +99,7 @@ class Seting(Talk_with):
         self.but_list[5].place(x=self.Win_Size[0][0]-35, y=0)
        
     def draw_a_text(self,canv,s,pos,color="#000000",fun=None):
-        tag=canv.create_text(pos[0],pos[1],text=s,fill=color,activefill="black")
+        tag=canv.create_text(pos[0],pos[1],text=s,fill=color,activefill='black')
         if fun:
             self.pan_tag.append(tag)
             canv.tag_bind(tag,"<Button-1>",fun)
@@ -159,9 +159,9 @@ class Seting(Talk_with):
             else:
                 for m in mess:
                     text.tag_add("mess",m[0],m[1])
-        text.tag_config("name",foreground='red')  
-        text.tag_config("#",foreground='green')  
-        text.tag_config("mess",foreground='blue')  
+        text.tag_config("name", foreground=self.Color['name'])
+        text.tag_config("#",foreground=self.Color['#'])  
+        text.tag_config("mess",foreground=self.Color['mess'])  
     
     def savetext(self,):
         print(Spilt_Mess.Isfile(self.textlab['text']))

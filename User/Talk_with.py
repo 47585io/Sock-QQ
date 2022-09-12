@@ -4,9 +4,9 @@ from User.Friend import*
 from Pubilc.Split import Spilt_Mess
 from User.UDPmess import th
 from User.History import History
-#from User.messbox import Mess_Box
+from User.messbox import Mess_Box
 
-class Talk_with(Friend_list):
+class Talk_with(Friend_list,Mess_Box):
     '''the talk_with class, can talk with your friens or grounp, and send or get file'''
 
     def __init__(self) -> None:
@@ -21,7 +21,8 @@ class Talk_with(Friend_list):
         self.history=History()
         self.topinit()
         #self.messbox=Mess_Box()
-        ##self.messbox.init(self.win)
+        Mess_Box.__init__(self)
+        self.messinit(self.win)
   
     def quickconfig(self, friends, mess, sock, tcpmess, tcpsock):
         Friend_list.quickconfig(self, friends, sock, mess)
@@ -37,10 +38,14 @@ class Talk_with(Friend_list):
         self.mess.Send(self.sock,"LOGIN "+self.User_Name)
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         self.history.refuall(self.fren)
-        #sleep(1)
-        #self.messbox.atstr.append("与服务器断开连接!" if self.mess.server_is_start==0 else "连接至服务器")
-        #self.messbox.start(20)
+        sleep(0.5)
+        self.atstr.append(("与服务器断开连接!" if self.mess.server_is_start==0 else "连接至服务器"))
+        self.starttime(20)
         super().Login()
+    
+    def new(self):
+        super().new()
+        self.to()
         
     def chu(self, new):
         '''get friend headpic from server, add to a dir and add to self.fren.pic with name'''
@@ -169,6 +174,9 @@ class Talk_with(Friend_list):
             self.Sendshow(0, self.fren.talk_with, Spilt_Mess.Send_mess_spilt(
                 self.User_Name, self.fren.talk_with, file, str(os.path.getsize(file))).decode())
     #upload file to server, and send command string to get file to user, wait user get it
+            self.atstr[0]=self.tcpmess.s_g_size
+            self.starttime(20)
+            self.to()
             
     def usergetfile(self,):
         '''from history.file, get talk_with send to str, and send to server get the file'''
@@ -197,7 +205,10 @@ class Talk_with(Friend_list):
         for t in tup:
             lis.append(self.history.File_all[self.fren.talk_with][t])
         self.getfile(lis)
-        
+        self.atstr[0] = self.tcpmess.s_g_size
+        self.starttime(20)
+        self.to()
+ 
     def endretu(self):
         '''clear Canvs'''
         self.clear_Canv()

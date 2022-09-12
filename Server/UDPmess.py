@@ -2,7 +2,7 @@ import socket
 import os
 from Server.users import users
 from Pubilc.Split import Spilt_Mess
-Mess_Buffer = 128
+Mess_Buffer = 8192
 
 # 设置每一个sock cache buffer size
 
