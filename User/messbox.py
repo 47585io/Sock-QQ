@@ -12,13 +12,13 @@ class Mess_Box:
         self.strvar=tk.StringVar()
         self.mess_y=0
         self.mess_start=0
-        
+        self.Win_Size.append([250,300])
     def messinit(self,win):
         self.messtop=tk.Toplevel(win)
         self.messxbut = tk.Button(
             self.messtop, command=lambda: self.messclose(self.messtop),text="×",borderwidth=0,highlightthickness=0,font=(self.Font['zheng'],8))
         self.messlab=tk.Message(self.messtop,textvariable=self.strvar,width=200,font=(self.Font['zheng'],8))
-       
+        
         self.messtop.overrideredirect(True)
         #self.messtop.update()
         self.messtop.attributes("-alpha", 1.0)
@@ -27,6 +27,8 @@ class Mess_Box:
     def messclose(self,top):
         top.geometry("0x0")
         self.atstrlist.clear()
+        self.atstr=""
+        self.strvar.set("")
         self.other_clear()
     
     def output(self,s_str):
@@ -37,9 +39,10 @@ class Mess_Box:
         
     def messshow(self,):
         '''open show window'''
+       
         pos_str=self.win.geometry()
         pos=self.geostr(pos_str,('x','+','+'))
-        pos_str=self.geosize((250,300,int(pos[2])+int(pos[0]),int(pos[3])+self.Win_Size[1][1]))
+        pos_str=self.geosize((self.Win_Size[2][0],self.Win_Size[2][1],int(pos[2])+int(pos[0]),int(pos[3])+self.Win_Size[1][1]))
         self.messtop.geometry(pos_str)
         self.messxbut.pack(anchor='ne',side='right',)
         self.messlab.pack()

@@ -59,5 +59,3 @@ class friends:
 
 Friend_List = friends()
 # sava all friend
-
-

@@ -46,7 +46,7 @@ class Seting(Talk_with,Extension):
     def text_init(self):
         self.pantext = tk.Text(self.panson, borderwidth=0, highlightthickness=0,undo=True,insertbackground=self.Color['s_blue'],
                                 width=self.Win_Size[0][0], height=self.Win_Size[0][1], bg=self.Color['setpage'],insertwidth=3)
-        self.textlab=tk.Label(self.panson)
+        self.textlab=tk.Label(self.panson,fg=self.Color['pansonfont'])
         self.textlab.pack()
         self.text_scro=tk.Scrollbar(self.panson,width=6)
         self.pantext.config(yscrollcommand=self.text_scro.set)
@@ -114,7 +114,7 @@ class Seting(Talk_with,Extension):
         self.but_list[5].place(x=self.Win_Size[0][0]-35, y=0)
        
     def draw_a_text(self,canv,s,pos,color="#000000",fun=None):
-        tag=canv.create_text(pos[0],pos[1],text=s,fill=color,activefill='black')
+        tag=canv.create_text(pos[0],pos[1],text=s,fill=color,activefill=self.Color['panfarmefont'])
         if fun:
             self.pan_tag.append(tag)
             canv.tag_bind(tag,"<Button-1>",fun)

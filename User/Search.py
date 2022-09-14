@@ -200,7 +200,7 @@ class Graphics_Search(Buffer_Search):
         #yscro.config(command=text.yview)
         
         self.win.savetext()
-        self.win.strvar.set("文件已打开,请前往设置>Edit")
+        self.win.strvar.set("文件已打开,请前往: 设置>Edit")
         if self.win.textlab['text']:
             self.add_files((self.win.textlab['text'],))
         self.win.textlab.config(text=val)

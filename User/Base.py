@@ -17,11 +17,12 @@ class GraBase:
         self.Color = {"bg": "#282c34", "fg": "#abb2bf","endblack":"#1e2126",'s_blue':"#61afef",
                       "entblock": "#808080", "ffg": "#3e4451", "bubu1": "#3c4049",
                       "bubu2": "#ff9a97", "alpha": "#4b5363", "setpage": "#e8e2d4",
-                      "#": "#98c379", "name": "#ca463a", "mess": "#56ab9d", "orange": "#d19a66", }
+                      "#": "#98c379", "name": "#ca463a", "mess": "#56ab9d", "orange": "#d19a66",
+                      "panfarmefont":"black","pansonfont":"black","messbg":"","messfont":"black"}
         self.Font = {"zheng": "DejaVu Sans", "alpha": "Quicksand",
                      "drak": "Quicksand Medium", "small": "Z003",
                      "beutful": "DejaVu Math TeX Gyre", "frmory": "Dingbats"}
-        self.Font_size = {"small": 5, "mid": 10, "big": 20}
+        self.Font_size = {"small": 5,"hell":7, "mid": 10, "big": 20}
         self.pic_size = [100, 90]
         self.filename = ""
 
