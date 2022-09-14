@@ -33,12 +33,12 @@ class Talk_with(Friend_list,Mess_Box):
         self.topclose(self.win2)
         #used for send and get file
     
-    def Login(self):  
+    def new(self):  
         self.mess.init(self.User_Name, self.filename, self.tcpmess)
         self.mess.Send(self.sock,"LOGIN "+self.User_Name)
         self.tcpmess.Add_a_Send("Server",self.User_Name,self.filename)
         self.history.refuall(self.fren)
-        super().Login()
+        super().new()
     
     def chu(self, new):
         '''get friend headpic from server, add to a dir and add to self.fren.pic with name'''

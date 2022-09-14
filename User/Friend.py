@@ -51,7 +51,7 @@ class Friend_list(Welcome):
         self.Win_Size[0][1] += 220
         self.win.geometry(self.geosize())
         self.panda.config(
-            width=self.Win_Size[0][0], height=self.Win_Size[0][1])
+            width=self.Win_Size[0][0], height=self.Win_Size[0][1],bg=self.Color['setpage'])
         self.bgfarme.config(
             background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])
         self.fren.pic[0]=self.filename

@@ -1,6 +1,7 @@
 from copy import deepcopy
 from re import T
 import tkinter as tk
+from time import perf_counter
 
 class GraBase:
     '''A a basic configuration class'''
@@ -26,7 +27,9 @@ class GraBase:
 
     def init(self,):
         self.win = tk.Tk()
-        self.panda=tk.PanedWindow(self.win,bg=self.Color['setpage'],width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=8,borderwidth=0)
+        self.win.config(bg=self.Color['bg'])
+        self.win.update()
+        self.panda=tk.PanedWindow(self.win,bg=self.Color['bg'],width=self.Win_Size[0][0],height=self.Win_Size[0][1],sashwidth=8,borderwidth=0)
         self.bgfarme = tk.Frame(self.panda)
         self.lab_list = []
         self.but_list = []
@@ -133,10 +136,19 @@ class GraBase:
         self.index += 1
         self.retu()
 
+    def sleep(self,time):
+        start_time=perf_counter()
+        end_time=start_time+time
+        while start_time<end_time:
+            pass
+
     def winconfig(self):
         self.win.config(bg=self.Color["bg"],)
         self.win.title("Sock QQ")
-        self.win.geometry(self.geosize())
+        #self.win.geometry(str(self.Win_Size[0][0])+"x"+str(self.Win_Size[0][1]))
+        tup=self.geostr(self.win.geometry(),("x","+","+"))
+        self.Win_Size[0][2]=int(tup[2])
+        self.Win_Size[0][3]=int(tup[3])
         self.win.resizable(0, 0)
         self.bgfarme.config(
             background=self.Color["bg"], width=self.Win_Size[0][0], height=self.Win_Size[0][1])

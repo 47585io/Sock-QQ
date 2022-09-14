@@ -73,13 +73,14 @@ class Seting(Talk_with,Extension):
 #when user click the Seting Button, show the Setting page, so now add panframe in self.Setting
 #the panframe have two member: pancanv and panson, pancanv show fllow panframe, so can show first, and becuse pancanv on panframe, so olny show panframe, just show pancanv
 #when uset click the pancanv obj, show the pantext, so add panson to panframe in after
-    
+
+
     def Closeall(self):
         '''when user close the window, saveall and exit'''
-        self.mess_start = 0
         self.tcpmess.isget = 0
         self.tcpmess.issend=0
         self.isstart=0
+        self.mess_start = 0
         sleep(0.5)
         self.history.saveall(self.fren)
         self.savetext()
@@ -91,7 +92,7 @@ class Seting(Talk_with,Extension):
             self.draw_a_text(
                 self.pancanv, s, (self.Win_Size[0][0]//2-20, self.pan_y))
             self.pan_y += 30
-
+            
         i = 0
         while i < len(self.setstr2):
             self.draw_a_text(
@@ -100,8 +101,9 @@ class Seting(Talk_with,Extension):
                 self.pancanv, self.setstr3[i], (self.Win_Size[0][0]//2+self.Win_Size[0][0]//6//2, self.pan_y),)
             self.pan_y += 50
             i += 1
+            
         self.pan_y += 100
-        self.pancanv.create_text(self.Win_Size[0][0]/2,self.pan_y,text="选中上面的文件后,将下面的分割条往上拉↓")
+        self.pancanv.create_text(self.Win_Size[0][0]/2,self.pan_y,text="选中 or 打开文件后,将下面的分割条往上拉↓")
     
     def showfriends(self):
         super().showfriends()
@@ -132,7 +134,7 @@ class Seting(Talk_with,Extension):
                 if index==0:
                     tmp=-1
                 index=s.find('\n',index+1)
-                tup.append(s[tmp+1:index+1:])  
+                tup.append(s[tmp+1:index+1:]) 
             return tup
         
         def get_index(line,row,index):
@@ -142,9 +144,9 @@ class Seting(Talk_with,Extension):
                 index=line.find(l,index)
                 relis.append((str(row)+"."+str(index), str(row)+"."+str(index+len(l))))
             return relis
-        
-        tup=get_line(s)     
+            
         text.insert("end",s)
+        tup = get_line(s)
         
         name_list=[]
         list_=[]
@@ -184,6 +186,11 @@ class Seting(Talk_with,Extension):
             file=open(self.textlab['text'],"w")
             text=self.pantext.get("0.0","end")
             i=len(text)-1
+            if text[i] != '\n':
+                file.write(text+'\n')
+                file.write(text[0:i+2:])
+                file.close()
+                return
             while text[i]=='\n':
                 i-=1
             file.write(text[0:i+2:])
@@ -200,22 +207,25 @@ class Seting(Talk_with,Extension):
             self.opentext(name)
         
     def opentext(self,name):
-        self.savetext() 
+        try:
+            self.savetext() 
+        except:
+            pass
         self.pantext.delete("0.0", "end")  
         self.textlab.config(text=name)        
         file=open(name,"r")
         s=file.read()
         file.close()
         self.color_insert(self.pantext,s)
-       
+        
     def openpic(self,name):
+        self.textlab.config(text=name)  
         self.pantext.delete("0.0", "end")  
         self.atpic=tk.PhotoImage(file=name)
         self.pantext.image_create("end",image=self.atpic)
     
     def open_other(self,name):
         name=f.askopenfilename(initialdir=name,)
-        self.textlab.config(text=name)  
         type=Spilt_Mess.Isfile(name)
         if type==".png" or type==".gif":
             self.openpic(name)

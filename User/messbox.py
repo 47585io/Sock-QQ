@@ -16,27 +16,33 @@ class Mess_Box:
     def messinit(self,win):
         self.messtop=tk.Toplevel(win)
         self.messxbut = tk.Button(
-            self.messtop, command=lambda: self.topclose(self.messtop),text="×",borderwidth=0,highlightthickness=0)
-        self.messlab=tk.Message(self.messtop,textvariable=self.strvar,width=200)
-        self.messxbut.pack(anchor='ne',side='right',)
-        self.messlab.pack()
+            self.messtop, command=lambda: self.messclose(self.messtop),text="×",borderwidth=0,highlightthickness=0,font=(self.Font['zheng'],8))
+        self.messlab=tk.Message(self.messtop,textvariable=self.strvar,width=200,font=(self.Font['zheng'],8))
+       
         self.messtop.overrideredirect(True)
         #self.messtop.update()
         self.messtop.attributes("-alpha", 1.0)
         self.topclose(self.messtop)
-     
+    
+    def messclose(self,top):
+        top.geometry("0x0")
+        self.atstrlist.clear()
+        self.other_clear()
+    
     def output(self,s_str):
      self.starttime(20)
      self.atstrlist.append(s_str)
      if self.mess_start==0:
         self.to()
-         
+        
     def messshow(self,):
         '''open show window'''
         pos_str=self.win.geometry()
         pos=self.geostr(pos_str,('x','+','+'))
         pos_str=self.geosize((250,300,int(pos[2])+int(pos[0]),int(pos[3])+self.Win_Size[1][1]))
         self.messtop.geometry(pos_str)
+        self.messxbut.pack(anchor='ne',side='right',)
+        self.messlab.pack()
     
     def starttime(self,time):
         '''start show, set a time'''
@@ -63,14 +69,15 @@ class Mess_Box:
             if self.mess_start == 0:
                 print("mess return")
                 return
-            if self.strvar.get()!=self.atstr:          
+            if self.strvar.get()!=self.atstr and self.atstr!="":          
                 self.starttime(None)
                 self.strvar.set(self.atstr) 
                 self.messshow()
+            if self.atstr=="":
+                 self.strvar.set("")
             self.before_time = perf_counter() 
-            self.messtop.update()  
-        self.atstrlist.clear()     
-        self.topclose(self.messtop)
+            self.messtop.update()     
+        self.messclose(self.messtop)
         self.mess_start=0
         
     
